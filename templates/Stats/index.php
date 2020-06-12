@@ -7,7 +7,7 @@
     <script type="text/javascript">
         Highcharts.chart('top', {
             title: {
-                text: 'Top 10 users by activity'
+                text: 'Top users by activity'
             },
             chart: {
                 backgroundColor: 'transparent',
