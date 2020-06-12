@@ -158,7 +158,7 @@ use Cake\Utility\Hash;
                 colors: ['#4572A7', '#AA4643', '#89A54E', '#80699B'],
                 chart: {
                     backgroundColor: 'transparent',
-                    type: 'column',
+                    type: 'spline',
                     credits: false,
                 },
                 title: {
