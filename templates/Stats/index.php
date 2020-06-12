@@ -217,7 +217,7 @@ use Cake\Utility\Hash;
                     <span class="emoji">
                         <?php
                             $emoji = str_replace(['&lt;:', ':&gt;'], '', $this->Discord->resolveEmoji($reaction->reaction, 32, 32));
-                            if (mb_strlen($emoji) == 1) {
+                            if (mb_strlen($emoji) <= 4) {
                                 $emoji = dechex(mb_ord($emoji));
                                 $emoji = '<img src="https://abs.twimg.com/emoji/v2/svg/'.$emoji.'.svg" width="32" height="32">';
                             }
