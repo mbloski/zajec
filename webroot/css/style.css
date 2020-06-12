@@ -269,3 +269,20 @@ td {
     float: left;
     width: 50%;
 }
+
+.itemgfx {
+    text-align: center;
+    width: 40px;
+    height: 40px;
+    border: none !important;
+}
+
+.itemgfx img {
+    margin-top: 4px;
+    margin-right: 1px;
+}
+
+.itemgfx:nth-child(4n+1),
+.itemgfx:nth-child(4n+2)  {
+    background: #C8D3D4;
+}

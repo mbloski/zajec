@@ -205,6 +205,33 @@ use Cake\Utility\Hash;
 
 <div class="sbox">
     <h2 class="text-center">
+        Most popular reactions
+    </h2>
+    <table class="itemtable">
+        <tr class="itemrow solid-border">
+            <?php foreach ($reactions as $reaction): ?>
+                <td class="itemgfx" style="width: 0;">
+                    <div><?= $this->Number->format($reaction->count) ?>x</div>
+                </td>
+                <td class="itemgfx">
+                    <span class="emoji">
+                        <?php
+                            $emoji = str_replace(['&lt;:', ':&gt;'], '', $this->Discord->resolveEmoji($reaction->reaction, 32, 32));
+                            if (mb_strlen($emoji) == 1) {
+                                $emoji = dechex(mb_ord($emoji));
+                                $emoji = '<img src="https://abs.twimg.com/emoji/v2/svg/'.$emoji.'.svg" width="32" height="32">';
+                            }
+                            echo $emoji;
+                        ?>
+                    </span>
+                </td>
+            <?php endforeach; ?>
+        </tr>
+    </table>
+</div>
+
+<div class="sbox">
+    <h2 class="text-center">
         Quotes
         <img src="https://discordapp.com/assets/0b6fc9f58ca3827977d546a6ee0ca3e7.svg" class="emoji" alt=":speech_balloon:">
     </h2>

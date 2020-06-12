@@ -27,6 +27,8 @@ class StatsController extends AppController
         $this->loadModel('Quotes');
         $quotes = $this->Quotes->find('all');
 
-        $this->set(compact('top', 'dailyActivity', 'mostActiveTimes', 'quotes', 'guildMembers'));
+        $reactions = $this->Stats->getTopReactions(10);
+
+        $this->set(compact('top', 'dailyActivity', 'mostActiveTimes', 'quotes', 'reactions', 'guildMembers'));
     }
 }

@@ -72,4 +72,21 @@ class StatsTable extends \Cake\ORM\Table
             ],
         ]);
     }
+
+    public function getTopReactions($c = null) {
+        $reactions = TableRegistry::getTableLocator()->get('Reactions');
+        return $reactions->find('all', [
+            'fields' => [
+                'count' => 'COUNT(1)',
+                'reaction'
+            ],
+            'group' => [
+                'reaction',
+            ],
+            'order' => [
+                'count' => 'DESC',
+            ],
+            'limit' => $c,
+        ]);
+    }
 }
