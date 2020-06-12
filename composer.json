@@ -1,7 +1,6 @@
 {
-    "name": "cakephp/app",
-    "description": "CakePHP skeleton app",
-    "homepage": "https://cakephp.org",
+    "name": "mbloski/zajec",
+    "description": "Discord statistic",
     "type": "project",
     "license": "MIT",
     "require": {
