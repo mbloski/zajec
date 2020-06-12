@@ -29,4 +29,32 @@ class StatsTable extends \Cake\ORM\Table
             'limit' => $c,
         ]);
     }
+
+    public function getDaily(int $days = 7) {
+        $messages = TableRegistry::getTableLocator()->get('Messages');
+        $q = $messages->find('all', [
+            'fields' => [
+                'interval' => 'datetime((strftime(\'%s\', created) / 21600) * 21600, \'unixepoch\')',
+                'date' => 'date(created)',
+                'time' => 'strftime(\'%H\', time((strftime(\'%s\', created) / 21600) * 21600, \'unixepoch\'))',
+                'count' => 'COUNT(1)',
+            ],
+            'group' => [
+                'interval',
+            ],
+            'conditions' => [
+                'created > (SELECT DATETIME(\'now\', \''.-$days.' day\'))',
+            ],
+        ]);
+
+        $ret = [];
+        foreach ($q->toArray() as $key => $item) {
+            if (!isset($ret[$item['date']])) {
+                $ret[$item['date']] = [0 => 0, 6 => 0, 12 => 0, 18 => 0];
+            }
+            $ret[$item['date']][intval($item->time)] = intval($item->count);
+        }
+
+        return $ret;
+    }
 }
