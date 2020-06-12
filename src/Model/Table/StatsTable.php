@@ -19,6 +19,7 @@ class StatsTable extends \Cake\ORM\Table
             'fields' => [
                 'count' => 'COUNT(1)',
                 'author_id',
+                'seen' => 'MAX(created)',
             ],
             'group' => [
                 'author_id',
