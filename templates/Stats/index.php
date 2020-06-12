@@ -124,6 +124,62 @@ use Cake\Utility\Hash;
 </div>
 
 <div class="sbox">
+    <figure class="highcharts-figure">
+        <div id="hours"></div>
+    </figure>
+    <script type="text/javascript">
+        Highcharts.chart('hours', {
+            colors: ['#4572A7', '#AA4643', '#89A54E', '#80699B'],
+            chart: {
+                backgroundColor: 'transparent',
+                type: 'column',
+                credits: false,
+            },
+            legend: {
+                reversed: true,
+            },
+            title: {
+                text: 'Most active times'
+            },
+            xAxis: {
+                categories: <?= json_encode(array_map(function($x) { return $x->hour; }, $mostActiveTimes->toArray())) ?>
+            },
+            yAxis: {
+                min: 0,
+                title: {
+                    text: 'Total lines'
+                }
+            },
+            tooltip: {
+                pointFormat: '<span style="color:{series.color}">{series.name}</span>: <b>{point.y}</b><br/>',
+                shared: true
+            },
+            plotOptions: {
+                column: {
+                    stacking: 'normal'
+                },
+                series: {
+                    pointPadding: 0,
+                    groupPadding: 0,
+                    states: {
+                        inactive: {
+                            opacity: 0.6,
+                        }
+                    }
+                },
+            },
+            series: [{
+                name: 'lines',
+                data: <?= json_encode(array_map(function($x) { return intval($x->count); }, $mostActiveTimes->toArray())) ?>,
+            }],
+            credits: {
+                enabled: false,
+            }
+        });
+    </script>
+</div>
+
+<div class="sbox">
     <h2 class="text-center">
         Quotes
         <img src="https://discordapp.com/assets/0b6fc9f58ca3827977d546a6ee0ca3e7.svg" class="emoji" alt=":speech_balloon:">

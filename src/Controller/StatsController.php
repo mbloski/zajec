@@ -22,10 +22,11 @@ class StatsController extends AppController
         $guildMembers = json_decode($this->Discord->getGuildMembers(Configure::read('discord.guild')), true);
         $top = $this->Stats->getTop();
         $dailyActivity = $this->Stats->getDaily(14);
+        $mostActiveTimes = $this->Stats->getMostActiveTimes();
 
         $this->loadModel('Quotes');
         $quotes = $this->Quotes->find('all');
 
-        $this->set(compact('top', 'dailyActivity', 'quotes', 'guildMembers'));
+        $this->set(compact('top', 'dailyActivity', 'mostActiveTimes', 'quotes', 'guildMembers'));
     }
 }

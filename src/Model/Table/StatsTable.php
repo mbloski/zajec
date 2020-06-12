@@ -57,4 +57,18 @@ class StatsTable extends \Cake\ORM\Table
 
         return $ret;
     }
+
+    public function getMostActiveTimes() {
+        $messages = TableRegistry::getTableLocator()->get('Messages');
+        return $messages->find('all', [
+            'fields' => [
+                'interval' => 'time((strftime(\'%s\', created) / 3600) * 3600, \'unixepoch\')',
+                'hour' => 'strftime(\'%H\', created)',
+                'count' => 'COUNT(1)',
+            ],
+            'group' => [
+                'interval',
+            ],
+        ]);
+    }
 }
