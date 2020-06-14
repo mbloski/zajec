@@ -35,7 +35,7 @@ class StatsTable extends \Cake\ORM\Table
         $messages = TableRegistry::getTableLocator()->get('Messages');
         $q = $messages->find('all', [
             'fields' => [
-                'interval' => 'datetime((strftime(\'%s\', datetime(created, \'localtime\')) / 21600) * 21600, \'unixepoch\')',
+                'interval' => 'datetime((strftime(\'%s\', created) / 21600) * 21600, \'unixepoch\')',
                 'date' => 'date(created)',
                 'time' => 'strftime(\'%H\', time((strftime(\'%s\', created) / 21600) * 21600, \'unixepoch\'))',
                 'count' => 'COUNT(1)',
@@ -63,7 +63,7 @@ class StatsTable extends \Cake\ORM\Table
         $messages = TableRegistry::getTableLocator()->get('Messages');
         return $messages->find('all', [
             'fields' => [
-                'interval' => 'time((strftime(\'%s\', created) / 3600) * 3600, \'unixepoch\', \'localtime\')',
+                'interval' => 'time((strftime(\'%s\', created) / 3600) * 3600, \'unixepoch\')',
                 'hour' => 'strftime(\'%H\', created)',
                 'count' => 'COUNT(1)',
             ],
