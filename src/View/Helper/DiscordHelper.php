@@ -40,7 +40,7 @@ class DiscordHelper extends Helper
     }
 
     public function resolveNickname($guildMembers, $str) {
-        return preg_replace_callback('/&lt;@(\d*)&gt;/', function($x) use ($guildMembers) {
+        return preg_replace_callback('/&lt;@!?(\d*)&gt;/', function($x) use ($guildMembers) {
             $user = getUserById($guildMembers, $x[1]);
             if (!$user) {
                 return '@'.$x[1];
