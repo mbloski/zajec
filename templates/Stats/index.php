@@ -247,7 +247,7 @@ use Cake\Utility\Hash;
             <tr class="itemrow">
                 <td class="itemdesc">#<?= $quote->id ?></td>
                 <td class="itemdesc" style="width:200px;"><?= h($quote->name) ?></td>
-                <td class="itemdesc" style="max-width:600px;word-break:break-word;"><?= h($this->Discord->resolveNickname($guildMembers, $this->Discord->resolveEmoji($quote->value))) ?></td>
+                <td class="itemdesc" style="max-width:600px;word-break:break-word;"><?= $this->Discord->resolveNickname($guildMembers, $this->Discord->resolveEmoji($quote->value)) ?></td>
                 <td><?= h($quote->created) ?></td>
             </tr>
         <?php endforeach; ?>
