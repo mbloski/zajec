@@ -25,7 +25,15 @@ class StatsController extends AppController
         $mostActiveTimes = $this->Stats->getMostActiveTimes();
 
         $this->loadModel('Quotes');
-        $quotes = $this->Quotes->find('all');
+        $quotes = $this->Quotes->find('all', [
+            'fields' => [
+                'created' => 'datetime(created, \'localtime\')',
+                'id',
+                'name',
+                'value',
+
+            ]
+        ]);
 
         $reactions = $this->Stats->getTopReactions(10);
 
