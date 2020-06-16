@@ -19,7 +19,7 @@ use Cake\Utility\Hash;
                 <?php foreach ($top->toArray() as $n => $row): ?>
                     <?php if ($n > 9) break; ?>
                     <tr class="itemrow">
-                        <td class="itemdesc"><?= h($this->Discord->getUserById($guildMembers, $row->author_id, 'user.username')) ?></td>
+                        <td class="itemdesc"><?= h($this->Discord->getUserById($guildMembers, $row->author_id, 'user.username') ?? '???') ?></td>
                         <td class="itemdesc"><?= h($row->count) ?></td>
                         <td class="itemdesc"><?= h((new \Cake\I18n\Time($row->seen))->timeAgoInWords(['end' => '+7 days'])) ?></td>
                     </tr>
@@ -71,7 +71,7 @@ use Cake\Utility\Hash;
                     series: [{
                         name: 'Lines',
                         colorByPoint: true,
-                        data: <?= json_encode(array_map(function($x) use ($guildMembers) { return ['name' => $this->Discord->getUserById($guildMembers, $x->author_id, 'user.username'), 'y' => intval($x->count)]; }, $top->toArray())) ?>
+                        data: <?= json_encode(array_map(function($x) use ($guildMembers) { return ['name' => $this->Discord->getUserById($guildMembers, $x->author_id, 'user.username') ?? '???', 'y' => intval($x->count)]; }, $top->toArray())) ?>
                     }],
                     credits: {
                         enabled: false,
