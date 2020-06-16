@@ -243,9 +243,9 @@ use Cake\Utility\Hash;
         <th width="170px;">Date</th>
         </thead>
         <tbody>
-        <?php foreach ($quotes as $n => $quote): ?>
+        <?php foreach ($quotes as $quote): ?>
             <tr class="itemrow">
-                <td class="itemdesc">#<?= $n + 1 ?></td>
+                <td class="itemdesc">#<?= $quote->id ?></td>
                 <td class="itemdesc" style="width:200px;"><?= h($quote->name) ?></td>
                 <td class="itemdesc" style="max-width:600px;word-break:break-word;"><?= h($this->Discord->resolveNickname($guildMembers, $this->Discord->resolveEmoji($quote->value))) ?></td>
                 <td><?= h($quote->created) ?></td>
