@@ -287,3 +287,7 @@ td {
 .itemgfx:nth-child(4n+2)  {
     background: #33363c;
 }
+
+.bold {
+    font-weight: bold;
+}

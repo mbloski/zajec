@@ -248,7 +248,7 @@ use Cake\Utility\Hash;
         <?php if (!$key) continue; ?>
             <tr class="itemrow">
                 <td class="itemdesc">#<?= $n + 1 ?></td>
-                <td class="itemdesc">#<?= h($guildChannels[$key]['name']) ?></td>
+                <td class="itemdesc bold">#<?= h($guildChannels[$key]['name']) ?></td>
                 <td class="itemdesc"><?= $channel->count ?></td>
                 <td class="itemdesc discordfeel" style="min-width:100px;"><?= $this->Discord->getUsernameWithColor($guildMembers, $channel->most_active) ?? '???' ?></td>
                 <td class="itemdesc discordfeel" style="max-width:600px;word-break:break-word;"><?= $this->Discord->resolveNickname($guildMembers, $this->Discord->resolveEmoji($channel->random_message)) ?></td>
