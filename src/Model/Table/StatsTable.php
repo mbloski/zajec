@@ -89,4 +89,26 @@ class StatsTable extends \Cake\ORM\Table
             'limit' => $c,
         ]);
     }
+
+    public function getTopChannels($c = null) {
+        $messages = TableRegistry::getTableLocator()->get('Messages');
+        return $messages->find('all', [
+            'fields' => [
+                'channel_id',
+                'count' => 'COUNT(1)',
+                'most_active' => '(select author_id from messages m where m.channel_id = Messages.channel_id and m.deleted = 0 limit 1)',
+                'random_message' => '(select (\'<<@\' || author_id || \'>> \' || message) from messages m where m.channel_id = Messages.channel_id and length(message) between 1 and 200 and m.deleted = 0 order by random() limit 1)',
+            ],
+            'group' => [
+                'Messages.channel_id',
+            ],
+            'conditions' => [
+                'deleted' => false,
+            ],
+            'order' => [
+                'count' => 'DESC',
+            ],
+            'limit' => $c,
+        ]);
+    }
 }

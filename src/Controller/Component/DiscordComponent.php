@@ -44,6 +44,10 @@ class DiscordComponent extends Component
         return $this->genericGet('/guilds/'.$id);
     }
 
+    public function getChannels($guildId) {
+        return $this->genericGet('/guilds/'.$guildId.'/channels');
+    }
+
     public function getGuildMembers($id) {
         return $this->genericGet('/guilds/'.$id.'/members?limit=1000');
     }

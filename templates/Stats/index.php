@@ -232,6 +232,34 @@ use Cake\Utility\Hash;
 
 <div class="sbox">
     <h2 class="text-center">
+        Most popular channels
+    </h2>
+    <table class="itemtable">
+        <thead>
+        <th>#</th>
+        <th>Channel</th>
+        <th>Lines</th>
+        <th>Most active</th>
+        <th>Random quote</th>
+        </thead>
+        <tbody>
+        <?php foreach ($topChannels as $n => $channel): ?>
+        <?php $key = array_search($channel->channel_id, array_column($guildChannels, 'id')); ?>
+        <?php if (!$key) continue; ?>
+            <tr class="itemrow">
+                <td class="itemdesc">#<?= $n + 1 ?></td>
+                <td class="itemdesc">#<?= h($guildChannels[$key]['name']) ?></td>
+                <td class="itemdesc"><?= $channel->count ?></td>
+                <td class="itemdesc" style="min-width:100px;"><?= h($this->Discord->getUserById($guildMembers, $channel->most_active, 'user.username') ?? '???') ?></td>
+                <td class="itemdesc" style="max-width:600px;word-break:break-word;"><?= $this->Discord->resolveNickname($guildMembers, $this->Discord->resolveEmoji($channel->random_message)) ?></td>
+            </tr>
+        <?php endforeach; ?>
+        </tbody>
+    </table>
+</div>
+
+<div class="sbox">
+    <h2 class="text-center">
         Quotes
         <img src="https://discordapp.com/assets/0b6fc9f58ca3827977d546a6ee0ca3e7.svg" class="emoji" alt=":speech_balloon:">
     </h2>
