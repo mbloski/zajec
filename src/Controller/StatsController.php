@@ -19,8 +19,8 @@ class StatsController extends AppController
      */
     public function index()
     {
-        $guildMembers = json_decode($this->Discord->getGuildMembers(Configure::read('discord.guild')), true);
-        $guildChannels = json_decode($this->Discord->getChannels(Configure::read('discord.guild')), true);
+        $guildMembers = $this->Discord->getGuildMembersWithRoles(Configure::read('discord.guild'));
+        $guildChannels = $this->Discord->getChannels(Configure::read('discord.guild'));
         $top = $this->Stats->getTop();
         $dailyActivity = $this->Stats->getDaily(14);
         $mostActiveTimes = $this->Stats->getMostActiveTimes();

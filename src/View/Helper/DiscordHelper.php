@@ -19,6 +19,21 @@ class DiscordHelper extends Helper
      */
     protected $_defaultConfig = [];
 
+    private function colorName($user, $prefix = '') {
+        if (!$user) {
+            return null;
+        }
+
+        $name = $user['nick'] ?? $user['user']['username'];
+        $color = '';
+        foreach ($user['roles'] as $role) {
+            if ($role['color'] !== 0) {
+                $color = 'color:#'.str_pad(dechex($role['color']), 6, '0', STR_PAD_LEFT).';';
+            }
+        }
+        return '<span style="font-weight: bold;'.$color.'">'.h($prefix.$name).'</span>';
+    }
+
     public function getUserById($guildMembers, $id, $prop = null) {
         $key = array_search($id, Hash::extract($guildMembers, '{n}.user.id'));
         if (!$key) {
@@ -30,6 +45,11 @@ class DiscordHelper extends Helper
         }
 
         return $ret;
+    }
+
+    public function getUsernameWithColor($guildMembers, $id) {
+        $ret = $this->getUserById($guildMembers, $id);
+        return $this->colorName($ret);
     }
 
     public function resolveEmoji($str, $w = 16, $h = 16) {
@@ -50,8 +70,7 @@ class DiscordHelper extends Helper
                 return '@'.$x[1];
             }
 
-            $name = $user['nick'] ?? $user['user']['username'];
-            return '@'.$name;
+            return $this->colorName($user, '@');
         }, $str);
     }
 

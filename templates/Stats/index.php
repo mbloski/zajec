@@ -19,7 +19,7 @@ use Cake\Utility\Hash;
                 <?php foreach ($top->toArray() as $n => $row): ?>
                     <?php if ($n > 9) break; ?>
                     <tr class="itemrow">
-                        <td class="itemdesc"><?= h($this->Discord->getUserById($guildMembers, $row->author_id, 'user.username') ?? '???') ?></td>
+                        <td class="itemdesc discordfeel"><?= $this->Discord->getUsernameWithColor($guildMembers, $row->author_id) ?? '???' ?></td>
                         <td class="itemdesc"><?= h($row->count) ?></td>
                         <td class="itemdesc"><?= h((new \Cake\I18n\Time($row->seen))->timeAgoInWords(['end' => '+7 days'])) ?></td>
                     </tr>
@@ -250,8 +250,8 @@ use Cake\Utility\Hash;
                 <td class="itemdesc">#<?= $n + 1 ?></td>
                 <td class="itemdesc">#<?= h($guildChannels[$key]['name']) ?></td>
                 <td class="itemdesc"><?= $channel->count ?></td>
-                <td class="itemdesc" style="min-width:100px;"><?= h($this->Discord->getUserById($guildMembers, $channel->most_active, 'user.username') ?? '???') ?></td>
-                <td class="itemdesc" style="max-width:600px;word-break:break-word;"><?= $this->Discord->resolveNickname($guildMembers, $this->Discord->resolveEmoji($channel->random_message)) ?></td>
+                <td class="itemdesc discordfeel" style="min-width:100px;"><?= $this->Discord->getUsernameWithColor($guildMembers, $channel->most_active) ?? '???' ?></td>
+                <td class="itemdesc discordfeel" style="max-width:600px;word-break:break-word;"><?= $this->Discord->resolveNickname($guildMembers, $this->Discord->resolveEmoji($channel->random_message)) ?></td>
             </tr>
         <?php endforeach; ?>
         </tbody>

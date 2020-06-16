@@ -37,11 +37,15 @@ class DiscordComponent extends Component
         $ch = curl_init($this->url.$url);
         curl_setopt($ch, CURLOPT_HTTPHEADER, $request_headers);
         curl_setopt($ch, CURLOPT_RETURNTRANSFER, 1);
-        return curl_exec($ch);
+        return json_decode(curl_exec($ch), true);
     }
 
     public function getGuild($id) {
         return $this->genericGet('/guilds/'.$id);
+    }
+
+    public function getRoles($guildId) {
+        return $this->genericGet('/guilds/'.$guildId.'/roles');
     }
 
     public function getChannels($guildId) {
@@ -50,6 +54,23 @@ class DiscordComponent extends Component
 
     public function getGuildMembers($id) {
         return $this->genericGet('/guilds/'.$id.'/members?limit=1000');
+    }
+
+    public function getGuildMembersWithRoles($id) {
+        $ret = $this->getGuildMembers($id);
+        $roles = $this->getRoles($id);
+        foreach ($ret as &$member) {
+            foreach ($member['roles'] as &$role) {
+                $role = ['id' => $role];
+                $key = array_search($role['id'], array_column($roles, 'id'));
+                if ($key) {
+                    $role = $roles[$key];
+                }
+            }
+
+        }
+
+        return $ret;
     }
 
 }
