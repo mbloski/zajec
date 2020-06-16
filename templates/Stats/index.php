@@ -232,7 +232,7 @@ use Cake\Utility\Hash;
 
 <div class="sbox">
     <h2 class="text-center">
-        Most popular channels
+        Top channels
     </h2>
     <table class="itemtable">
         <thead>
