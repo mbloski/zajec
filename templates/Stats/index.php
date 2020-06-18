@@ -320,8 +320,13 @@ use Cake\Utility\Hash;
             <?php $words = array_keys($mostCommonBadwords); ?>
             <li>
                 The most common curse is <b><?= $words[0] ?></b>.
-            </li>
+            <br><br></li>
         <?php endif; ?>
+        <?php foreach ($wordOccurences as $word => $count): ?>
+        <li>
+            <b><?= $word ?></b> was mentioned <?= $count ?> <?= $count == 1? 'time' : 'times' ?>.
+        </li>
+        <?php endforeach; ?>
     </ul>
 </div>
 

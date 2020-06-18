@@ -181,6 +181,22 @@ class StatsTable extends \Cake\ORM\Table
         return $ret;
     }
 
+    public function getWordOccurences($word) {
+        $messages = TableRegistry::getTableLocator()->get('Messages');
+        return $messages->find('all', [
+            'fields' => [
+                $word => 'COUNT(1)'
+            ],
+            'conditions' => [
+                'deleted' => false,
+                'author_id NOT IN' => Configure::read('excluded_authors') ?? [],
+                'OR' => [
+                    ['message LIKE' => '%'.$word.'%'],
+                ]
+            ],
+        ])->count();
+    }
+
     public function getTopAngry($c = null) {
         $messages = TableRegistry::getTableLocator()->get('Messages');
 

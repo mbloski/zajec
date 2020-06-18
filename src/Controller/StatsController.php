@@ -39,6 +39,11 @@ class StatsController extends AppController
         $longestLines = $this->Stats->getLongestLines(2);
         $shortestLines = $this->Stats->getShortestLines(2);
 
+        $wordOccurences = [];
+        foreach (Configure::read('word_occurences') ?? [] as $word) {
+            $wordOccurences[$word] = $this->Stats->getWordOccurences($word);
+        }
+
         $this->loadModel('Quotes');
         $quotes = $this->Quotes->find('all', [
             'fields' => [
@@ -52,6 +57,6 @@ class StatsController extends AppController
 
         $reactions = $this->Stats->getTopReactions(10);
 
-        $this->set(compact('top', 'dailyActivity', 'mostActiveTimes', 'quotes', 'reactions', 'topChannels', 'topBadwords', 'foulLine', 'mostCommonBadwords', 'topAngry', 'angryLine', 'topQuestions', 'longestLines', 'shortestLines', 'guildMembers', 'guildChannels'));
+        $this->set(compact('top', 'dailyActivity', 'mostActiveTimes', 'quotes', 'reactions', 'topChannels', 'topBadwords', 'foulLine', 'mostCommonBadwords', 'topAngry', 'angryLine', 'topQuestions', 'longestLines', 'shortestLines', 'wordOccurences', 'guildMembers', 'guildChannels'));
     }
 }
