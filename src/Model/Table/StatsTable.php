@@ -149,6 +149,31 @@ class StatsTable extends \Cake\ORM\Table
         return $ret;
     }
 
+    public function getMostCommonBadwords() {
+        $messages = TableRegistry::getTableLocator()->get('Messages');
+
+        $fields = [];
+        foreach (Configure::read('bad_words') as $word) {
+            /* not accurate but seems good enough */
+            $fields[$word] = '(SELECT COUNT(1) FROM messages WHERE message LIKE \''.'% '.$word.' %'.'\' OR message LIKE \''.$word.'%'.'\' OR message LIKE \''.$word.'\')';
+        }
+
+        $ret = $messages->find('all', [
+            'fields' => $fields,
+            'conditions' => [
+                'deleted' => false,
+                'author_id NOT IN' => Configure::read('excluded_authors') ?? [],
+                'OR' => array_map(function($x) { return ['message LIKE' => '%'.$x.'%']; }, Configure::read('bad_words') ?? [])
+            ],
+            'group' => [
+                '1',
+            ]
+        ])->first()->toArray();
+        arsort($ret);
+
+        return $ret;
+    }
+
     public function getTopAngry($c = null) {
         $messages = TableRegistry::getTableLocator()->get('Messages');
 

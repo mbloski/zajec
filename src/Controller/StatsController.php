@@ -30,6 +30,7 @@ class StatsController extends AppController
         if (count($topBadwords) > 0) {
             $foulLine = $this->Stats->getFoulLine(array_keys($topBadwords)[0]);
         }
+        $mostCommonBadwords = $this->Stats->getMostCommonBadwords();
         $topAngry = $this->Stats->getTopAngry(2);
         if (count($topAngry) > 0) {
             $angryLine = $this->Stats->getAngryLine(array_keys($topAngry)[0]);
@@ -51,6 +52,6 @@ class StatsController extends AppController
 
         $reactions = $this->Stats->getTopReactions(10);
 
-        $this->set(compact('top', 'dailyActivity', 'mostActiveTimes', 'quotes', 'reactions', 'topChannels', 'topBadwords', 'foulLine', 'topAngry', 'angryLine', 'topQuestions', 'longestLines', 'shortestLines', 'guildMembers', 'guildChannels'));
+        $this->set(compact('top', 'dailyActivity', 'mostActiveTimes', 'quotes', 'reactions', 'topChannels', 'topBadwords', 'foulLine', 'mostCommonBadwords', 'topAngry', 'angryLine', 'topQuestions', 'longestLines', 'shortestLines', 'guildMembers', 'guildChannels'));
     }
 }

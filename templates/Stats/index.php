@@ -314,6 +314,12 @@ use Cake\Utility\Hash;
                 <?php if (count($shortestLines) > 1): ?>
                     <small><b><?= $this->Discord->getUserById($guildMembers, $authors[1], 'user.username') ?? $authors[1] ?></b> was tight-lipped, too, averaging <?= $this->Number->format($shortestLines[$authors[0]], ['precision' => 0]) ?> characters.</small>
                 <?php endif; ?>
+            <br><br></li>
+        <?php endif; ?>
+        <?php if (!empty($mostCommonBadwords)): ?>
+            <?php $words = array_keys($mostCommonBadwords); ?>
+            <li>
+                The most common curse is <b><?= $words[0] ?></b>.
             </li>
         <?php endif; ?>
     </ul>
