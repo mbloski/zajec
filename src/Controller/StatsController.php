@@ -34,7 +34,7 @@ class StatsController extends AppController
         if (count($topAngry) > 0) {
             $angryLine = $this->Stats->getAngryLine(array_keys($topAngry)[0]);
         }
-        $longestLines = $this->Stats->getLongestLines(1);
+        $longestLines = $this->Stats->getLongestLines(2);
 
         $this->loadModel('Quotes');
         $quotes = $this->Quotes->find('all', [
