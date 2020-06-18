@@ -217,3 +217,7 @@ ServerRequest::addDetector('tablet', function ($request) {
 if (file_exists(CONFIG . 'discord.php')) {
     Configure::load('discord', 'default');
 }
+
+if (file_exists(CONFIG . 'misc.php')) {
+    Configure::load('misc', 'default');
+}

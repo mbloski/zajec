@@ -260,6 +260,27 @@ use Cake\Utility\Hash;
 
 <div class="sbox">
     <h2 class="text-center">
+        Fun facts
+    </h2>
+    <ul>
+        <?php if (!empty($topBadwords)): ?>
+        <?php $authors = array_keys($topBadwords); ?>
+        <li>
+            <b><?= $this->Discord->getUserById($guildMembers, $authors[0], 'user.username') ?? $authors[0] ?></b> has quite a potty mouth. <?= $this->Number->format($topBadwords[$authors[0]], ['precision' => 2]) ?>% lines contained foul language.<br>
+            <?php if ($foulLine): ?>
+            <b>For example, like this:</b><br />&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<?= $this->Discord->resolveNickname($guildMembers, $this->Discord->resolveEmoji($foulLine->message)) ?>
+            <?php endif; ?>
+            <?php if (count($topBadwords) > 1): ?>
+            <br>
+                <small><b><?= $this->Discord->getUserById($guildMembers, $authors[1], 'user.username') ?? $authors[1] ?></b> also makes sailors blush, <?= $this->Number->format($topBadwords[$authors[1]], ['precision' => 2]) ?>% of the time.</small>
+            <?php endif; ?>
+        </li>
+        <?php endif; ?>
+    </ul>
+</div>
+
+<div class="sbox">
+    <h2 class="text-center">
         Quotes
         <img src="https://discordapp.com/assets/0b6fc9f58ca3827977d546a6ee0ca3e7.svg" class="emoji" alt=":speech_balloon:">
     </h2>

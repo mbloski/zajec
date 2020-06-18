@@ -25,6 +25,11 @@ class StatsController extends AppController
         $dailyActivity = $this->Stats->getDaily(14);
         $mostActiveTimes = $this->Stats->getMostActiveTimes();
         $topChannels = $this->Stats->getTopChannels()->all();
+        $topBadwords = $this->Stats->getTopBadwords(2);
+        $foulLine = null;
+        if (count($topBadwords) > 0) {
+            $foulLine = $this->Stats->getFoulLine(array_keys($topBadwords)[0]);
+        }
 
         $this->loadModel('Quotes');
         $quotes = $this->Quotes->find('all', [
@@ -39,6 +44,6 @@ class StatsController extends AppController
 
         $reactions = $this->Stats->getTopReactions(10);
 
-        $this->set(compact('top', 'dailyActivity', 'mostActiveTimes', 'quotes', 'reactions', 'topChannels', 'guildMembers', 'guildChannels'));
+        $this->set(compact('top', 'dailyActivity', 'mostActiveTimes', 'quotes', 'reactions', 'topChannels', 'topBadwords', 'foulLine', 'guildMembers', 'guildChannels'));
     }
 }

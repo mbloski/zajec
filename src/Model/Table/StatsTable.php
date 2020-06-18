@@ -1,9 +1,12 @@
 <?php
 namespace App\Model\Table;
 
+use Cake\Cache\Cache;
+use Cake\Core\Configure;
 use Cake\ORM\Locator\TableLocator;
 use Cake\ORM\Table;
 use Cake\ORM\TableRegistry;
+use Cake\Utility\Hash;
 
 class StatsTable extends \Cake\ORM\Table
 {
@@ -110,5 +113,56 @@ class StatsTable extends \Cake\ORM\Table
             ],
             'limit' => $c,
         ]);
+    }
+
+    public function getTopBadwords($c = null) {
+        $messages = TableRegistry::getTableLocator()->get('Messages');
+
+        $ret = Cache::read('top_badwords');
+        if (!$ret) {
+            $ret = $messages->find('list', [
+                'keyField' => 'author_id',
+                'valueField' => ['percent'],
+                'fields' => [
+                    'author_id',
+                    'bad_words' => 'COUNT(1)',
+                    'total_lines' => '(SELECT COUNT(1) FROM messages m WHERE m.author_id = Messages.author_id AND deleted = 0)',
+                    'percent' => '(COUNT(1) * 1.0 / (SELECT COUNT(1) FROM messages m WHERE m.author_id = Messages.author_id AND deleted = 0)) * 100',
+                ],
+                'conditions' => [
+                    'deleted' => false,
+                    'OR' => array_map(function($x) { return ['message LIKE' => '%'.$x.'%']; }, Configure::read('bad_words') ?? [])
+                ],
+                'order' => [
+                    'percent' => 'DESC',
+                ],
+                'group' => [
+                    'author_id',
+                ],
+                'limit' => $c,
+            ])->toArray();
+
+            Cache::write('top_badwords', $ret);
+        }
+
+        return $ret;
+    }
+
+    function getFoulLine($authorId) {
+        $messages = TableRegistry::getTableLocator()->get('Messages');
+        return $messages->find('all', [
+            'fields' => [
+                'message',
+            ],
+            'conditions' => [
+                'author_id' => $authorId,
+                'deleted' => false,
+                'OR' => array_map(function($x) { return ['message LIKE' => '%'.$x.'%']; }, Configure::read('bad_words') ?? [])
+            ],
+            'order' => [
+                'RANDOM()',
+            ],
+            'limit' => 1,
+        ])->first();
     }
 }
