@@ -158,18 +158,25 @@ class StatsTable extends \Cake\ORM\Table
             $fields[$word] = '(SELECT COUNT(1) FROM messages WHERE message LIKE \''.'% '.$word.' %'.'\' OR message LIKE \''.$word.'%'.'\' OR message LIKE \''.$word.'\')';
         }
 
-        $ret = $messages->find('all', [
-            'fields' => $fields,
-            'conditions' => [
-                'deleted' => false,
-                'author_id NOT IN' => Configure::read('excluded_authors') ?? [],
-                'OR' => array_map(function($x) { return ['message LIKE' => '%'.$x.'%']; }, Configure::read('bad_words') ?? [])
-            ],
-            'group' => [
-                '1',
-            ]
-        ])->first()->toArray();
-        arsort($ret);
+        $ret = Cache::read('most_common_badwords');
+        if (!$ret) {
+            $ret = $messages->find('all', [
+                'fields' => $fields,
+                'conditions' => [
+                    'deleted' => false,
+                    'author_id NOT IN' => Configure::read('excluded_authors') ?? [],
+                    'OR' => array_map(function ($x) {
+                        return ['message LIKE' => '%' . $x . '%'];
+                    }, Configure::read('bad_words') ?? [])
+                ],
+                'group' => [
+                    '1',
+                ]
+            ])->first()->toArray();
+            arsort($ret);
+
+            Cache::write('most_common_badwords', $ret);
+        }
 
         return $ret;
     }
