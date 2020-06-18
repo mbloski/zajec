@@ -215,6 +215,39 @@ class StatsTable extends \Cake\ORM\Table
         return $ret;
     }
 
+    public function getShortestLines($c = null) {
+        $messages = TableRegistry::getTableLocator()->get('Messages');
+
+        $ret = Cache::read('short_lines');
+        if (!$ret) {
+            $ret = $messages->find('list', [
+                'keyField' => 'author_id',
+                'valueField' => ['average_length'],
+                'fields' => [
+                    'author_id',
+                    'average_length' => 'AVG(LENGTH(message))',
+                    'message',
+                ],
+                'conditions' => [
+                    'deleted' => false,
+                    'author_id NOT IN' => Configure::read('excluded_authors') ?? [],
+                    'LENGTH(message) > 0',
+                ],
+                'order' => [
+                    'average_length' => 'ASC',
+                ],
+                'group' => [
+                    'author_id',
+                ],
+                'limit' => $c,
+            ])->toArray();
+
+            Cache::write('short_lines', $ret);
+        }
+
+        return $ret;
+    }
+
     function getFoulLine($authorId) {
         $messages = TableRegistry::getTableLocator()->get('Messages');
         return $messages->find('all', [

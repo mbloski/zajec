@@ -292,9 +292,18 @@ use Cake\Utility\Hash;
         <?php if (!empty($longestLines)): ?>
             <?php $authors = array_keys($longestLines); ?>
             <li>
-                <b><?= $this->Discord->getUserById($guildMembers, $authors[0], 'user.username') ?? $authors[0] ?></b> writes the longest lines, averaging <?= $this->Number->format($longestLines[$authors[0]], ['precision' => 0]) ?> characters in length.<br>
-                <?php if (count($topAngry) > 1): ?>
+                <b><?= $this->Discord->getUserById($guildMembers, $authors[0], 'user.username') ?? $authors[0] ?></b> wrote the longest lines, averaging <?= $this->Number->format($longestLines[$authors[0]], ['precision' => 0]) ?> characters in length.<br>
+                <?php if (count($longestLines) > 1): ?>
                     <small><b><?= $this->Discord->getUserById($guildMembers, $authors[1], 'user.username') ?? $authors[1] ?></b> is a good orator as well, with approximately <?= $this->Number->format($longestLines[$authors[0]], ['precision' => 0]) ?> characters per line.</small>
+                <?php endif; ?>
+            <br><br></li>
+        <?php endif; ?>
+        <?php if (!empty($shortestLines)): ?>
+            <?php $authors = array_keys($shortestLines); ?>
+            <li>
+                <b><?= $this->Discord->getUserById($guildMembers, $authors[0], 'user.username') ?? $authors[0] ?></b> wrote the shortest lines, averaging <?= $this->Number->format($shortestLines[$authors[0]], ['precision' => 0]) ?> characters in length.<br>
+                <?php if (count($shortestLines) > 1): ?>
+                    <small><b><?= $this->Discord->getUserById($guildMembers, $authors[1], 'user.username') ?? $authors[1] ?></b> was tight-lipped, too, averaging <?= $this->Number->format($shortestLines[$authors[0]], ['precision' => 0]) ?> characters.</small>
                 <?php endif; ?>
             </li>
         <?php endif; ?>
