@@ -131,6 +131,7 @@ class StatsTable extends \Cake\ORM\Table
                 ],
                 'conditions' => [
                     'deleted' => false,
+                    'author_id NOT IN' => Configure::read('excluded_authors') ?? [],
                     'OR' => array_map(function($x) { return ['message LIKE' => '%'.$x.'%']; }, Configure::read('bad_words') ?? [])
                 ],
                 'order' => [
@@ -164,6 +165,7 @@ class StatsTable extends \Cake\ORM\Table
                 ],
                 'conditions' => [
                     'deleted' => false,
+                    'author_id NOT IN' => Configure::read('excluded_authors') ?? [],
                     'OR' => array_map(function($x) { return ['message LIKE' => '%'.$x.'%']; }, Configure::read('angry_emoji') ?? [])
                 ],
                 'order' => [
@@ -176,6 +178,38 @@ class StatsTable extends \Cake\ORM\Table
             ])->toArray();
 
             Cache::write('top_angry', $ret);
+        }
+
+        return $ret;
+    }
+
+    public function getLongestLines($c = null) {
+        $messages = TableRegistry::getTableLocator()->get('Messages');
+
+        $ret = Cache::read('long_lines');
+        if (!$ret) {
+            $ret = $messages->find('list', [
+                'keyField' => 'author_id',
+                'valueField' => ['average_length'],
+                'fields' => [
+                    'author_id',
+                    'average_length' => 'AVG(LENGTH(message))',
+                    'message',
+                ],
+                'conditions' => [
+                    'deleted' => false,
+                    'author_id NOT IN' => Configure::read('excluded_authors') ?? [],
+                ],
+                'order' => [
+                    'average_length' => 'DESC',
+                ],
+                'group' => [
+                    'author_id',
+                ],
+                'limit' => $c,
+            ])->toArray();
+
+            Cache::write('long_lines', $ret);
         }
 
         return $ret;

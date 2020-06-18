@@ -287,6 +287,12 @@ use Cake\Utility\Hash;
                     <br>
                     <small><b><?= $this->Discord->getUserById($guildMembers, $authors[1], 'user.username') ?? $authors[1] ?></b> also tends to be mad, <?= $this->Number->format($topAngry[$authors[1]], ['precision' => 2]) ?>% of the time.</small>
                 <?php endif; ?>
+            <br><br></li>
+        <?php endif; ?>
+        <?php if (!empty($longestLines)): ?>
+            <?php $authors = array_keys($longestLines); ?>
+            <li>
+                <b><?= $this->Discord->getUserById($guildMembers, $authors[0], 'user.username') ?? $authors[0] ?></b> writes the longest lines, averaging <?= $this->Number->format($longestLines[$authors[0]], ['precision' => 0]) ?> characters in length.<br>
             </li>
         <?php endif; ?>
     </ul>

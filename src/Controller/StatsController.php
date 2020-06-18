@@ -34,6 +34,7 @@ class StatsController extends AppController
         if (count($topAngry) > 0) {
             $angryLine = $this->Stats->getAngryLine(array_keys($topAngry)[0]);
         }
+        $longestLines = $this->Stats->getLongestLines(1);
 
         $this->loadModel('Quotes');
         $quotes = $this->Quotes->find('all', [
@@ -48,6 +49,6 @@ class StatsController extends AppController
 
         $reactions = $this->Stats->getTopReactions(10);
 
-        $this->set(compact('top', 'dailyActivity', 'mostActiveTimes', 'quotes', 'reactions', 'topChannels', 'topBadwords', 'foulLine', 'topAngry', 'angryLine', 'guildMembers', 'guildChannels'));
+        $this->set(compact('top', 'dailyActivity', 'mostActiveTimes', 'quotes', 'reactions', 'topChannels', 'topBadwords', 'foulLine', 'topAngry', 'angryLine', 'longestLines', 'guildMembers', 'guildChannels'));
     }
 }
