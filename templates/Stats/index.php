@@ -263,6 +263,15 @@ use Cake\Utility\Hash;
         Fun facts
     </h2>
     <ul>
+        <?php if (!empty($topQuestions)): ?>
+            <?php $authors = array_keys($topQuestions); ?>
+            <li>
+                Is <b><?= $this->Discord->getUserById($guildMembers, $authors[0], 'user.username') ?? $authors[0] ?></b> stupid or just asking too many questions? <?= $this->Number->format($topQuestions[$authors[0]], ['precision' => 2]) ?>% lines contained a question.<br>
+                <?php if (count($topQuestions) > 1): ?>
+                    <small><b><?= $this->Discord->getUserById($guildMembers, $authors[1], 'user.username') ?? $authors[1] ?></b> didn't know that much either. <?= $this->Number->format($topQuestions[$authors[1]], ['precision' => 2]) ?>% lines were questions.</small>
+                <?php endif; ?>
+                <br><br></li>
+        <?php endif; ?>
         <?php if (!empty($topBadwords)): ?>
         <?php $authors = array_keys($topBadwords); ?>
         <li>

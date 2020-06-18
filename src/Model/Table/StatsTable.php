@@ -183,6 +183,40 @@ class StatsTable extends \Cake\ORM\Table
         return $ret;
     }
 
+    public function getTopQuestions($c = null) {
+        $messages = TableRegistry::getTableLocator()->get('Messages');
+
+        $ret = Cache::read('top_questions');
+        if (!$ret) {
+            $ret = $messages->find('list', [
+                'keyField' => 'author_id',
+                'valueField' => ['percent'],
+                'fields' => [
+                    'author_id',
+                    'questions' => 'COUNT(1)',
+                    'total_lines' => '(SELECT COUNT(1) FROM messages m WHERE m.author_id = Messages.author_id AND deleted = 0)',
+                    'percent' => '(COUNT(1) * 1.0 / (SELECT COUNT(1) FROM messages m WHERE m.author_id = Messages.author_id AND deleted = 0)) * 100',
+                ],
+                'conditions' => [
+                    'deleted' => false,
+                    'author_id NOT IN' => Configure::read('excluded_authors') ?? [],
+                    'message REGEXP' => '.*\?(?!\S).*',
+                ],
+                'order' => [
+                    'percent' => 'DESC',
+                ],
+                'group' => [
+                    'author_id',
+                ],
+                'limit' => $c,
+            ])->toArray();
+
+            Cache::write('top_questions', $ret);
+        }
+
+        return $ret;
+    }
+
     public function getLongestLines($c = null) {
         $messages = TableRegistry::getTableLocator()->get('Messages');
 
