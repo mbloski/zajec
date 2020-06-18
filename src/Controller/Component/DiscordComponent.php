@@ -3,6 +3,7 @@ declare(strict_types=1);
 
 namespace App\Controller\Component;
 
+use Cake\Cache\Cache;
 use Cake\Controller\Component;
 use Cake\Controller\ComponentRegistry;
 
@@ -41,19 +42,39 @@ class DiscordComponent extends Component
     }
 
     public function getGuild($id) {
-        return $this->genericGet('/guilds/'.$id);
+        $ret = Cache::read('discord_guilds');
+        if (!$ret) {
+            $ret = $this->genericGet('/guilds/'.$id);
+            Cache::write('discord_guilds', $ret);
+        }
+        return $ret;
     }
 
     public function getRoles($guildId) {
-        return $this->genericGet('/guilds/'.$guildId.'/roles');
+        $ret = Cache::read('discord_guild_roles');
+        if (!$ret) {
+            $ret = $this->genericGet('/guilds/' . $guildId . '/roles');
+            Cache::write('discord_guild_roles', $ret);
+        }
+        return $ret;
     }
 
     public function getChannels($guildId) {
-        return $this->genericGet('/guilds/'.$guildId.'/channels');
+        $ret = Cache::read('discord_guild_channels');
+        if (!$ret) {
+            $ret = $this->genericGet('/guilds/' . $guildId . '/channels');
+            Cache::write('discord_guild_channels', $ret);
+        }
+        return $ret;
     }
 
     public function getGuildMembers($id) {
-        return $this->genericGet('/guilds/'.$id.'/members?limit=1000');
+        $ret = Cache::read('discord_guild_members');
+        if (!$ret) {
+            $ret = $this->genericGet('/guilds/' . $id . '/members?limit=1000');
+            Cache::write('discord_guild_members', $ret);
+        }
+        return $ret;
     }
 
     public function getGuildMembersWithRoles($id) {
