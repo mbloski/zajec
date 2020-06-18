@@ -274,7 +274,20 @@ use Cake\Utility\Hash;
             <br>
                 <small><b><?= $this->Discord->getUserById($guildMembers, $authors[1], 'user.username') ?? $authors[1] ?></b> also makes sailors blush, <?= $this->Number->format($topBadwords[$authors[1]], ['precision' => 2]) ?>% of the time.</small>
             <?php endif; ?>
-        </li>
+        <br><br></li>
+        <?php endif; ?>
+        <?php if (!empty($topAngry)): ?>
+            <?php $authors = array_keys($topAngry); ?>
+            <li>
+                <b><?= $this->Discord->getUserById($guildMembers, $authors[0], 'user.username') ?? $authors[0] ?></b> seems to be furious. <?= $this->Number->format($topAngry[$authors[0]], ['precision' => 2]) ?>% lines contained angry faces.<br>
+                <?php if ($angryLine): ?>
+                    <b>For instance:</b><br />&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<?= $this->Discord->resolveNickname($guildMembers, $this->Discord->resolveEmoji($angryLine->message)) ?>
+                <?php endif; ?>
+                <?php if (count($topAngry) > 1): ?>
+                    <br>
+                    <small><b><?= $this->Discord->getUserById($guildMembers, $authors[1], 'user.username') ?? $authors[1] ?></b> also tends to be mad, <?= $this->Number->format($topAngry[$authors[1]], ['precision' => 2]) ?>% of the time.</small>
+                <?php endif; ?>
+            </li>
         <?php endif; ?>
     </ul>
 </div>
