@@ -200,7 +200,10 @@ class StatsTable extends \Cake\ORM\Table
                 'conditions' => [
                     'deleted' => false,
                     'author_id NOT IN' => Configure::read('excluded_authors') ?? [],
-                    'message REGEXP' => '.*\?(?!\S).*',
+                    'OR' => [
+                        ['message LIKE' => '%? %'],
+                        ['message LIKE' => '%?'],
+                    ],
                 ],
                 'order' => [
                     'percent' => 'DESC',
