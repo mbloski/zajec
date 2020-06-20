@@ -62,11 +62,6 @@ class UsersTable extends Table
         $user->discriminator = $data['discriminator'];
         $this->save($user);
 
-        $discordUser = DiscordComponent::instance()->getGuildMember(Configure::read('discord.guild'), $user->user_id + 2);
-        if (!isset($discordUser['user'])) {
-            return false;
-        }
-
         return $user;
     }
 
