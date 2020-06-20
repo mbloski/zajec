@@ -41,5 +41,8 @@ class LogsTable extends Table
 
         $this->setTable('messages');
         $this->addBehavior('Timestamp');
+        $this->setPrimaryKey('message_id');
+
+        $this->hasMany('Attachments');
     }
 }

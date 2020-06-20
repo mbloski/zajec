@@ -16,6 +16,13 @@ class LogHelper extends Helper
     {
         $nick = $this->Discord->getUsernameWithColor($guildMembers, $log->author_id) ?? $log->author_id;
         $line = $this->Discord->resolveNickname($guildMembers, $this->Discord->resolveEmoji($log->message));
+        if ($log->has('attachments')) {
+            if ($line) {
+                $line .= ' ';
+            }
+            $line .= implode(' ', array_map(function($x) { return $this->Html->link(basename($x->url), $x->url, ['target' => '_blank']); }, $log->attachments));
+        }
+
         echo <<<EOL
         <div class="msg">
             <a href="#$log->message_id" id="$log->message_id">{$log->created->format('H:i')}</a>
