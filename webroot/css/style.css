@@ -97,8 +97,12 @@ body {
 }
 
 .sbox a {
-    color: #606060;
+    color: #AAAAAA;
     text-decoration: none;
+}
+
+.sbox a:hover {
+    text-decoration: underline;
 }
 
 td {
