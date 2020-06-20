@@ -14,9 +14,11 @@ class LogHelper extends Helper
 
     public function chat($guildMembers, $log)
     {
+        echo '<div class="msg">';
         $nick = $this->Discord->getUsernameWithColor($guildMembers, $log->author_id) ?? $log->author_id;
         $line = $this->Discord->resolveNickname($guildMembers, $this->Discord->resolveEmoji($log->message));
         $line = str_replace("\n", "\n&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;", $line);
+
         if ($log->has('attachments')) {
             if ($line) {
                 $line .= ' ';
@@ -24,14 +26,22 @@ class LogHelper extends Helper
             $line .= implode(' ', array_map(function($x) { return $this->Html->link(basename($x->url), $x->url, ['target' => '_blank']); }, $log->attachments));
         }
 
+        if ($log->has('edit_history') && !empty($log->edit_history)) {
+
+            if ($line) {
+                $line .= $this->Html->link('<small><cite>(show edit history)</cite></small>', '#hide%23'.'c'.$log->message_id, ['escape' => false, 'class' => 'hide', 'id' => 'hide%23'.'c'.$log->message_id]);
+                $line .= $this->Html->link('<small><cite>(hide edit history)</cite></small>', '#show%23'.'c'.$log->message_id, ['escape' => false, 'class' => 'show', 'id' => 'show%23'.'c'.$log->message_id]);
+                $line .= '<span class="collapsible">'.implode('', array_map(function($x) { return '<br>&nbsp;<a>OLD:</a> '.$x->message; }, $log->edit_history)).'</span>';
+            }
+        }
+
         echo <<<EOL
-        <div class="msg">
             <a href="#$log->message_id" id="$log->message_id">{$log->created->format('H:i')}</a>
             <<span class="nickname">{$nick}</span>>
             <pre>{$line}</pre>
             <br>
-        </div>
 EOL;
+        echo '</div>';
     }
 
     public function status($line) {

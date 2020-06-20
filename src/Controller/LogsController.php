@@ -39,7 +39,7 @@ class LogsController extends AppController
         }
 
         $logs = $this->Logs->find('all', [
-            'contain' => ['Attachments'],
+            'contain' => ['Attachments', 'EditHistory'],
             'conditions' => [
                 'DATE(created)' => $date,
                 'channel_id' => $channel,

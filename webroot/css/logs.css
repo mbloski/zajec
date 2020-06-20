@@ -100,4 +100,9 @@ header span {
     font-size: 18px; }
 
 .row { vertical-align: top; height:auto !important; }
-.list { display:block; }
+.collapsible {display:none; }
+.show {display: none; }
+.hide:target + .show {display: inline; }
+.hide:target {display: none; }
+.hide:target ~ .collapsible {display:inline; }
+@media print { .hide, .show { display: none; } }

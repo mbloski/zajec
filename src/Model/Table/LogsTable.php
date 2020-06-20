@@ -44,5 +44,9 @@ class LogsTable extends Table
         $this->setPrimaryKey('message_id');
 
         $this->hasMany('Attachments');
+        $this->hasMany('EditHistory', [
+            'className' => 'MessageEditHistory',
+            'sort' => ['created' => 'ASC'],
+        ]);
     }
 }
