@@ -19,8 +19,6 @@ class StatsController extends AppController
      */
     public function index()
     {
-        $guildMembers = $this->Discord->getGuildMembersWithRoles(Configure::read('discord.guild'));
-        $guildChannels = $this->Discord->getChannels(Configure::read('discord.guild'));
         $top = $this->Stats->getTop();
         $dailyActivity = $this->Stats->getDaily(14);
         $mostActiveTimes = $this->Stats->getMostActiveTimes();
@@ -57,6 +55,6 @@ class StatsController extends AppController
 
         $reactions = $this->Stats->getTopReactions(10);
 
-        $this->set(compact('top', 'dailyActivity', 'mostActiveTimes', 'quotes', 'reactions', 'topChannels', 'topBadwords', 'foulLine', 'mostCommonBadwords', 'topAngry', 'angryLine', 'topQuestions', 'longestLines', 'shortestLines', 'wordOccurences', 'guildMembers', 'guildChannels'));
+        $this->set(compact('top', 'dailyActivity', 'mostActiveTimes', 'quotes', 'reactions', 'topChannels', 'topBadwords', 'foulLine', 'mostCommonBadwords', 'topAngry', 'angryLine', 'topQuestions', 'longestLines', 'shortestLines', 'wordOccurences'));
     }
 }

@@ -1,0 +1,103 @@
+body {
+    background-color: #2f3136;
+    font-family: "Menlo", "Monaco", monospace;
+    font-size: 12px;
+    line-height: 16px;
+    color: white;
+    margin: 0;
+    padding: 0; }
+
+section, header, pre {
+    display: inline;
+    margin: 0; }
+
+pre {
+    white-space: pre-wrap;
+    font-family: "Menlo", "Monaco", monospace; }
+
+a {
+    color: white; }
+
+#channels {
+    position: fixed;
+    width: 200px;
+    top: 0;
+    overflow: auto;
+    height: 100%;
+    border-right: 1px solid #CCCCCC; }
+#channels ul {
+    list-style-type: none;
+    margin: 0;
+    padding: 10px; }
+#channels ul.withline {
+    border-top: 1px solid #CCCCCC;
+}
+#channels ul a {
+    color: #999999;
+    text-decoration: none; }
+#channels ul li.current a {
+    color: white; }
+#channels #calendar {
+    text-align: center;
+    font-size: 14px;
+    display: block;
+    color: #AAAAAA;
+    padding: 10px;
+    border-bottom: 1px solid #CCCCCC; }
+#channels #calendar a {
+    text-decoration: none;
+    color: #AAAAAA; }
+#channels #calendar a.current {
+    color: white; }
+#title {
+    position: fixed;
+    width: 100%;
+    margin-left: 201px;
+    background-color: #202225;
+    line-height: 25px;
+    padding: 10px;
+    color: #AAAAAA;
+    font-weight: bold;
+}
+#log {
+    padding: 55px 10px 10px 10px;
+    margin: 0 0 0 201px;
+    color: #888888; }
+#log div.highlight {
+    color: white; }
+#log div.highlight span.nickname {
+    color: #fb1263; }
+#log a[id] {
+    color: #888888;
+    text-decoration: none; }
+#log a[id]:hover {
+    text-decoration: underline; }
+#log a {
+    color: #f6f840; }
+
+body:not(.highlight) .msg {
+    color: white; }
+body:not(.highlight) span.nickname {
+    color: #fb1263; }
+
+header {
+    background-color: black;
+    height: 0;
+    line-height: 0;
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    text-align: center;
+    border-bottom: 1px solid #CCCCCC; }
+header a {
+    text-decoration: none;
+    color: #AAAAAA; }
+header span {
+    position: absolute;
+    left: 10px;
+    top: 0;
+    font-size: 18px; }
+
+.row { vertical-align: top; height:auto !important; }
+.list { display:block; }

@@ -18,6 +18,7 @@ namespace App\Controller;
 
 use Cake\Controller\Controller;
 use Cake\Core\Configure;
+use Cake\Event\EventInterface;
 
 /**
  * Application Controller
@@ -47,11 +48,13 @@ class AppController extends Controller
         $this->loadComponent('Discord', [
             'token' => Configure::read('discord.token'),
         ]);
+    }
 
-        /*
-         * Enable the following component for recommended CakePHP form protection settings.
-         * see https://book.cakephp.org/4/en/controllers/components/form-protection.html
-         */
-        //$this->loadComponent('FormProtection');
+    public function beforeFilter(EventInterface $event)
+    {
+        $guildMembers = $this->Discord->getGuildMembersWithRoles(Configure::read('discord.guild'));
+        $guildChannels = $this->Discord->getChannels(Configure::read('discord.guild'));
+        $this->set(compact('guildMembers', 'guildChannels'));
+        parent::beforeFilter($event);
     }
 }

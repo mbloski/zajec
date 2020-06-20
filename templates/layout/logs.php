@@ -8,19 +8,13 @@
     </title>
     <?= $this->Html->meta('icon') ?>
 
-    <?= $this->Html->css('style.css') ?>
+    <?= $this->Html->css('logs.css') ?>
 
     <?= $this->fetch('meta') ?>
     <?= $this->fetch('css') ?>
     <?= $this->fetch('script') ?>
 </head>
 <body>
-
-<div id="container">
-    <div id="fcontent" style="width:80%">
-        <?= $this->Flash->render() ?>
-        <?= $this->fetch('content') ?>
-    </div>
-</div>
+    <?= $this->fetch('content') ?>
 </body>
 </html>
