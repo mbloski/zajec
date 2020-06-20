@@ -66,7 +66,7 @@ a {
 #log div.highlight {
     color: white; }
 #log div.highlight span.nickname {
-    color: #fb1263; }
+    color: #bfbfbf; }
 #log a[id] {
     color: #888888;
     text-decoration: none; }
@@ -78,7 +78,7 @@ a {
 body:not(.highlight) .msg {
     color: white; }
 body:not(.highlight) span.nickname {
-    color: #fb1263; }
+    color: #bfbfbf; }
 
 header {
     background-color: black;
