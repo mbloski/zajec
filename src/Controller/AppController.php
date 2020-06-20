@@ -19,6 +19,9 @@ namespace App\Controller;
 use Cake\Controller\Controller;
 use Cake\Core\Configure;
 use Cake\Event\EventInterface;
+use Cake\Event\EventManager;
+use Cake\ORM\TableRegistry;
+use Cake\Utility\Hash;
 
 /**
  * Application Controller
@@ -48,12 +51,34 @@ class AppController extends Controller
         $this->loadComponent('Discord', [
             'token' => Configure::read('discord.token'),
         ]);
+
+        $this->loadComponent('Auth', [
+            'authenticate' => [
+                'Muffin/OAuth2.OAuth' => [
+                    'providers' => [
+                        'discord' => [
+                            'className' => 'Wohali\OAuth2\Client\Provider\Discord',
+                            'options' => [
+                                'clientId' => Configure::read('discord.oauth.clientId'),
+                                'clientSecret' => Configure::read('discord.oauth.clientSecret'),
+                                'redirectUri' => Configure::read('discord.oauth.redirectUri'),
+                            ],
+                        ]
+                    ],
+                ],
+            ],
+            'loginAction' => ['controller' => 'Users', 'action' => 'login'],
+            'authError' => null,
+        ]);
     }
 
     public function beforeFilter(EventInterface $event)
     {
         $guildMembers = $this->Discord->getGuildMembersWithRoles(Configure::read('discord.guild'));
         $guildChannels = $this->Discord->getChannels(Configure::read('discord.guild'));
+
+
+
         $this->set(compact('guildMembers', 'guildChannels'));
         parent::beforeFilter($event);
     }

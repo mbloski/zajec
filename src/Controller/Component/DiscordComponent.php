@@ -19,6 +19,11 @@ class DiscordComponent extends Component
      */
     protected $_defaultConfig = [];
     private $token;
+    private static $instance;
+
+    public static function instance() {
+        return self::$instance;
+    }
 
     public function initialize(array $config): void
     {
@@ -29,6 +34,8 @@ class DiscordComponent extends Component
         parent::initialize($config);
         $this->token = $config['token'];
         $this->url = 'https://discordapp.com/api/v6/';
+
+        self::$instance = $this;
     }
 
     private function genericGet($url) {
@@ -66,6 +73,10 @@ class DiscordComponent extends Component
             Cache::write('discord_guild_channels', $ret);
         }
         return $ret;
+    }
+
+    public function getGuildMember($guildId, $id) {
+        return $this->genericGet('/guilds/'.$guildId.'/members/'.$id);
     }
 
     public function getGuildMembers($id) {

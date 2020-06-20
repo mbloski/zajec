@@ -64,6 +64,11 @@ $routes->scope('/', function (RouteBuilder $builder) {
      */
     $builder->connect('/', ['controller' => 'Stats', 'action' => 'index']);
 
+    $builder->connect('/oauth/:provider',
+        ['controller' => 'users', 'action' => 'login'],
+        ['provider' => 'discord']
+    );
+
     /*
      * Connect catchall routes for all controllers.
      *

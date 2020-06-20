@@ -37,6 +37,7 @@ use Cake\Core\Configure\Engine\PhpConfig;
 use Cake\Datasource\ConnectionManager;
 use Cake\Error\ConsoleErrorHandler;
 use Cake\Error\ErrorHandler;
+use Cake\Event\EventManager;
 use Cake\Http\ServerRequest;
 use Cake\Log\Log;
 use Cake\Mailer\Mailer;
@@ -221,3 +222,6 @@ if (file_exists(CONFIG . 'discord.php')) {
 if (file_exists(CONFIG . 'misc.php')) {
     Configure::load('misc', 'default');
 }
+
+EventManager::instance()->on('Muffin/OAuth2.newUser',  [\Cake\ORM\TableRegistry::getTableLocator()->get('Users'), 'createNew']);
+EventManager::instance()->on('Muffin/OAuth2.afterIdentify',  [\Cake\ORM\TableRegistry::getTableLocator()->get('Users'), 'identify']);
