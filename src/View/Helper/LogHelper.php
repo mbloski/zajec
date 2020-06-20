@@ -16,6 +16,7 @@ class LogHelper extends Helper
     {
         $nick = $this->Discord->getUsernameWithColor($guildMembers, $log->author_id) ?? $log->author_id;
         $line = $this->Discord->resolveNickname($guildMembers, $this->Discord->resolveEmoji($log->message));
+        $line = str_replace("\n", "\n&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;", $line);
         if ($log->has('attachments')) {
             if ($line) {
                 $line .= ' ';
