@@ -15,6 +15,12 @@ class LogHelper extends Helper
     public function chat($guildMembers, $log)
     {
         echo '<div class="msg">';
+        if ($log->deleted) {
+            echo $this->Html->link('<small><cite>(show deleted message)</cite></small>', '#hide%23'.'d'.$log->message_id, ['escape' => false, 'class' => 'hide', 'id' => 'hide%23'.'d'.$log->message_id]);
+        }
+
+        echo '<div class="'.($log->deleted? 'collapsible' : '').'">';
+
         $nick = $this->Discord->getUsernameWithColor($guildMembers, $log->author_id) ?? $log->author_id;
         $line = $this->Discord->resolveNickname($guildMembers, $this->Discord->resolveEmoji($log->message));
         $line = str_replace("\n", "\n&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;", $line);
@@ -27,7 +33,6 @@ class LogHelper extends Helper
         }
 
         if ($log->has('edit_history') && !empty($log->edit_history)) {
-
             if ($line) {
                 $line .= $this->Html->link('<small><cite>(show edit history)</cite></small>', '#hide%23'.'c'.$log->message_id, ['escape' => false, 'class' => 'hide', 'id' => 'hide%23'.'c'.$log->message_id]);
                 $line .= $this->Html->link('<small><cite>(hide edit history)</cite></small>', '#show%23'.'c'.$log->message_id, ['escape' => false, 'class' => 'show', 'id' => 'show%23'.'c'.$log->message_id]);
@@ -41,6 +46,7 @@ class LogHelper extends Helper
             <pre>{$line}</pre>
             <br>
 EOL;
+        echo '</div>';
         echo '</div>';
     }
 
