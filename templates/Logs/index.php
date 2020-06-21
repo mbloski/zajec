@@ -56,7 +56,7 @@
     <?php if (isset($logs)): ?>
         <?php if ($logs->count() > 0): ?>
             <?php foreach ($logs as $log): ?>
-                <?php $this->Log->chat($guildMembers, $log, (bool)$this->request->getQuery('search')); ?>
+                <?php $this->Log->chat($log, (bool)$this->request->getQuery('search')); ?>
             <?php endforeach; ?>
         <?php else: ?>
             <?php $this->Log->status('Nothing here'); ?>

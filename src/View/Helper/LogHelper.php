@@ -13,7 +13,7 @@ class LogHelper extends Helper
 {
     public $helpers = ['Html', 'Url', 'Discord'];
 
-    public function chat($guildMembers, $log, $fullDate = false)
+    public function chat($log, $fullDate = false)
     {
         echo '<div class="msg">';
         if ($log->deleted) {
@@ -22,8 +22,8 @@ class LogHelper extends Helper
 
         echo '<div class="'.($log->deleted? 'collapsible' : '').'">';
 
-        $nick = $this->Html->link($this->Discord->getUsernameWithColor($guildMembers, $log->author_id) ?? $log->author_id, ['controller' => 'Stats', 'action' => 'user', $log->author_id], ['class' => 'userlink', 'escape' => false]);
-        $line = $this->Discord->resolveNickname($guildMembers, $this->Discord->resolveEmoji($log->message));
+        $nick = $this->Html->link($this->Discord->getUsernameWithColor($log->author_id) ?? $log->author_id, ['controller' => 'Stats', 'action' => 'user', $log->author_id], ['class' => 'userlink', 'escape' => false]);
+        $line = $this->richLine($log->message);
         $line = str_replace("\n", "\n&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;", $line);
 
         if ($log->has('attachments') && $log->attachments) {
@@ -35,9 +35,10 @@ class LogHelper extends Helper
 
         if ($log->has('edit_history') && !empty($log->edit_history)) {
             if ($line) {
+                $line .= ' ';
                 $line .= $this->Html->link('<small><cite>(show edit history)</cite></small>', '#hide%23'.'c'.$log->message_id, ['escape' => false, 'class' => 'hide', 'id' => 'hide%23'.'c'.$log->message_id]);
                 $line .= $this->Html->link('<small><cite>(hide edit history)</cite></small>', '#show%23'.'c'.$log->message_id, ['escape' => false, 'class' => 'show', 'id' => 'show%23'.'c'.$log->message_id]);
-                $line .= '<span class="collapsible">'.implode('', array_map(function($x) use ($guildMembers) { return '<br>&nbsp;<a>OLD:</a> '.$this->Discord->resolveNickname($guildMembers, $this->Discord->resolveEmoji($x->message)); }, $log->edit_history)).'</span>';
+                $line .= '<span class="collapsible">'.implode('', array_map(function($x) { return '<br>&nbsp;<a>OLD:</a> '.$this->richLine($x->message); }, $log->edit_history)).'</span>';
             }
         }
 
@@ -77,21 +78,26 @@ EOL;
     }
 
     public function resolveLinks($str) {
-        $reg_exUrl = "/(http|https|ftp|ftps)\:\/\/[a-zA-Z0-9\-\.]+\.[a-zA-Z]{2,5}(\/\S*\w)?/";
+        $str = $str ?? '';
+        $reg_exUrl = "/(\&lt;)?((http|https|ftp|ftps)\:\/\/[a-zA-Z0-9\-\.]+\.[a-zA-Z]{2,5}(\/\S*\w)?)/";
         $urls = array();
         $urlsToReplace = array();
         if(preg_match_all($reg_exUrl, $str, $urls)) {
-            $numOfMatches = count($urls[0]);
+            $numOfMatches = count($urls[2]);
             for($i=0; $i<$numOfMatches; $i++) {
+                if ($urls[1][$i] === '&lt;' && strrpos($urls[2][$i], '&gt') === strlen($urls[2][$i]) - 3) {
+                    $urls[2][$i] = substr($urls[2][$i], 0, -3);
+                }
+
                 $alreadyAdded = false;
                 $numOfUrlsToReplace = count($urlsToReplace);
                 for($j=0; $j<$numOfUrlsToReplace; $j++) {
-                    if($urlsToReplace[$j] == $urls[0][$i]) {
+                    if($urlsToReplace[$j] == $urls[2][$i]) {
                         $alreadyAdded = true;
                     }
                 }
                 if(!$alreadyAdded) {
-                    array_push($urlsToReplace, $urls[0][$i]);
+                    array_push($urlsToReplace, $urls[2][$i]);
                 }
             }
             $numOfUrlsToReplace = count($urlsToReplace);
@@ -101,5 +107,9 @@ EOL;
             return $str;
         }
         return $str;
+    }
+
+    public function richLine($str) {
+        return $this->Discord->resolveNickname($this->Discord->resolveEmoji($this->resolveLinks(h($str)), 16, true));
     }
 }

@@ -19,7 +19,7 @@ use Cake\Utility\Hash;
                 <?php foreach ($top->toArray() as $n => $row): ?>
                     <?php if ($n > 9) break; ?>
                     <tr class="itemrow">
-                        <td class="itemdesc discordfeel"><?= $this->Html->link($this->Discord->getUsernameWithColor($guildMembers, $row->author_id) ?? $row->author_id, ['controller' => 'Stats', 'action' => 'user', $row->author_id], ['escape' => false]) ?></td>
+                        <td class="itemdesc discordfeel"><?= $this->Html->link($this->Discord->getUsernameWithColor($row->author_id) ?? $row->author_id, ['controller' => 'Stats', 'action' => 'user', $row->author_id], ['escape' => false]) ?></td>
                         <td class="itemdesc"><?= h($row->count) ?></td>
                         <td class="itemdesc"><?= h((new \Cake\I18n\Time($row->seen))->timeAgoInWords(['end' => '+7 days'])) ?></td>
                     </tr>
@@ -74,7 +74,7 @@ use Cake\Utility\Hash;
                     series: [{
                         name: 'Lines',
                         colorByPoint: true,
-                        data: <?= json_encode(array_map(function($x) use ($guildMembers) { return ['name' => $this->Discord->getUserById($guildMembers, $x->author_id, 'user.username') ?? $x->author_id, 'y' => intval($x->count)]; }, $top->toArray())) ?>
+                        data: <?= json_encode(array_map(function($x) { return ['name' => $this->Discord->getUserById($x->author_id, 'user.username') ?? $x->author_id, 'y' => intval($x->count)]; }, $top->toArray())) ?>
                     }],
                     credits: {
                         enabled: false,
@@ -219,7 +219,7 @@ use Cake\Utility\Hash;
                 <td class="itemgfx">
                     <span class="emoji">
                         <?php
-                            $emoji = str_replace(['&lt;:', ':&gt;'], '', $this->Discord->resolveEmoji($reaction->reaction, 32));
+                            $emoji = str_replace(['<:' ,':>'], '', $this->Discord->resolveEmoji($reaction->reaction, 32, false));
                             if (mb_strlen($emoji) <= 4) {
                                 $emoji = dechex(mb_ord($emoji));
                                 $emoji = '<img src="https://abs.twimg.com/emoji/v2/svg/'.$emoji.'.svg" width="32" height="32">';
@@ -253,8 +253,8 @@ use Cake\Utility\Hash;
                 <td class="itemdesc">#<?= $n + 1 ?></td>
                 <td class="itemdesc bold"><?= $this->Html->link('#'.$guildChannels[$key]['name'], ['controller' => 'Logs', 'action' => 'index', '?' => ['channel' => $guildChannels[$key]['id']]]) ?></td>
                 <td class="itemdesc"><?= $channel->count ?></td>
-                <td class="itemdesc discordfeel" style="min-width:100px;"><?= $this->Html->link($this->Discord->getUsernameWithColor($guildMembers, $channel->most_active) ?? $channel->most_active, ['controller' => 'Stats', 'action' => 'user', $channel->most_active], ['escape' => false]) ?></td>
-                <td class="itemdesc discordfeel" style="max-width:600px;word-break:break-word;"><?= $this->Discord->resolveNickname($guildMembers, $this->Discord->resolveEmoji($channel->random_message)) ?></td>
+                <td class="itemdesc discordfeel" style="min-width:100px;"><?= $this->Html->link($this->Discord->getUsernameWithColor($channel->most_active) ?? $channel->most_active, ['controller' => 'Stats', 'action' => 'user', $channel->most_active], ['escape' => false]) ?></td>
+                <td class="itemdesc discordfeel" style="max-width:600px;word-break:break-word;"><?= $this->Log->richLine($channel->random_message) ?></td>
             </tr>
         <?php endforeach; ?>
         </tbody>
@@ -269,53 +269,53 @@ use Cake\Utility\Hash;
         <?php if (!empty($topQuestions)): ?>
             <?php $authors = array_keys($topQuestions); ?>
             <li>
-                Is <b><?= $this->Discord->getUserById($guildMembers, $authors[0], 'user.username') ?? $authors[0] ?></b> stupid or just asking too many questions? <?= $this->Number->format($topQuestions[$authors[0]], ['precision' => 2]) ?>% lines contained a question.<br>
+                Is <b><?= $this->Discord->getUserById($authors[0], 'user.username') ?? $authors[0] ?></b> stupid or just asking too many questions? <?= $this->Number->format($topQuestions[$authors[0]], ['precision' => 2]) ?>% lines contained a question.<br>
                 <?php if (count($topQuestions) > 1): ?>
-                    <small><b><?= $this->Discord->getUserById($guildMembers, $authors[1], 'user.username') ?? $authors[1] ?></b> didn't know that much either. <?= $this->Number->format($topQuestions[$authors[1]], ['precision' => 2]) ?>% lines were questions.</small>
+                    <small><b><?= $this->Discord->getUserById($authors[1], 'user.username') ?? $authors[1] ?></b> didn't know that much either. <?= $this->Number->format($topQuestions[$authors[1]], ['precision' => 2]) ?>% lines were questions.</small>
                 <?php endif; ?>
                 <br><br></li>
         <?php endif; ?>
         <?php if (!empty($topBadwords)): ?>
         <?php $authors = array_keys($topBadwords); ?>
         <li>
-            <b><?= $this->Discord->getUserById($guildMembers, $authors[0], 'user.username') ?? $authors[0] ?></b> has quite a potty mouth. <?= $this->Number->format($topBadwords[$authors[0]], ['precision' => 2]) ?>% lines contained foul language.<br>
+            <b><?= $this->Discord->getUserById($authors[0], 'user.username') ?? $authors[0] ?></b> has quite a potty mouth. <?= $this->Number->format($topBadwords[$authors[0]], ['precision' => 2]) ?>% lines contained foul language.<br>
             <?php if ($foulLine): ?>
-            <b>For example, like this:</b><br />&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<?= $this->Discord->resolveNickname($guildMembers, $this->Discord->resolveEmoji($foulLine->message)) ?>
+            <b>For example, like this:</b><br />&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<?= $this->Log->richLine($foulLine->message) ?>
             <?php endif; ?>
             <?php if (count($topBadwords) > 1): ?>
             <br>
-                <small><b><?= $this->Discord->getUserById($guildMembers, $authors[1], 'user.username') ?? $authors[1] ?></b> also makes sailors blush, <?= $this->Number->format($topBadwords[$authors[1]], ['precision' => 2]) ?>% of the time.</small>
+                <small><b><?= $this->Discord->getUserById($authors[1], 'user.username') ?? $authors[1] ?></b> also makes sailors blush, <?= $this->Number->format($topBadwords[$authors[1]], ['precision' => 2]) ?>% of the time.</small>
             <?php endif; ?>
         <br><br></li>
         <?php endif; ?>
         <?php if (!empty($topAngry)): ?>
             <?php $authors = array_keys($topAngry); ?>
             <li>
-                <b><?= $this->Discord->getUserById($guildMembers, $authors[0], 'user.username') ?? $authors[0] ?></b> seems to be furious. <?= $this->Number->format($topAngry[$authors[0]], ['precision' => 2]) ?>% lines contained angry faces.<br>
+                <b><?= $this->Discord->getUserById($authors[0], 'user.username') ?? $authors[0] ?></b> seems to be furious. <?= $this->Number->format($topAngry[$authors[0]], ['precision' => 2]) ?>% lines contained angry faces.<br>
                 <?php if ($angryLine): ?>
-                    <b>For instance:</b><br />&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<?= $this->Discord->resolveNickname($guildMembers, $this->Discord->resolveEmoji($angryLine->message)) ?>
+                    <b>For instance:</b><br />&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<?= $this->Log->richLine($angryLine->message) ?>
                 <?php endif; ?>
                 <?php if (count($topAngry) > 1): ?>
                     <br>
-                    <small><b><?= $this->Discord->getUserById($guildMembers, $authors[1], 'user.username') ?? $authors[1] ?></b> also tends to be mad, <?= $this->Number->format($topAngry[$authors[1]], ['precision' => 2]) ?>% of the time.</small>
+                    <small><b><?= $this->Discord->getUserById($authors[1], 'user.username') ?? $authors[1] ?></b> also tends to be mad, <?= $this->Number->format($topAngry[$authors[1]], ['precision' => 2]) ?>% of the time.</small>
                 <?php endif; ?>
             <br><br></li>
         <?php endif; ?>
         <?php if (!empty($longestLines)): ?>
             <?php $authors = array_keys($longestLines); ?>
             <li>
-                <b><?= $this->Discord->getUserById($guildMembers, $authors[0], 'user.username') ?? $authors[0] ?></b> wrote the longest lines, averaging <?= $this->Number->format($longestLines[$authors[0]], ['precision' => 0]) ?> characters in length.<br>
+                <b><?= $this->Discord->getUserById($authors[0], 'user.username') ?? $authors[0] ?></b> wrote the longest lines, averaging <?= $this->Number->format($longestLines[$authors[0]], ['precision' => 0]) ?> characters in length.<br>
                 <?php if (count($longestLines) > 1): ?>
-                    <small><b><?= $this->Discord->getUserById($guildMembers, $authors[1], 'user.username') ?? $authors[1] ?></b> is a good orator as well, with approximately <?= $this->Number->format($longestLines[$authors[0]], ['precision' => 0]) ?> characters per line.</small>
+                    <small><b><?= $this->Discord->getUserById($authors[1], 'user.username') ?? $authors[1] ?></b> is a good orator as well, with approximately <?= $this->Number->format($longestLines[$authors[0]], ['precision' => 0]) ?> characters per line.</small>
                 <?php endif; ?>
             <br><br></li>
         <?php endif; ?>
         <?php if (!empty($shortestLines)): ?>
             <?php $authors = array_keys($shortestLines); ?>
             <li>
-                <b><?= $this->Discord->getUserById($guildMembers, $authors[0], 'user.username') ?? $authors[0] ?></b> wrote the shortest lines, averaging <?= $this->Number->format($shortestLines[$authors[0]], ['precision' => 0]) ?> characters in length.<br>
+                <b><?= $this->Discord->getUserById($authors[0], 'user.username') ?? $authors[0] ?></b> wrote the shortest lines, averaging <?= $this->Number->format($shortestLines[$authors[0]], ['precision' => 0]) ?> characters in length.<br>
                 <?php if (count($shortestLines) > 1): ?>
-                    <small><b><?= $this->Discord->getUserById($guildMembers, $authors[1], 'user.username') ?? $authors[1] ?></b> was tight-lipped, too, averaging <?= $this->Number->format($shortestLines[$authors[0]], ['precision' => 0]) ?> characters.</small>
+                    <small><b><?= $this->Discord->getUserById($authors[1], 'user.username') ?? $authors[1] ?></b> was tight-lipped, too, averaging <?= $this->Number->format($shortestLines[$authors[0]], ['precision' => 0]) ?> characters.</small>
                 <?php endif; ?>
             <br><br></li>
         <?php endif; ?>
@@ -350,7 +350,7 @@ use Cake\Utility\Hash;
             <tr class="itemrow">
                 <td class="itemdesc">#<?= $quote->id ?></td>
                 <td class="itemdesc" style="width:200px;"><?= h($quote->name) ?></td>
-                <td class="itemdesc" style="max-width:600px;word-break:break-word;"><?= $this->Discord->resolveNickname($guildMembers, $this->Discord->resolveEmoji($quote->value)) ?></td>
+                <td class="itemdesc" style="max-width:600px;word-break:break-word;"><?= $this->Log->richLine($quote->value) ?></td>
                 <td><?= h($quote->created) ?></td>
             </tr>
         <?php endforeach; ?>
