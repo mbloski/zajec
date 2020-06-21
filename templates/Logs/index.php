@@ -25,6 +25,11 @@
             </div>
         <?php endforeach; ?>
     </ul>
+    <ul>
+        <li>
+            <?= $this->Html->link('Statistics', ['controller' => 'Stats', 'action' => 'index']) ?>
+        </li>
+    </ul>
 </section>
 <div id="title">
     <?php if (isset($logs) && $currentChannel): ?>
