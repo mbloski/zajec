@@ -19,7 +19,7 @@ use Cake\Utility\Hash;
                 <?php foreach ($top->toArray() as $n => $row): ?>
                     <?php if ($n > 9) break; ?>
                     <tr class="itemrow">
-                        <td class="itemdesc discordfeel"><?= $this->Discord->getUsernameWithColor($guildMembers, $row->author_id) ?? $row->author_id ?></td>
+                        <td class="itemdesc discordfeel"><?= $this->Html->link($this->Discord->getUsernameWithColor($guildMembers, $row->author_id) ?? $row->author_id, ['controller' => 'Stats', 'action' => 'user', $row->author_id], ['escape' => false]) ?></td>
                         <td class="itemdesc"><?= h($row->count) ?></td>
                         <td class="itemdesc"><?= h((new \Cake\I18n\Time($row->seen))->timeAgoInWords(['end' => '+7 days'])) ?></td>
                     </tr>
@@ -219,7 +219,7 @@ use Cake\Utility\Hash;
                 <td class="itemgfx">
                     <span class="emoji">
                         <?php
-                            $emoji = str_replace(['&lt;:', ':&gt;'], '', $this->Discord->resolveEmoji($reaction->reaction, 32, 32));
+                            $emoji = str_replace(['&lt;:', ':&gt;'], '', $this->Discord->resolveEmoji($reaction->reaction, 32));
                             if (mb_strlen($emoji) <= 4) {
                                 $emoji = dechex(mb_ord($emoji));
                                 $emoji = '<img src="https://abs.twimg.com/emoji/v2/svg/'.$emoji.'.svg" width="32" height="32">';
@@ -253,7 +253,7 @@ use Cake\Utility\Hash;
                 <td class="itemdesc">#<?= $n + 1 ?></td>
                 <td class="itemdesc bold"><?= $this->Html->link('#'.$guildChannels[$key]['name'], ['controller' => 'Logs', 'action' => 'index', '?' => ['channel' => $guildChannels[$key]['id']]]) ?></td>
                 <td class="itemdesc"><?= $channel->count ?></td>
-                <td class="itemdesc discordfeel" style="min-width:100px;"><?= $this->Discord->getUsernameWithColor($guildMembers, $channel->most_active) ?? $channel->most_active ?></td>
+                <td class="itemdesc discordfeel" style="min-width:100px;"><?= $this->Html->link($this->Discord->getUsernameWithColor($guildMembers, $channel->most_active) ?? $channel->most_active, ['controller' => 'Stats', 'action' => 'user', $channel->most_active], ['escape' => false]) ?></td>
                 <td class="itemdesc discordfeel" style="max-width:600px;word-break:break-word;"><?= $this->Discord->resolveNickname($guildMembers, $this->Discord->resolveEmoji($channel->random_message)) ?></td>
             </tr>
         <?php endforeach; ?>
@@ -336,7 +336,7 @@ use Cake\Utility\Hash;
 <div class="sbox">
     <h2 class="text-center">
         Quotes
-        <img src="https://discordapp.com/assets/0b6fc9f58ca3827977d546a6ee0ca3e7.svg" class="emoji" alt=":speech_balloon:">
+        <img src="https://discordapp.com/assets/0b6fc9f58ca3827977d546a6ee0ca3e7.svg" class="emoji" style="height:32px;" alt=":speech_balloon:">
     </h2>
     <table class="itemtable">
         <thead>

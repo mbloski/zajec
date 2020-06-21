@@ -22,7 +22,7 @@ class LogHelper extends Helper
 
         echo '<div class="'.($log->deleted? 'collapsible' : '').'">';
 
-        $nick = $this->Discord->getUsernameWithColor($guildMembers, $log->author_id) ?? $log->author_id;
+        $nick = $this->Html->link($this->Discord->getUsernameWithColor($guildMembers, $log->author_id) ?? $log->author_id, ['controller' => 'Stats', 'action' => 'user', $log->author_id], ['class' => 'userlink', 'escape' => false]);
         $line = $this->Discord->resolveNickname($guildMembers, $this->Discord->resolveEmoji($log->message));
         $line = str_replace("\n", "\n&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;", $line);
 

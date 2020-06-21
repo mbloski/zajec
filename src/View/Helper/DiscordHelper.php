@@ -52,15 +52,8 @@ class DiscordHelper extends Helper
         return $this->colorName($ret);
     }
 
-    public function resolveEmoji($str, $w = 16, $h = 16) {
-        $wh = '';
-        if ($w) {
-            $wh .= ' width="'.$w.'"';
-        }
-        if ($h) {
-            $wh .= ' height="'.$h.'"';
-        }
-        return preg_replace('/&lt;\:(\w*)\:(\d*)&gt;/', '<img class="emoji" alt=":$1:" title=":$1:" src="https://cdn.discordapp.com/emojis/$2.png"'.$wh.'>', htmlspecialchars($str ?? ''));
+    public function resolveEmoji($str, int $h = 16) {
+        return preg_replace('/&lt;\:(\w*)\:(\d*)&gt;/', '<img style="height:'.$h.'px;" class="emoji" alt=":$1:" title=":$1:" src="https://cdn.discordapp.com/emojis/$2.png">', htmlspecialchars($str ?? ''));
     }
 
     public function resolveNickname($guildMembers, $str) {

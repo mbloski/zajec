@@ -148,6 +148,11 @@ input {
     left:238px;
 }
 
+.userlink {
+    color: #bfbfbf !important;
+    text-decoration: none;
+}
+
 .row { vertical-align: top; height:auto !important; }
 .collapsible {display:none; }
 .show {display: none; }

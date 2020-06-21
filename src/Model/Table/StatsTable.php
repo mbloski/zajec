@@ -34,9 +34,17 @@ class StatsTable extends \Cake\ORM\Table
         ]);
     }
 
-    public function getDaily(int $days = 7) {
+    public function getDaily(int $days = 7, $author_id = null) {
+        $conditions = [
+            'created > (SELECT DATETIME(\'now\', \''.-$days.' day\'))',
+        ];
+        if ($author_id) {
+            $conditions['author_id'] = $author_id;
+        }
+
         $messages = TableRegistry::getTableLocator()->get('Messages');
         $q = $messages->find('all', [
+            'conditions' => $conditions,
             'fields' => [
                 'interval' => 'datetime((strftime(\'%s\', datetime(created, \'localtime\')) / 21600) * 21600, \'unixepoch\')',
                 'date' => 'date(created, \'localtime\')',
@@ -45,9 +53,6 @@ class StatsTable extends \Cake\ORM\Table
             ],
             'group' => [
                 'interval',
-            ],
-            'conditions' => [
-                'created > (SELECT DATETIME(\'now\', \''.-$days.' day\'))',
             ],
         ]);
 
@@ -62,9 +67,15 @@ class StatsTable extends \Cake\ORM\Table
         return $ret;
     }
 
-    public function getMostActiveTimes() {
+    public function getMostActiveTimes($author_id = null) {
+        $conditions = [];
+        if ($author_id) {
+            $conditions['author_id'] = $author_id;
+        }
+
         $messages = TableRegistry::getTableLocator()->get('Messages');
         return $messages->find('all', [
+            'conditions' => $conditions,
             'fields' => [
                 'interval' => 'time((strftime(\'%s\', datetime(created, \'localtime\')) / 3600) * 3600, \'unixepoch\')',
                 'hour' => 'strftime(\'%H\', datetime(created, \'localtime\'))',
@@ -76,9 +87,14 @@ class StatsTable extends \Cake\ORM\Table
         ]);
     }
 
-    public function getTopReactions($c = null) {
+    public function getTopReactions($c = null, $author_id = null) {
+        $conditions = [];
+        if ($author_id) {
+            $conditions['author_id'] = $author_id;
+        }
         $reactions = TableRegistry::getTableLocator()->get('Reactions');
         return $reactions->find('all', [
+            'conditions' => $conditions,
             'fields' => [
                 'count' => 'COUNT(1)',
                 'reaction'

@@ -4,6 +4,7 @@ declare(strict_types=1);
 namespace App\Controller;
 
 use Cake\Core\Configure;
+use Cake\Http\Exception\NotFoundException;
 
 /**
  * Stats Controller
@@ -55,5 +56,24 @@ class StatsController extends AppController
         $reactions = $this->Stats->getTopReactions(10);
 
         $this->set(compact('top', 'dailyActivity', 'mostActiveTimes', 'quotes', 'reactions', 'topChannels', 'topBadwords', 'foulLine', 'mostCommonBadwords', 'topAngry', 'angryLine', 'topQuestions', 'longestLines', 'shortestLines', 'wordOccurences'));
+    }
+
+    /**
+     * User method
+     *
+     * @return \Cake\Http\Response|null|void Renders view
+     */
+    public function user($id = null)
+    {
+        $user = $this->Discord->getGuildMember(Configure::read('discord.guild'), $id);
+        if (!isset($user['user'])) {
+            throw new NotFoundException();
+        }
+
+        $dailyActivity = $this->Stats->getDaily(14, $id);
+        $mostActiveTimes = $this->Stats->getMostActiveTimes($id);
+        $reactions = $this->Stats->getTopReactions(10, $id);
+
+        $this->set(compact('user', 'dailyActivity', 'mostActiveTimes', 'reactions'));
     }
 }
