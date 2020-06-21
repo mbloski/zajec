@@ -77,8 +77,6 @@ class AppController extends Controller
         $guildMembers = $this->Discord->getGuildMembersWithRoles(Configure::read('discord.guild'));
         $guildChannels = $this->Discord->getChannels(Configure::read('discord.guild'));
 
-
-
         $this->set(compact('guildMembers', 'guildChannels'));
         parent::beforeFilter($event);
     }

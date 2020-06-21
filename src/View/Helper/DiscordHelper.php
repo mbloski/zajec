@@ -43,7 +43,8 @@ class DiscordHelper extends Helper
 
     public function getUserById($id, $prop = null) {
         $key = array_search($id, Hash::extract($this->guildMembers, '{n}.user.id'));
-        if (!$key) {
+
+        if ($key === false) {
             return null;
         }
 
