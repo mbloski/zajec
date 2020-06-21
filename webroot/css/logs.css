@@ -99,6 +99,10 @@ header span {
     top: 0;
     font-size: 18px; }
 
+.msg {
+    font-size: 14px;
+}
+
 .row { vertical-align: top; height:auto !important; }
 .collapsible {display:none; }
 .show {display: none; }
