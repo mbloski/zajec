@@ -57,10 +57,11 @@ class StatsTable extends \Cake\ORM\Table
         ]);
 
         $ret = [];
+        for ($i = $days; $i >= 0; --$i) {
+            $ret[date('Y-m-d', strtotime('-'.$i.' days'))] = [0 => 0, 6 => 0, 12 => 0, 18 => 0];
+        }
+
         foreach ($q->toArray() as $key => $item) {
-            if (!isset($ret[$item['date']])) {
-                $ret[$item['date']] = [0 => 0, 6 => 0, 12 => 0, 18 => 0];
-            }
             $ret[$item['date']][intval($item->time)] = intval($item->count);
         }
 
