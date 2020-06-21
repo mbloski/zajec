@@ -11,7 +11,6 @@ use Cake\Utility\Hash;
     </div>
 </div>
 
-
 <div class="row">
     <div class="column">
         <figure class="highcharts-figure">
@@ -129,6 +128,49 @@ use Cake\Utility\Hash;
                 }
             });
         </script>
+    </div>
+</div>
+
+<div>
+    <div class="sbox" style="text-align: center;">
+        <div style="display: inline-block;" style="width:50%;">
+            <h2>Most commonly mentioned users</h2>
+            <table class="itemtable">
+                <thead>
+                <th>Username</th>
+                <th>Mentions</th>
+                </thead>
+                <tbody>
+                <?php foreach ($mostMentioned as $n => $row): ?>
+                    <?php if ($n > 9) break; ?>
+                    <tr class="itemrow">
+                        <td class="itemdesc discordfeel"><?= $this->Html->link($this->Discord->getUsernameWithColor($row->mentioned_id) ?? $row->mentioned_id, ['controller' => 'Stats', 'action' => 'user', $row->mentioned_id], ['escape' => false]) ?></td>
+                        <td class="itemdesc"><?= h($row->mentions) ?></td>
+                    </tr>
+                <?php endforeach; ?>
+                </tbody>
+            </table>
+
+        </div>
+
+        <div style="display: inline-block;" style="width:50%;">
+            <h2>Most commonly mentioned by</h2>
+            <table class="itemtable">
+                <thead>
+                <th>Username</th>
+                <th>Mentions</th>
+                </thead>
+                <tbody>
+                <?php foreach ($mostMentionedBy as $n => $row): ?>
+                    <?php if ($n > 9) break; ?>
+                    <tr class="itemrow">
+                        <td class="itemdesc discordfeel"><?= $this->Html->link($this->Discord->getUsernameWithColor($row->author_id) ?? $row->author_id, ['controller' => 'Stats', 'action' => 'user', $row->author_id], ['escape' => false]) ?></td>
+                        <td class="itemdesc"><?= h($row->mentions) ?></td>
+                    </tr>
+                <?php endforeach; ?>
+                </tbody>
+            </table>
+        </div>
     </div>
 </div>
 

@@ -73,7 +73,9 @@ class StatsController extends AppController
         $dailyActivity = $this->Stats->getDaily(14, $id);
         $mostActiveTimes = $this->Stats->getMostActiveTimes($id);
         $reactions = $this->Stats->getTopReactions(10, $id);
+        $mostMentioned = $this->Stats->mostMentioned($id);
+        $mostMentionedBy = $this->Stats->mostMentionedBy($id);
 
-        $this->set(compact('user', 'dailyActivity', 'mostActiveTimes', 'reactions'));
+        $this->set(compact('user', 'dailyActivity', 'mostActiveTimes', 'reactions', 'mostMentioned', 'mostMentionedBy'));
     }
 }
