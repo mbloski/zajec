@@ -33,7 +33,21 @@
 </section>
 <div id="title">
     <?php if (isset($logs) && $currentChannel): ?>
-    #<?= h($currentChannel['name']) ?> - <?= $this->request->getQuery('date') ?? date('Y-m-d') ?>
+    <div class="chantitle">
+        #<?= h($currentChannel['name']) ?> -
+        <?php if ($this->request->getQuery('search')): ?>
+            Search results
+        <?php else: ?>
+            <?= $this->request->getQuery('date') ?? date('Y-m-d') ?>
+        <?php endif; ?>
+    </div>
+    <div class="search">
+        <?= $this->Form->create($logs, ['type' => 'get']) ?>
+        <?= $this->Form->input('channel', ['type' => 'hidden', 'value' => $this->request->getQuery('channel')]) ?>
+        <?= $this->Form->input('search') ?>
+        <?= $this->Form->submit('Search') ?>
+        <?= $this->Form->end() ?>
+    </div>
     <?php else: ?>
     Home
     <?php endif; ?>
@@ -42,7 +56,7 @@
     <?php if (isset($logs)): ?>
         <?php if ($logs->count() > 0): ?>
             <?php foreach ($logs as $log): ?>
-                <?php $this->Log->chat($guildMembers, $log); ?>
+                <?php $this->Log->chat($guildMembers, $log, (bool)$this->request->getQuery('search')); ?>
             <?php endforeach; ?>
         <?php else: ?>
             <?php $this->Log->status('Nothing here'); ?>

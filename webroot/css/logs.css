@@ -1,5 +1,5 @@
 body {
-    background-color: #2f3136;
+    background-color: #32353b;
     font-family: "Menlo", "Monaco", monospace;
     font-size: 12px;
     line-height: 16px;
@@ -24,7 +24,7 @@ a {
     top: 0;
     overflow: auto;
     height: 100%;
-    border-right: 1px solid #CCCCCC; }
+    background-color: #202225; }
 #channels ul {
     list-style-type: none;
     margin: 0;
@@ -52,12 +52,15 @@ a {
 #title {
     position: fixed;
     width: 100%;
-    margin-left: 201px;
-    background-color: #202225;
-    line-height: 25px;
-    padding: 10px;
+    min-width: 800px;
+    margin-left: 200px;
+    background-color: #2f3136;
+    line-height: 40px;
+    padding: 5px 5px 5px 15px;
     color: #AAAAAA;
+    font-size: 16px;
     font-weight: bold;
+    z-index: 1;
 }
 #log {
     padding: 55px 10px 10px 10px;
@@ -102,6 +105,47 @@ header span {
 .msg {
     font-size: 14px;
     line-height:22px;
+}
+
+.chantitle {
+    float: left;
+}
+
+.search {
+    float: right;
+    margin-right: 230px;
+}
+
+.submit {
+    display: inline-block;
+}
+
+input {
+    background-color: #202225;
+    color: #AAAAAA;
+    padding: 10px;
+    height: 100%;
+    border: 1px solid #32353b;
+}
+
+:target {
+    display: inline-block;
+    position: relative;
+    top: -51px;
+    visibility: hidden;
+}
+
+:target ~ div:before {
+    content: '⬤';
+    color: red;
+    visibility: visible;
+}
+
+.anchor-marker {
+    display: inline-block;
+    visibility:hidden;
+    position:absolute;
+    left:238px;
 }
 
 .row { vertical-align: top; height:auto !important; }

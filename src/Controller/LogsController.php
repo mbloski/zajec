@@ -38,6 +38,18 @@ class LogsController extends AppController
             return;
         }
 
+        $conditions = [
+            'channel_id' => $channel,
+        ];
+
+        $search = $this->request->getQuery('search') ?? null;
+        if ($search) {
+            $conditions['message LIKE'] = '%'.$search.'%';
+            // TODO: search specific date
+        } else {
+            $conditions['DATE(created, \'localtime\') ='] = $date;
+        }
+
         $logs = $this->Logs->find('all', [
             'fields' => [
                 'created' => 'DATETIME(created, \'localtime\')',
@@ -47,10 +59,7 @@ class LogsController extends AppController
                 'deleted',
             ],
             'contain' => ['Attachments', 'EditHistory'],
-            'conditions' => [
-                'DATE(created, \'localtime\') =' => $date,
-                'channel_id' => $channel,
-            ]
+            'conditions' => $conditions
         ]);
 
         $this->set(compact('logs'));

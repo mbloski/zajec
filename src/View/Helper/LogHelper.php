@@ -3,6 +3,7 @@ declare(strict_types=1);
 
 namespace App\View\Helper;
 
+use Cake\Routing\Router;
 use Cake\View\Helper;
 
 /**
@@ -10,9 +11,9 @@ use Cake\View\Helper;
  */
 class LogHelper extends Helper
 {
-    public $helpers = ['Html', 'Discord'];
+    public $helpers = ['Html', 'Url', 'Discord'];
 
-    public function chat($guildMembers, $log)
+    public function chat($guildMembers, $log, $fullDate = false)
     {
         echo '<div class="msg">';
         if ($log->deleted) {
@@ -40,8 +41,23 @@ class LogHelper extends Helper
             }
         }
 
+        $format = 'H:i';
+        if ($fullDate) {
+            $format = 'd.m.Y '.$format;
+        }
+
+
+        $queryParams = Router::getRequest()->getQueryParams();
+        $queryParams['date'] = $log->created->format('Y-m-d');
+        if (isset($queryParams['search'])) {
+            unset($queryParams['search']);
+        }
+
+        $anchor = $this->Html->link($log->created->format($format), $this->Url->build(['?' => $queryParams]).'#'.$log->message_id, ['class' => 'anchor', 'id' => $log->message_id, 'escape' => false]);
+        $anchor .= '<div class="anchor-marker"></div>';
+
         echo <<<EOL
-            <a href="#$log->message_id" id="$log->message_id">{$log->created->format('H:i')}</a>
+            {$anchor}
             <<span class="nickname">{$nick}</span>>
             <pre>{$line}</pre>
             <br>
