@@ -101,6 +101,7 @@ header span {
 
 .msg {
     font-size: 14px;
+    line-height:22px;
 }
 
 .row { vertical-align: top; height:auto !important; }
