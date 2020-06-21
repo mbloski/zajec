@@ -23,9 +23,9 @@ class LogsController extends AppController
         $date = $this->request->getQuery('date') ?? date('Y-m-d');
 
         $channels = ['' => []];
-        foreach ($this->viewBuilder()->getVar('guildChannels') as $channel) {
-            if ($channel['type'] == 4 ) {
-                $channels[$channel['id']] = ['name' => $channel['name'], 'channels' => []];
+        foreach ($this->viewBuilder()->getVar('guildChannels') as $n => $channel) {
+            if ($channel['type'] == 4) {
+               $channels[$channel['id']]['name'] = $channel['name'];
             } elseif($channel['type'] == 0) {
                 $channels[$channel['parent_id']]['channels'][] = $channel;
             }
