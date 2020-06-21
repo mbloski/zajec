@@ -48,7 +48,7 @@ class LogsController extends AppController
             ],
             'contain' => ['Attachments', 'EditHistory'],
             'conditions' => [
-                'DATE(created)' => $date,
+                'DATE(created, \'localtime\') =' => $date,
                 'channel_id' => $channel,
             ]
         ]);
