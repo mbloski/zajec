@@ -22,7 +22,7 @@ class StatsTable extends \Cake\ORM\Table
             'fields' => [
                 'count' => 'COUNT(1)',
                 'author_id',
-                'seen' => 'MAX(created)',
+                'seen' => 'MAX(DATETIME(created, \'localtime\'))',
             ],
             'group' => [
                 'author_id',
