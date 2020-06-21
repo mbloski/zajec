@@ -97,6 +97,11 @@ body {
 }
 
 .sbox a {
+    color: #4572A7;
+    text-decoration: none;
+}
+
+.sbox .itemtable a {
     color: #AAAAAA;
     text-decoration: none;
 }

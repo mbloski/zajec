@@ -26,6 +26,9 @@ use Cake\Utility\Hash;
                 <?php endforeach; ?>
                 </tbody>
             </table>
+            <div>
+                <h3><?= $this->Html->link('Go to log browser', ['controller' => 'Logs', 'action' => 'index']) ?></h3>
+            </div>
         </div>
 
         <div style="display: inline-block; width:50%;">
