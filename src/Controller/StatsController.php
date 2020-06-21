@@ -42,6 +42,8 @@ class StatsController extends AppController
             $wordOccurences[$word] = $this->Stats->getWordOccurences($word);
         }
 
+        $mostMentionedUsers = $this->Stats->mostMentionedUsers(2);
+
         $this->loadModel('Quotes');
         $quotes = $this->Quotes->find('all', [
             'fields' => [
@@ -55,7 +57,7 @@ class StatsController extends AppController
 
         $reactions = $this->Stats->getTopReactions(10);
 
-        $this->set(compact('top', 'dailyActivity', 'mostActiveTimes', 'quotes', 'reactions', 'topChannels', 'topBadwords', 'foulLine', 'mostCommonBadwords', 'topAngry', 'angryLine', 'topQuestions', 'longestLines', 'shortestLines', 'wordOccurences'));
+        $this->set(compact('top', 'dailyActivity', 'mostActiveTimes', 'quotes', 'reactions', 'topChannels', 'topBadwords', 'foulLine', 'mostCommonBadwords', 'topAngry', 'angryLine', 'topQuestions', 'longestLines', 'shortestLines', 'wordOccurences', 'mostMentionedUsers'));
     }
 
     /**

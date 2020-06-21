@@ -306,7 +306,7 @@ use Cake\Utility\Hash;
             <li>
                 <b><?= $this->Discord->getUserById($authors[0], 'user.username') ?? $authors[0] ?></b> wrote the longest lines, averaging <?= $this->Number->format($longestLines[$authors[0]], ['precision' => 0]) ?> characters in length.<br>
                 <?php if (count($longestLines) > 1): ?>
-                    <small><b><?= $this->Discord->getUserById($authors[1], 'user.username') ?? $authors[1] ?></b> is a good orator as well, with approximately <?= $this->Number->format($longestLines[$authors[0]], ['precision' => 0]) ?> characters per line.</small>
+                    <small><b><?= $this->Discord->getUserById($authors[1], 'user.username') ?? $authors[1] ?></b> is a good orator as well, with approximately <?= $this->Number->format($longestLines[$authors[1]], ['precision' => 0]) ?> characters per line.</small>
                 <?php endif; ?>
             <br><br></li>
         <?php endif; ?>
@@ -315,9 +315,18 @@ use Cake\Utility\Hash;
             <li>
                 <b><?= $this->Discord->getUserById($authors[0], 'user.username') ?? $authors[0] ?></b> wrote the shortest lines, averaging <?= $this->Number->format($shortestLines[$authors[0]], ['precision' => 0]) ?> characters in length.<br>
                 <?php if (count($shortestLines) > 1): ?>
-                    <small><b><?= $this->Discord->getUserById($authors[1], 'user.username') ?? $authors[1] ?></b> was tight-lipped, too, averaging <?= $this->Number->format($shortestLines[$authors[0]], ['precision' => 0]) ?> characters.</small>
+                    <small><b><?= $this->Discord->getUserById($authors[1], 'user.username') ?? $authors[1] ?></b> was tight-lipped, too, averaging <?= $this->Number->format($shortestLines[$authors[1]], ['precision' => 0]) ?> characters.</small>
                 <?php endif; ?>
             <br><br></li>
+        <?php endif; ?>
+        <?php if (!empty($mostMentionedUsers)): ?>
+            <?php $authors = array_keys($mostMentionedUsers); ?>
+            <li>
+                <b><?= $this->Discord->getUserById($authors[0], 'user.username') ?? $authors[0] ?></b> is quite popular, having people mention them <?= $this->Number->format($mostMentionedUsers[$authors[0]], ['precision' => 0]) ?> times.<br>
+                <?php if (count($mostMentionedUsers) > 1): ?>
+                    <small><b><?= $this->Discord->getUserById($authors[1], 'user.username') ?? $authors[1] ?></b> is also liked on this server, getting <?= $this->Number->format($mostMentionedUsers[$authors[1]], ['precision' => 0]) ?> mentions.</small>
+                <?php endif; ?>
+                <br><br></li>
         <?php endif; ?>
         <?php if (!empty($mostCommonBadwords)): ?>
             <?php $words = array_keys($mostCommonBadwords); ?>

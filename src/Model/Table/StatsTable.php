@@ -425,4 +425,23 @@ class StatsTable extends \Cake\ORM\Table
             'limit' => $c,
         ]);
     }
+
+    function mostMentionedUsers($c = 10) {
+        $mentions = TableRegistry::getTableLocator()->get('Mentions');
+        return $mentions->find('list', [
+            'keyField' => 'mentioned_id',
+            'valueField' => ['mentions'],
+            'fields' => [
+                'mentioned_id',
+                'mentions' => 'COUNT(1)',
+            ],
+            'group' => [
+                'mentioned_id',
+            ],
+            'order' => [
+                'mentions' => 'DESC',
+            ],
+            'limit' => $c,
+        ])->toArray();
+    }
 }
