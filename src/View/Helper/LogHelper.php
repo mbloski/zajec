@@ -37,7 +37,7 @@ class LogHelper extends Helper
             if ($line) {
                 $line .= $this->Html->link('<small><cite>(show edit history)</cite></small>', '#hide%23'.'c'.$log->message_id, ['escape' => false, 'class' => 'hide', 'id' => 'hide%23'.'c'.$log->message_id]);
                 $line .= $this->Html->link('<small><cite>(hide edit history)</cite></small>', '#show%23'.'c'.$log->message_id, ['escape' => false, 'class' => 'show', 'id' => 'show%23'.'c'.$log->message_id]);
-                $line .= '<span class="collapsible">'.implode('', array_map(function($x) { return '<br>&nbsp;<a>OLD:</a> '.$x->message; }, $log->edit_history)).'</span>';
+                $line .= '<span class="collapsible">'.implode('', array_map(function($x) use ($guildMembers) { return '<br>&nbsp;<a>OLD:</a> '.$this->Discord->resolveNickname($guildMembers, $this->Discord->resolveEmoji($x->message)); }, $log->edit_history)).'</span>';
             }
         }
 
