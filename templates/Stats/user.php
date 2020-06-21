@@ -147,7 +147,7 @@ use Cake\Utility\Hash;
                         <?php
                         $emoji = str_replace(['&lt;:', ':&gt;'], '', $this->Discord->resolveEmoji($reaction->reaction, 32, 32));
                         if (mb_strlen($emoji) <= 4) {
-                            $emoji = dechex(mb_ord($emoji));
+                            $emoji = implode('-', array_filter(array_map(function($x) { return dechex(mb_ord($x)); }, mb_str_split($emoji)), function($x) { return $x != 'fe0f'; }));
                             $emoji = '<img src="https://abs.twimg.com/emoji/v2/svg/'.$emoji.'.svg" width="32" height="32">';
                         }
                         echo $emoji;
