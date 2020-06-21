@@ -39,6 +39,13 @@ class LogsController extends AppController
         }
 
         $logs = $this->Logs->find('all', [
+            'fields' => [
+                'created' => 'DATETIME(created, \'localtime\')',
+                'message_id',
+                'author_id',
+                'message',
+                'deleted',
+            ],
             'contain' => ['Attachments', 'EditHistory'],
             'conditions' => [
                 'DATE(created)' => $date,
