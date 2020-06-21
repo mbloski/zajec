@@ -57,8 +57,8 @@ class StatsTable extends \Cake\ORM\Table
         ]);
 
         $ret = [];
-        for ($i = $days; $i >= 0; --$i) {
-            $ret[date('Y-m-d', strtotime('-'.$i.' days'))] = [0 => 0, 6 => 0, 12 => 0, 18 => 0];
+        for ($i = $days - 1; $i >= 0; --$i) {
+            $ret[date('Y-m-d', strtotime('-'.$i.' days midnight'))] = [0 => 0, 6 => 0, 12 => 0, 18 => 0];
         }
 
         foreach ($q->toArray() as $key => $item) {
