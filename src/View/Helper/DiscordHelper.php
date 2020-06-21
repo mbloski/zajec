@@ -60,7 +60,7 @@ class DiscordHelper extends Helper
         if ($h) {
             $wh .= ' height="'.$h.'"';
         }
-        return preg_replace('/&lt;\:(\w*)\:(\d*)&gt;/', '<img alt=":$1:" title=":$1:" src="https://cdn.discordapp.com/emojis/$2.png"'.$wh.'>', htmlspecialchars($str ?? ''));
+        return preg_replace('/&lt;\:(\w*)\:(\d*)&gt;/', '<img class="emoji" alt=":$1:" title=":$1:" src="https://cdn.discordapp.com/emojis/$2.png"'.$wh.'>', htmlspecialchars($str ?? ''));
     }
 
     public function resolveNickname($guildMembers, $str) {

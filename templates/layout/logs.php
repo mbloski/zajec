@@ -8,6 +8,7 @@
     </title>
     <?= $this->Html->meta('icon') ?>
 
+    <?= $this->Html->css('style.css') ?>
     <?= $this->Html->css('logs.css') ?>
 
     <?= $this->fetch('meta') ?>

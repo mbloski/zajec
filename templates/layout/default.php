@@ -9,6 +9,7 @@
     <?= $this->Html->meta('icon') ?>
 
     <?= $this->Html->css('style.css') ?>
+    <?= $this->Html->css('stats.css') ?>
 
     <?= $this->fetch('meta') ?>
     <?= $this->fetch('css') ?>
