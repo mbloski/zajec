@@ -35,8 +35,9 @@ class StatsTable extends \Cake\ORM\Table
     }
 
     public function getDaily(int $days = 7, $author_id = null) {
+        --$days;
         $conditions = [
-            'created > (SELECT DATETIME(\'now\', \''.-$days.' day\'))',
+            'created > (SELECT DATETIME(\'now\', \''.-$days.' day\', \'localtime\'))',
         ];
         if ($author_id) {
             $conditions['author_id'] = $author_id;
@@ -57,7 +58,8 @@ class StatsTable extends \Cake\ORM\Table
         ]);
 
         $ret = [];
-        for ($i = $days - 1; $i >= 0; --$i) {
+        for ($i = $days - 1; $i >= -1; --$i) {
+            // is there a tz problem?
             $ret[date('Y-m-d', strtotime('-'.$i.' days midnight'))] = [0 => 0, 6 => 0, 12 => 0, 18 => 0];
         }
 
