@@ -26,11 +26,11 @@ class LogHelper extends Helper
         $line = $this->Discord->resolveNickname($guildMembers, $this->Discord->resolveEmoji($log->message));
         $line = str_replace("\n", "\n&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;", $line);
 
-        if ($log->has('attachments')) {
+        if ($log->has('attachments') && $log->attachments) {
             if ($line) {
                 $line .= ' ';
             }
-            $line .= implode(' ', array_map(function($x) { return $this->Html->link(basename($x->url), $x->url, ['target' => '_blank']); }, $log->attachments));
+            $line .= implode(' ', array_map(function($x) { return $this->Html->link('['.basename($x->url).']', $x->url, ['target' => '_blank']); }, $log->attachments));
         }
 
         if ($log->has('edit_history') && !empty($log->edit_history)) {
@@ -46,7 +46,6 @@ class LogHelper extends Helper
             $format = 'd.m.Y '.$format;
         }
 
-
         $queryParams = Router::getRequest()->getQueryParams();
         $queryParams['date'] = $log->created->format('Y-m-d');
         if (isset($queryParams['search'])) {
@@ -60,7 +59,6 @@ class LogHelper extends Helper
             {$anchor}
             <<span class="nickname">{$nick}</span>>
             <pre>{$line}</pre>
-            <br>
 EOL;
         echo '</div>';
         echo '</div>';
