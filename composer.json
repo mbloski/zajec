@@ -9,7 +9,9 @@
         "cakephp/migrations": "^3.0@beta",
         "cakephp/plugin-installer": "^1.2",
         "muffin/oauth2": "^1.1",
-        "wohali/oauth2-discord-new": "^1.0"
+        "wohali/oauth2-discord-new": "^1.0",
+        "ext-json": "*",
+        "ext-calendar": "*"
     },
     "require-dev": {
         "cakephp/bake": "^2.0.3",
