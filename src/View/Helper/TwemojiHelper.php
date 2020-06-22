@@ -42,7 +42,7 @@ final class TwemojiHelper extends Helper
 
     public function replace(string $string): string
     {
-        return strtr(implode('', array_filter(mb_str_split($string), function($x) { return mb_ord($x) !== 0xFE0F; })), $this->emojis);
+        return strtr($string, $this->emojis);
     }
 
     private function requestRepository() {
