@@ -6,6 +6,7 @@ namespace App\View\Helper;
 use Cake\Utility\Hash;
 use Cake\View\Helper;
 use Cake\View\View;
+use Highlight\Highlighter;
 
 /**
  * Discord helper
@@ -81,17 +82,34 @@ class DiscordHelper extends Helper
     function resolveMarkdown($str) {
         // TODO: write a proper parser
         $c = 0;
-        $str = preg_replace_callback('/\`\`\`(\w*\n)?\n?(([^\`]|\n)*)\n?\`\`\`/', function($x) { return '<div class="code">'.(rtrim(empty($x[2])? $x[1] : $x[2])).'</div>'; }, $str, -1, $c);
+        $str = preg_replace_callback('/\`\`\`((\w*)\n)?\n?(([^\`]|\n)*)\n?\`\`\`/', function($x) { return '<div class="code '.$x[2].'">'.(rtrim(empty($x[3])? $x[2] : $x[3])).'</div>'; }, $str, -1, $c);
 
         // absolutely kek
         $chunks = [];
         $strr = $str;
-        for ($i = 0; $i < $c; ++$i) {
-            $o = ['start' => strpos($strr, '<div class="code">'), 'end' => strpos($strr, '</div>') + 6];
-            $b = substr($strr, 0, $o['start']);
-            if (!empty($b))  $chunks[] = ['data' => $b];
-            $chunks[] = ['noparse' => true, 'data' => substr($strr, $o['start'], $o['end'] - strlen($b))];
-            $strr = substr($strr, $o['end']);
+
+        if ($c > 0) {
+            $highlighter = new Highlighter();
+            preg_match_all('/<div class="code (\w*)">/', $str, $opentag);
+            $closetag = '</div>';
+            for ($i = 0; $i < $c; ++$i) {
+                $lang = (isset($opentag[1][$i])? $opentag[1][$i] : '');
+                $opentag = '<div class="code ' .$lang. '">';
+
+                $o = ['start' => strpos($strr, $opentag), 'end' => strpos($strr, $closetag) + 6];
+                $b = substr($strr, 0, $o['start']);
+                if (!empty($b))  $chunks[] = ['data' => $b];
+                $data = substr($strr, $o['start'] + strlen($opentag), $o['end'] - strlen($b) - strlen($opentag) - strlen($closetag));
+                if (in_array(strtolower($lang), $highlighter->listLanguages())) {
+                    try {
+                        $data = $highlighter->highlight(strtolower($lang), html_entity_decode($data, ENT_QUOTES))->value;
+                    } catch (\Exception $e) {
+                        // unknown language, let's just not highlight that
+                    }
+                }
+                $chunks[] = ['noparse' => true, 'data' => $data];
+                $strr = substr($strr, $o['end']);
+            }
         }
 
         if ($strr) {
@@ -125,7 +143,7 @@ class DiscordHelper extends Helper
         $ret = preg_replace_callback('/`([^`]*)`/', function($x) { return '<span class="oneliner">'.$x[1].'</span>'; }, $ret);
 
         // ...and bring the code blocks back
-        $ret = preg_replace_callback('/<code id="(\d*)">/', function($x) use ($chunks) { return $chunks[$x[1]]['data']; }, $ret);
+        $ret = preg_replace_callback('/<code id="(\d*)">/', function($x) use ($chunks) { return '<div class="hljs">'.$chunks[$x[1]]['data'].'</div>'; }, $ret);
 
         // it was horrible I wanna go home
         return $ret;

@@ -5,14 +5,15 @@
     "license": "MIT",
     "require": {
         "php": ">=7.2",
+        "ext-calendar": "*",
+        "ext-curl": "*",
+        "ext-json": "*",
         "cakephp/cakephp": "^4.0",
         "cakephp/migrations": "^3.0@beta",
         "cakephp/plugin-installer": "^1.2",
         "muffin/oauth2": "^1.1",
-        "wohali/oauth2-discord-new": "^1.0",
-        "ext-json": "*",
-        "ext-calendar": "*",
-        "ext-curl": "*"
+        "scrivo/highlight.php": "v9.18.1.1",
+        "wohali/oauth2-discord-new": "^1.0"
     },
     "require-dev": {
         "cakephp/bake": "^2.0.3",

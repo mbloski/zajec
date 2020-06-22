@@ -10,6 +10,7 @@
 
     <?= $this->Html->css('style.css') ?>
     <?= $this->Html->css('logs.css') ?>
+    <?= $this->Html->css('hljs.css') ?>
 
     <?= $this->fetch('meta') ?>
     <?= $this->fetch('css') ?>

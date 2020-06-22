@@ -76,7 +76,8 @@ EOL;
     }
 
     public function resolveLinks($str) {
-        $str = $str ?? '';
+        $ret = $str;
+        $str = strip_tags($str) ?? '';
         $reg_exUrl = "/(\&lt;)?((http|https|ftp|ftps)\:\/\/[a-zA-Z0-9\-\.]+\.[a-zA-Z]{2,5}(\/\S*\w)?)/";
         $urls = array();
         $urlsToReplace = array();
@@ -100,11 +101,11 @@ EOL;
             }
             $numOfUrlsToReplace = count($urlsToReplace);
             for($i=0; $i<$numOfUrlsToReplace; $i++) {
-                $str = str_replace($urlsToReplace[$i], "<a href=\"".$urlsToReplace[$i]."\" target=\"_blank\">".$urlsToReplace[$i]."</a>", $str);
+                $ret = str_replace($urlsToReplace[$i], "<a href=\"".$urlsToReplace[$i]."\" target=\"_blank\">".$urlsToReplace[$i]."</a>", $ret);
             }
-            return $str;
+            return $ret;
         }
-        return $str;
+        return $ret;
     }
 
     public function richLine($str, $escape = true) {
