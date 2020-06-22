@@ -58,7 +58,7 @@ class LogHelper extends Helper
 
         echo <<<EOL
             {$anchor}
-            <<span class="nickname">{$nick}</span>>
+            &lt;<span class="nickname">{$nick}</span>&gt;
             <pre>{$line}</pre>
 EOL;
         echo '</div>';
