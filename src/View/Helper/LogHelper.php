@@ -114,6 +114,6 @@ EOL;
             $str = h($str);
         }
 
-        return '<span class="rich-line">'.$this->Discord->resolveNickname($this->Discord->resolveEmoji($this->Twemoji->replace($this->resolveLinks($str)), $escape)).'</span>';
+        return '<span class="rich-line">'.$this->Discord->resolveNickname($this->Discord->resolveEmoji($this->Twemoji->replace($this->resolveLinks($str)), true)).'</span>';
     }
 }
