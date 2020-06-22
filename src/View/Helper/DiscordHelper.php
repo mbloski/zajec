@@ -77,4 +77,58 @@ class DiscordHelper extends Helper
             return $this->colorName($user, '@');
         }, $str);
     }
+
+    function resolveMarkdown($str) {
+        // TODO: write a proper parser
+        $c = 0;
+        $str = preg_replace_callback('/\`\`\`(\w*\n)?\n?(([^\`]|\n)*)\n?\`\`\`/', function($x) { return '<div class="code">'.(rtrim(empty($x[2])? $x[1] : $x[2])).'</div>'; }, $str, -1, $c);
+
+        // absolutely kek
+        $chunks = [];
+        $strr = $str;
+        for ($i = 0; $i < $c; ++$i) {
+            $o = ['start' => strpos($strr, '<div class="code">'), 'end' => strpos($strr, '</div>') + 6];
+            $b = substr($strr, 0, $o['start']);
+            if (!empty($b))  $chunks[] = ['data' => $b];
+            $chunks[] = ['noparse' => true, 'data' => substr($strr, $o['start'], $o['end'] - strlen($b))];
+            $strr = substr($strr, $o['end']);
+        }
+
+        if ($strr) {
+            if (!empty($b))  $chunks[] = ['data' => $strr];
+        }
+
+        if (empty($chunks)) {
+            $chunks[0]['data'] = $str;
+        }
+
+        $tpl = '';
+        foreach ($chunks as $k => $c) {
+            if (isset($c['noparse'])) {
+                $tpl .= '<code id="'.$k.'">';
+            } else {
+                $tpl .= $c['data'];
+            }
+
+        }
+
+        $ret = $tpl;
+
+        $ret = preg_replace_callback('/(\\\\)([\*_\`])/', function($x) { return '&#'.ord($x[2]).';'; }, $ret);
+        $ret = preg_replace_callback('/(\\\\)(\W)/', function($x) { return $x[2]; }, $ret);
+        $ret = preg_replace_callback('/\*\*(.*?)\*\*/', function($x) { return '<b>'.$x[1].'</b>'; }, $ret);
+        $ret = preg_replace_callback('/\*([^\*]+)\*/', function($x) { return '<i>'.$x[1].'</i>'; }, $ret);
+        $ret = preg_replace_callback('/__(.*?)__/', function($x) { return '<u>'.$x[1].'</u>'; }, $ret);
+        $ret = preg_replace_callback('/__(.*?)__/', function($x) { return '<u>'.$x[1].'</u>'; }, $ret);
+        $ret = preg_replace_callback('/_([^_]*)_/', function($x) { return '<i>'.$x[1].'</i>'; }, $ret);
+        $ret = preg_replace_callback('/\|\|(.*?)\|\|/', function($x) { return '<span class="spoiler">'.$x[1].'</span>'; }, $ret);
+        $ret = preg_replace_callback('/`([^`]*)`/', function($x) { return '<span class="oneliner">'.$x[1].'</span>'; }, $ret);
+
+        // ...and bring the code blocks back
+        $ret = preg_replace_callback('/<code id="(\d*)">/', function($x) use ($chunks) { return $chunks[$x[1]]['data']; }, $ret);
+
+        // it was horrible I wanna go home
+        return $ret;
+    }
+
 }

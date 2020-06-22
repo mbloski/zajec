@@ -10,3 +10,53 @@ img.emoji {
 .emoji-32 img {
     height: 32px;
 }
+
+.spoiler {
+    display: inline-block;
+    background-color: black !important;
+    color: black;
+}
+
+.spoiler:hover, .spoiler div:hover, .spoiler span:hover {
+    color: #bfbfbf !important;
+}
+
+.code {
+    color: #bfbfbf;
+    display: block;
+    white-space: pre-wrap;
+    background-color: #202225;
+    font-family: monospace;
+    padding: 5px;
+    margin: 4px 0 4px 0;
+    width: 100%;
+}
+
+.code span, .spoiler span {
+    color: inherit;
+    background: none !important;
+}
+
+.spoiler div {
+    color: black !important;
+    padding: 0;
+    margin: 0;
+    background: none !important;
+}
+
+.code u, .code i, .code b {
+    font-style: normal !important;
+    font-weight: normal !important;
+    text-decoration: none !important;
+}
+
+.code span:hover {
+    background-color: unset !important;
+    color: unset !important;
+}
+
+.oneliner {
+    font-family: monospace;
+    color: #bfbfbf;
+    background-color: #202225;
+}

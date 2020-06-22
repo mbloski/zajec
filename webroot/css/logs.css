@@ -153,6 +153,10 @@ input {
     text-decoration: none;
 }
 
+.gray {
+    color: #888888;
+}
+
 .row { vertical-align: top; height:auto !important; }
 .collapsible {display:none; }
 .show {display: none; }

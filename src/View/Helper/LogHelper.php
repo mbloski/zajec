@@ -24,7 +24,6 @@ class LogHelper extends Helper
 
         $nick = $this->Html->link($this->Discord->getUsernameWithColor($log->author_id) ?? $log->author_id, ['controller' => 'Stats', 'action' => 'user', $log->author_id], ['class' => 'userlink', 'escape' => false]);
         $line = $this->richLine($log->message);
-        $line = str_replace("\n", "\n&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;", $line);
 
         if ($log->has('attachments') && $log->attachments) {
             if ($line) {
@@ -59,7 +58,7 @@ class LogHelper extends Helper
         echo <<<EOL
             {$anchor}
             &lt;<span class="nickname">{$nick}</span>&gt;
-            <pre>{$line}</pre>
+            <span>{$line}</span>
 EOL;
         echo '</div>';
         echo '</div>';
@@ -114,6 +113,6 @@ EOL;
             $str = h($str);
         }
 
-        return '<span class="rich-line">'.$this->Discord->resolveNickname($this->Discord->resolveEmoji($this->Twemoji->replace($this->resolveLinks($str)), true)).'</span>';
+        return '<span class="rich-line">'.$this->Discord->resolveNickname($this->Discord->resolveEmoji($this->Twemoji->replace($this->resolveLinks($this->Discord->resolveMarkdown($str))), true)).'</span>';
     }
 }
