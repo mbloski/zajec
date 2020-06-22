@@ -35,8 +35,9 @@ class StatsTable extends \Cake\ORM\Table
     }
 
     public function getDaily(int $days = 7, $author_id = null) {
+        --$days;
         $conditions = [
-            'created > (SELECT DATETIME(\'now\', \''.-$days.' day\'))',
+            'DATE(created, \'localtime\') >= (SELECT DATE(\'now\', \''.-$days.' day\'))',
         ];
         if ($author_id) {
             $conditions['author_id'] = $author_id;
