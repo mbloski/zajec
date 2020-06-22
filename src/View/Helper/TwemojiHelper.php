@@ -25,6 +25,11 @@ final class TwemojiHelper extends Helper
             }
             $emoji = '';
 
+            // ® © ™
+            if (strlen($matches[1]) == 2 || $matches[1] == '2122') {
+                continue;
+            }
+
             $splitmoji = explode('-', $matches[1]);
 
             // https://github.com/twitter/twemoji/issues/272
