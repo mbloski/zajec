@@ -76,7 +76,9 @@ class StatsTable extends \Cake\ORM\Table
         }
 
         $messages = TableRegistry::getTableLocator()->get('Messages');
-        return $messages->find('all', [
+        $hours = $messages->find('list', [
+            'keyField' => 'hour',
+            'valueField' => 'count',
             'conditions' => $conditions,
             'fields' => [
                 'interval' => 'time((strftime(\'%s\', datetime(created, \'localtime\')) / 3600) * 3600, \'unixepoch\')',
@@ -86,7 +88,14 @@ class StatsTable extends \Cake\ORM\Table
             'group' => [
                 'interval',
             ],
-        ]);
+        ])->toArray();
+
+        for ($i = 0; $i <= 23; ++$i) {
+            $k = str_pad(strval($i), 2, '0', STR_PAD_LEFT);
+            $ret[$k] = (int)($hours[$k] ?? 0);
+        }
+
+        return $ret;
     }
 
     public function getTopReactions($c = null, $author_id = null) {

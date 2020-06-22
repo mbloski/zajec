@@ -168,7 +168,10 @@ use Cake\Utility\Hash;
                     text: 'Most active times'
                 },
                 xAxis: {
-                    categories: <?= json_encode(array_map(function($x) { return $x->hour; }, $mostActiveTimes->toArray())) ?>
+                    categories: <?= json_encode(array_keys($mostActiveTimes)) ?>,
+                    labels: {
+                        step: 1,
+                    }
                 },
                 yAxis: {
                     min: 0,
@@ -196,7 +199,7 @@ use Cake\Utility\Hash;
                 },
                 series: [{
                     name: 'lines',
-                    data: <?= json_encode(array_map(function($x) { return intval($x->count); }, $mostActiveTimes->toArray())) ?>,
+                    data: <?= json_encode(array_values($mostActiveTimes)) ?>,
                 }],
                 credits: {
                     enabled: false,
