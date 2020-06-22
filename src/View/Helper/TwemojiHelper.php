@@ -14,7 +14,7 @@ final class TwemojiHelper extends Helper
     {
         parent::initialize($config);
         $format = $config['format'] ?? 'svg';
-        $version = $config['version'] ?? '13.0.0';
+        $version = $config['version'] ?? 'v2';
 
         $response = $this->requestRepository();
 
@@ -41,7 +41,7 @@ final class TwemojiHelper extends Helper
                 $emoji .= mb_chr(hexdec($code));
             }
             $emojis[$emoji] = sprintf(
-                '<img draggable="false" class="emoji" alt="%s" src="https://twemoji.maxcdn.com/v/%s/%s/%s.%s">',
+                '<img draggable="false" class="emoji" alt="%s" src="https://abs.twimg.com/emoji/%s/%s/%s.%s">',
                 $emoji,
                 $version,
                 $format,
