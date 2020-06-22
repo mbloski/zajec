@@ -103,6 +103,14 @@ return [
             'duration' => '+1 day',
         ],
 
+        'long' => [
+            'className' => FileEngine::class,
+            'prefix' => 'long_',
+            'path' => CACHE . 'persistent' . DS,
+            'url' => env('CACHE_DEFAULT_URL', null),
+            'duration' => '+1 years',
+        ],
+
         /*
          * Configure the cache used for general framework caching.
          * Translation cache files are stored with this configuration.

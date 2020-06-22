@@ -46,13 +46,13 @@ final class TwemojiHelper extends Helper
     }
 
     private function requestRepository() {
-        $ret = Cache::read('twemoji');
+        $ret = Cache::read('twemoji', 'long');
         if (!$ret) {
             $ch = curl_init('https://api.github.com/repos/twitter/twemoji/git/trees/master?recursive=1');
             curl_setopt($ch, CURLOPT_RETURNTRANSFER, 1);
             curl_setopt($ch, CURLOPT_HTTPHEADER, ['User-Agent: ZAJEC']);
             $ret = json_decode(curl_exec($ch), true);
-            Cache::write('twemoji', $ret);
+            Cache::write('twemoji', $ret, 'long');
         }
 
         return $ret;
