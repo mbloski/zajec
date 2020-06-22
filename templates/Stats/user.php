@@ -185,7 +185,7 @@ use Cake\Utility\Hash;
                     <div><?= $this->Number->format($reaction->count) ?>x</div>
                 </td>
                 <td class="itemgfx">
-                    <span class="emoji">
+                    <span class="emoji emoji-32">
                         <?php
                         $emoji = str_replace(['<:', ':>'], '', $this->Discord->resolveEmoji($reaction->reaction));
                         echo $this->Twemoji->replace($emoji);
