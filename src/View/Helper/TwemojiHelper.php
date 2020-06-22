@@ -24,7 +24,15 @@ final class TwemojiHelper extends Helper
                 continue;
             }
             $emoji = '';
-            foreach (explode('-', $matches[1]) as $code) {
+
+            $splitmoji = explode('-', $matches[1]);
+
+            // https://github.com/twitter/twemoji/issues/272
+            if (count($splitmoji) === 2 && $splitmoji[1] == '20e3') {
+                $splitmoji = [$splitmoji[0], 'fe0f', '20e3'];
+            }
+
+            foreach ($splitmoji as $code) {
                 $emoji .= mb_chr(hexdec($code));
             }
             $emojis[$emoji] = sprintf(
