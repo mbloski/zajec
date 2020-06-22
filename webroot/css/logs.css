@@ -152,6 +152,10 @@ input {
     left:238px;
 }
 
+.anchor {
+    white-space: nowrap;
+}
+
 .userlink {
     color: #bfbfbf !important;
     text-decoration: none;
