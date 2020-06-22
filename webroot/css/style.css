@@ -29,7 +29,7 @@ img.emoji {
     font-family: monospace;
     padding: 5px;
     margin: 4px 0 4px 0;
-    width: 100%;
+    width: 99%;
 }
 
 .code span, .spoiler span {

@@ -56,9 +56,8 @@ class LogHelper extends Helper
         $anchor .= '<div class="anchor-marker"></div>';
 
         echo <<<EOL
-            {$anchor}
-            &lt;<span class="nickname">{$nick}</span>&gt;
-            <span>{$line}</span>
+            <div class="timestamp">{$anchor}</div>
+            <div class="logline">&lt;<span class="nickname">{$nick}</span>&gt; <span>{$line}</span></div>
 EOL;
         echo '</div>';
         echo '</div>';

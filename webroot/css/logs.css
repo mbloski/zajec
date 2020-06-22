@@ -105,6 +105,8 @@ header span {
 .msg {
     font-size: 14px;
     line-height:22px;
+    display: table;
+    width: 100%;
 }
 
 .chantitle {
@@ -139,6 +141,8 @@ input {
     content: '⬤';
     color: red;
     visibility: visible;
+    display: table-cell;
+    padding-right: 10px;
 }
 
 .anchor-marker {
@@ -155,6 +159,17 @@ input {
 
 .gray {
     color: #888888;
+}
+
+.timestamp {
+    display: table-cell;
+}
+
+.logline {
+    padding-left: 10px;
+    display: table-cell;
+    white-space: pre-wrap;
+    width: 100%;
 }
 
 .row { vertical-align: top; height:auto !important; }
