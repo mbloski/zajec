@@ -82,7 +82,7 @@ class DiscordHelper extends Helper
     function resolveMarkdown($str) {
         // TODO: write a proper parser
         $c = 0;
-        $str = preg_replace_callback('/\`\`\`((\w*)\n)?\n?(([^\`]|\n)*)\n?\`\`\`/', function($x) { return '<div class="code '.$x[2].'">'.(rtrim(empty($x[3])? $x[2] : $x[3])).'</div>'; }, $str, -1, $c);
+        $str = preg_replace_callback('/\`\`\`((\w*)\n)?\n?(([^\`]|\n)*)\n?\`\`\`\n?/', function($x) { return '<div class="code '.$x[2].'">'.(rtrim(empty($x[3])? $x[2] : $x[3])).'</div>'; }, $str, -1, $c);
 
         // absolutely kek
         $chunks = [];
