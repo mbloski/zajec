@@ -187,12 +187,8 @@ use Cake\Utility\Hash;
                 <td class="itemgfx">
                     <span class="emoji">
                         <?php
-                        $emoji = str_replace(['<:', ':>'], '', $this->Discord->resolveEmoji($reaction->reaction, 32, false));
-                        if (mb_strlen($emoji) <= 4) {
-                            $emoji = implode('-', array_filter(array_map(function($x) { return dechex(mb_ord($x)); }, mb_str_split($emoji)), function($x) { return $x != 'fe0f'; }));
-                            $emoji = '<img src="https://abs.twimg.com/emoji/v2/svg/'.$emoji.'.svg" width="32" height="32">';
-                        }
-                        echo $emoji;
+                        $emoji = str_replace(['<:', ':>'], '', $this->Discord->resolveEmoji($reaction->reaction));
+                        echo $this->Twemoji->replace($emoji);
                         ?>
                     </span>
                 </td>

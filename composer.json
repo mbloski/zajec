@@ -11,7 +11,8 @@
         "muffin/oauth2": "^1.1",
         "wohali/oauth2-discord-new": "^1.0",
         "ext-json": "*",
-        "ext-calendar": "*"
+        "ext-calendar": "*",
+        "ext-curl": "*"
     },
     "require-dev": {
         "cakephp/bake": "^2.0.3",

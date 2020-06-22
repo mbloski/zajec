@@ -2,3 +2,11 @@ img.emoji {
     vertical-align: middle;
     width: auto;
 }
+
+.rich-line img {
+    height: 16px;
+}
+
+.emoji-32 img {
+    height: 32px;
+}

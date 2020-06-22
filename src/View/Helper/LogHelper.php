@@ -11,7 +11,7 @@ use Cake\View\Helper;
  */
 class LogHelper extends Helper
 {
-    public $helpers = ['Html', 'Url', 'Discord'];
+    public $helpers = ['Html', 'Url', 'Discord', 'Twemoji'];
 
     public function chat($log, $fullDate = false)
     {
@@ -110,6 +110,6 @@ EOL;
     }
 
     public function richLine($str) {
-        return $this->Discord->resolveNickname($this->Discord->resolveEmoji($this->resolveLinks(h($str)), 16, true));
+        return '<span class="rich-line">'.$this->Discord->resolveNickname($this->Discord->resolveEmoji($this->Twemoji->replace($this->resolveLinks(h(($str)))), true)).'</span>';
     }
 }
