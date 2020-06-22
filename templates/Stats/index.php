@@ -354,7 +354,7 @@ use Cake\Utility\Hash;
         <?php foreach ($quotes as $quote): ?>
             <tr class="itemrow">
                 <td class="itemdesc">#<?= $quote->id ?></td>
-                <td class="itemdesc" style="width:200px;"><?= h($quote->name) ?></td>
+                <td class="itemdesc" style="width:200px;"><?= $quote->author_id? $this->Html->link($this->Discord->getUsernameWithColor($quote->author_id), ['controller' => 'Stats', 'action' => 'user', $quote->author_id], ['escape' => false]) : h($quote->name) ?></td>
                 <td class="itemdesc" style="max-width:600px;word-break:break-word;"><?= $this->Log->richLine($quote->value) ?></td>
                 <td><?= h($quote->created) ?></td>
             </tr>

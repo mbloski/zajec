@@ -49,9 +49,9 @@ class StatsController extends AppController
             'fields' => [
                 'created' => 'datetime(created, \'localtime\')',
                 'id',
+                'author_id',
                 'name',
                 'value',
-
             ]
         ]);
 
