@@ -60,3 +60,38 @@ img.emoji {
     color: #bfbfbf;
     background-color: #202225;
 }
+
+@font-face {
+    font-family: 'Dearest';
+    src: url('/fonts/Dearest.ttf') format('truetype');
+}
+
+.gallery {
+    padding: 20px;
+    margin: 20px;
+}
+
+.thumb-wrap {
+    display: block;
+    height: 240px;
+    width: 240px;
+    background-color: #d0d3d4;
+}
+
+.thumb-wrap .thumb {
+    display: block;
+    padding: 10px;
+}
+
+.thumb-wrap .thumblink {
+    height: 180px;
+    max-width: 220px;
+}
+
+.thumb-wrap .caption {
+    display: block;
+    font-size: 20px;
+    text-align: center;
+    font-weight: bold;
+    font-family: 'Dearest', sans-serif;
+}

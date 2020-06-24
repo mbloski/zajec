@@ -53,4 +53,5 @@ return [
     'angry_emoji' => ['😠', '😡', '👺', ':ree:', ':smrud:'],
     'word_occurences' => ['komunizm'],
     'excluded_authors' => ['224415693393625088', '719345430986752061'], // Sticker Surge, test account
+    'faces_dir' => RESOURCES . '/losers/',
 ];

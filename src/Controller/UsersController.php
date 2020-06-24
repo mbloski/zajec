@@ -9,7 +9,7 @@ use Cake\Http\Cookie\Cookie;
 use Cake\Utility\Hash;
 
 /**
- * Stats Controller
+ * Users Controller
  *
  */
 class UsersController extends AppController

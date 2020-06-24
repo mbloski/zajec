@@ -7,6 +7,7 @@
         "php": ">=7.2",
         "ext-calendar": "*",
         "ext-curl": "*",
+        "ext-imagick": "^3.4",
         "ext-json": "*",
         "cakephp/cakephp": "^4.0",
         "cakephp/migrations": "^3.0@beta",
