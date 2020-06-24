@@ -19,9 +19,11 @@ class LosersController extends AppController
         if (!is_file($thumbFile)) {
             $loser = $this->Losers->get($id);
             $magick = new \Imagick($loser->getPictureUrl());
-            $h = 240.0 / $magick->getImageHeight();
-            $w = 180.0 / $magick->getImageWidth();
-            $magick->sampleImage((int)($magick->getImageWidth() * $w), (int)($magick->getImageHeight() * $h));
+            $height = $magick->getImageHeight();
+            $width = $magick->getImageWidth();;
+            $h = 240.0 / $height;
+            $w = 180.0 / $width;
+            $magick->sampleImage((int)($width * $w), (int)($height * $h));
             $magick->writeImage($thumbFile);
         }
 
