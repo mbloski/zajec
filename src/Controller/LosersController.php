@@ -26,7 +26,7 @@ class LosersController extends AppController
             @file_put_contents($thumbFile, $magick->getImageBlob());
         }
 
-        return $this->getResponse()->withType('image/jpg')->withStringBody($thumbFile);
+        return $this->getResponse()->withType('image/jpg')->withFile($thumbFile);
     }
 
     public function photo($id, $name = null) {
