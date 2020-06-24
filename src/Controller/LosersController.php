@@ -21,7 +21,13 @@ class LosersController extends AppController
         $w = 180.0 / $magick->getImageWidth();
         $magick->setImagebackgroundcolor('#313131');
         $magick->thumbnailImage((int)($magick->getImageHeight() * $h), (int)($magick->getImageWidth() * $w), true, true);
-        return $this->getResponse()->withType('image/jpg')->withStringBody($magick->getImageBlob());
+
+        $thumbFile = Configure::read('faces_dir').'/thumb/'.$id;
+        if (!is_file($thumbFile)) {
+            @file_put_contents($thumbFile, $magick->getImageBlob());
+        }
+
+        return $this->getResponse()->withType('image/jpg')->withStringBody($thumbFile);
     }
 
     public function photo($id, $name = null) {
