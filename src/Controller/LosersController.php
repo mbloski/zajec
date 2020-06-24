@@ -21,8 +21,7 @@ class LosersController extends AppController
             $magick = new \Imagick($loser->getPictureUrl());
             $h = 240.0 / $magick->getImageHeight();
             $w = 180.0 / $magick->getImageWidth();
-            $magick->setImagebackgroundcolor('#313131');
-            $magick->thumbnailImage((int)($magick->getImageHeight() * $h), (int)($magick->getImageWidth() * $w), true, true);
+            $magick->sampleImage((int)($magick->getImageHeight() * $h), (int)($magick->getImageWidth() * $w));
             @file_put_contents($thumbFile, $magick->getImageBlob());
         }
 

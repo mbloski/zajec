@@ -79,11 +79,15 @@ img.emoji {
 }
 
 .thumb-wrap .thumb {
+    text-align: center;
     display: block;
-    padding: 10px;
+    margin: 10px;
+    background-color: #313131;
 }
 
 .thumb-wrap .thumblink {
+    vertical-align: middle;
+
     height: 180px;
     max-width: 220px;
 }
