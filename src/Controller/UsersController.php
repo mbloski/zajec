@@ -20,7 +20,7 @@ class UsersController extends AppController
         }
 
         if ($user = $this->Auth->user()) {
-            $discordUser = $this->Discord->getGuildMember(Configure::read('discord.guild'), $user['user_id']);
+            $discordUser = $this->Discord->getGuildMember(Configure::read('discord.guild'), (string)$user['user_id']);
             if (!isset($discordUser['user'])) {
                 $this->Auth->logout();
                 $this->Flash->error('You are not a member of this community.');
