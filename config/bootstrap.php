@@ -225,3 +225,6 @@ if (file_exists(CONFIG . 'misc.php')) {
 
 EventManager::instance()->on('Muffin/OAuth2.newUser',  [\Cake\ORM\TableRegistry::getTableLocator()->get('Users'), 'createNew']);
 EventManager::instance()->on('Muffin/OAuth2.afterIdentify',  [\Cake\ORM\TableRegistry::getTableLocator()->get('Users'), 'identify']);
+
+\Cake\I18n\FrozenDate::setToStringFormat('dd.MM.yyyy');
+\Cake\I18n\FrozenTime::setToStringFormat('dd.MM.yyyy H:mm');
