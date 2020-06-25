@@ -79,7 +79,7 @@ EOL;
     public function resolveLinks($str) {
         $ret = $str;
         $str = strip_tags($str) ?? '';
-        $reg_exUrl = "/(\&lt;)?((\&lt;)?^(https?|ftp):\/\/[^\s\/$.?#].[^\s]*$)/iS";
+        $reg_exUrl = "/(\&lt;)?((\&lt;)?(https?|ftp):\/\/[^\s\/$.?#].[^\s]*)/iS";
         $urls = array();
         $urlsToReplace = array();
         if(preg_match_all($reg_exUrl, $str, $urls)) {
