@@ -129,8 +129,7 @@ class DiscordHelper extends Helper
             if (isset($c['noparse'])) {
                 $tpl .= '<code id="'.$k.'" hljs="'.intval($c['hljs']).'">';
             } else {
-                $c['data'] = preg_replace_callback('/(\&lt;)?^(https?|ftp):\/\/[^\s\/$.?#].[^\s]*$/iS', function($x) { return '<span class="link">'.$x[0].'</span>'; }, $c['data']);
-                $tpl .= preg_replace_callback('/<span class="link">(.*)<\/span>/', function($x) { return preg_replace('/([\*\_\`])/', "\\\\$1", html_entity_decode($x[1])); }, $c['data']);
+                $tpl .= preg_replace_callback('/(\&lt;)?^(https?|ftp):\/\/[^\s\/$.?#].[^\s]*$/iS', function($x) { return str_replace(['*', '`', '_'], ['\\*', '\\`', '\\_'], $x[0]); }, $c['data']);
             }
 
         }
