@@ -81,42 +81,39 @@ class DiscordHelper extends Helper
 
     function resolveMarkdown($str) {
         // TODO: write a proper parser
-        $c = 0;
-        $str = preg_replace_callback('/\`\`\`((\w*)\n)?\n?(([^\`]|\n)*)\n?\`\`\`\n?/', function($x) { return '<div class="code '.$x[2].'">'.(rtrim(empty($x[3])? $x[2] : $x[3])).'</div>'; }, $str, -1, $c);
-        $str = preg_replace_callback('/`([^`]*)`/', function($x) { return '<div class="code oneliner">'.$x[1].'</div>'; }, $str);
+        $str = preg_replace_callback('/\`\`\`((\w*)\n)?\n?(([^\`]|\n)*)\n?\`\`\`\n?/', function($x) { return '<div class="code '.$x[2].'">'.(rtrim(empty($x[3])? $x[2] : $x[3])).'</div>'; }, $str, -1);
+        $str = preg_replace_callback('/`([^`]*)`/', function($x) { return '<span class="oneliner ">'.$x[1].'</span>'; }, $str);
 
         // absolutely kek
         $chunks = [];
         $strr = $str;
 
-        if ($c > 0) {
-            $highlighter = new Highlighter();
-            preg_match_all('/<div class="(\w*) ?(\w*)">/', $str, $otags);
+        $highlighter = new Highlighter();
+        preg_match_all('/<(\w*) class="(\w*) ?(\w*)">/', $str, $otags);
 
-            for ($i = 0; $i < count($otags[0]); ++$i) {
-                $class = (isset($otags[2][$i])? $otags[2][$i] : '');
+        for ($i = 0; $i < count($otags[0]); ++$i) {
+            $class = (isset($otags[3][$i])? $otags[3][$i] : '');
 
-                $type = $otags[1][$i];
-                $opentag = '<div class="'.$type.' ' .$class. '">';
-                $closetag = '</div>';
+            $type = $otags[2][$i];
+            $opentag = '<'.$otags[1][$i].' class="'.$type.' ' .$class. '">';
+            $closetag = '</'.$otags[1][$i].'>';
 
 
-                $o = ['start' => strpos($strr, $opentag), 'end' => strpos($strr, $closetag) + strlen($closetag)];
+            $o = ['start' => strpos($strr, $opentag), 'end' => strpos($strr, $closetag) + strlen($closetag)];
 
-                $b = substr($strr, 0, $o['start']);
-                if (!empty($b))  $chunks[] = ['data' => $b];
-                $data = substr($strr, $o['start'] + strlen($opentag), $o['end'] - strlen($b) - strlen($opentag) - strlen($closetag));
+            $b = substr($strr, 0, $o['start']);
+            if (!empty($b))  $chunks[] = ['data' => $b];
+            $data = substr($strr, $o['start'] + strlen($opentag), $o['end'] - strlen($b) - strlen($opentag) - strlen($closetag));
 
-                if ($type == 'code' && in_array(strtolower($class), $highlighter->listLanguages())) {
-                    try {
-                        $data = $highlighter->highlight(strtolower($class), html_entity_decode($data, ENT_QUOTES))->value;
-                    } catch (\Exception $e) {
-                        // unknown language, let's just not highlight that
-                    }
+            if (in_array(strtolower($class), $highlighter->listLanguages())) {
+                try {
+                    $data = $highlighter->highlight(strtolower($class), html_entity_decode($data, ENT_QUOTES))->value;
+                } catch (\Exception $e) {
+                    // unknown language, let's just not highlight that
                 }
-                $chunks[] = ['noparse' => true, 'data' => $data];
-                $strr = substr($strr, $o['end']);
             }
+            $chunks[] = ['noparse' => true, 'data' => $data, 'hljs' => $type == 'code' && $class != 'oneliner'];
+            $strr = substr($strr, $o['end']);
         }
 
         if ($strr) {
@@ -130,7 +127,7 @@ class DiscordHelper extends Helper
         $tpl = '';
         foreach ($chunks as $k => $c) {
             if (isset($c['noparse'])) {
-                $tpl .= '<code id="'.$k.'">';
+                $tpl .= '<code id="'.$k.'" hljs="'.intval($c['hljs']).'">';
             } else {
                 $c['data'] = preg_replace_callback('/(\&lt;)?((http|https|ftp|ftps)\:\/\/[a-zA-Z0-9\-\.]+\.[a-zA-Z]{2,5}(\/\S*\w)?)/', function($x) { return '<span class="link">'.$x[0].'</span>'; }, $c['data']);
                 $tpl .= preg_replace_callback('/<span class="link">(.*)<\/span>/', function($x) { return preg_replace('/([\*\_\`])/', "\\\\$1", html_entity_decode($x[1])); }, $c['data']);
@@ -150,7 +147,14 @@ class DiscordHelper extends Helper
         $ret = preg_replace_callback('/\|\|(.*?)\|\|/', function($x) { return '<span class="spoiler">'.$x[1].'</span>'; }, $ret);
 
         // ...and bring the code blocks back
-        $ret = preg_replace_callback('/<code id="(\d*)">/', function($x) use ($chunks) { return '<div class="hljs">'.$chunks[$x[1]]['data'].'</div>'; }, $ret);
+        $ret = preg_replace_callback('/<code id="(\d*)" hljs="(\d*)">/', function($x) use ($chunks) {
+            $ret = $chunks[$x[1]]['data'];
+            $class = 'oneliner';
+            if ($x[2]) {
+                $class = 'hljs';
+            }
+            return '<div class="'.$class.'">'.$ret.'</div>';;
+        }, $ret);
 
         // it was horrible I wanna go home
         return $ret;
