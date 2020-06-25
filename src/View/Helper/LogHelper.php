@@ -57,7 +57,7 @@ class LogHelper extends Helper
 
         echo <<<EOL
             <div class="timestamp">{$anchor}</div>
-            <div class="logline">&lt;<span class="nickname">{$nick}</span>&gt; <span>{$line}</span></div>
+            <div class="logline">&lt;<span class="nickname">{$nick}</span>&gt; <span class="rich-line">{$line}</span></div>
 EOL;
         echo '</div>';
         echo '</div>';
@@ -113,6 +113,6 @@ EOL;
             $str = h($str);
         }
 
-        return '<span class="rich-line">'.$this->Discord->resolveNickname($this->Discord->resolveEmoji($this->Twemoji->replace($this->resolveLinks($this->Discord->resolveMarkdown($str))), true)).'</span>';
+        return $this->Discord->resolveNickname($this->Discord->resolveEmoji($this->Twemoji->replace($this->resolveLinks($this->Discord->resolveMarkdown($str))), true));
     }
 }
