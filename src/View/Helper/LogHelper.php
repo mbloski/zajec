@@ -118,7 +118,7 @@ EOL;
             $str = h($str);
         }
 
-        return $this->Discord->resolveNickname($this->Discord->resolveEmoji($this->Twemoji->replace($this->Discord->resolveMarkdown($this->resolveLinks($str))), true));
+        return $this->Discord->resolveNickname($this->Discord->resolveEmoji($this->Twemoji->replace($this->resolveLinks($this->Discord->resolveMarkdown($str))), true));
     }
 
     public function wrappedRichLine($str, $escape = true) {

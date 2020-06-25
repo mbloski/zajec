@@ -91,19 +91,25 @@ class DiscordHelper extends Helper
 
         if ($c > 0) {
             $highlighter = new Highlighter();
-            preg_match_all('/<div class="code (\w*)">/', $str, $opentag);
-            $closetag = '</div>';
-            for ($i = 0; $i < $c; ++$i) {
-                $lang = (isset($opentag[1][$i])? $opentag[1][$i] : '');
-                $opentag = '<div class="code ' .$lang. '">';
+            preg_match_all('/<div class="(\w*) ?(\w*)">/', $str, $otags);
 
-                $o = ['start' => strpos($strr, $opentag), 'end' => strpos($strr, $closetag) + 6];
+            for ($i = 0; $i < count($otags[0]); ++$i) {
+                $class = (isset($otags[2][$i])? $otags[2][$i] : '');
+
+                $type = $otags[1][$i];
+                $opentag = '<div class="'.$type.' ' .$class. '">';
+                $closetag = '</div>';
+
+
+                $o = ['start' => strpos($strr, $opentag), 'end' => strpos($strr, $closetag) + strlen($closetag)];
+
                 $b = substr($strr, 0, $o['start']);
                 if (!empty($b))  $chunks[] = ['data' => $b];
                 $data = substr($strr, $o['start'] + strlen($opentag), $o['end'] - strlen($b) - strlen($opentag) - strlen($closetag));
-                if (in_array(strtolower($lang), $highlighter->listLanguages())) {
+
+                if ($type == 'code' && in_array(strtolower($class), $highlighter->listLanguages())) {
                     try {
-                        $data = $highlighter->highlight(strtolower($lang), html_entity_decode($data, ENT_QUOTES))->value;
+                        $data = $highlighter->highlight(strtolower($class), html_entity_decode($data, ENT_QUOTES))->value;
                     } catch (\Exception $e) {
                         // unknown language, let's just not highlight that
                     }
@@ -126,7 +132,8 @@ class DiscordHelper extends Helper
             if (isset($c['noparse'])) {
                 $tpl .= '<code id="'.$k.'">';
             } else {
-                $tpl .= $c['data'];
+                $c['data'] = preg_replace_callback('/(\&lt;)?((http|https|ftp|ftps)\:\/\/[a-zA-Z0-9\-\.]+\.[a-zA-Z]{2,5}(\/\S*\w)?)/', function($x) { return '<span class="link">'.$x[0].'</span>'; }, $c['data']);
+                $tpl .= preg_replace_callback('/<span class="link">(.*)<\/span>/', function($x) { return preg_replace('/([\*\_\`])/', "\\\\$1", html_entity_decode($x[1])); }, $c['data']);
             }
 
         }
