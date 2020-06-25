@@ -19,7 +19,7 @@ use Cake\Utility\Hash;
                 <?php foreach ($top->toArray() as $n => $row): ?>
                     <?php if ($n > 9) break; ?>
                     <tr class="itemrow">
-                        <td class="itemdesc discordfeel"><?= $this->Html->link($this->Discord->getUsernameWithColor($row->author_id) ?? $row->author_id, ['controller' => 'Stats', 'action' => 'user', $row->author_id], ['escape' => false]) ?></td>
+                        <td class="itemdesc"><?= $this->Html->link($this->Discord->getUsernameWithColor($row->author_id) ?? $row->author_id, ['controller' => 'Stats', 'action' => 'user', $row->author_id], ['escape' => false]) ?></td>
                         <td class="itemdesc"><?= h($row->count) ?></td>
                         <td class="itemdesc"><?= h((new \Cake\I18n\Time($row->seen))->timeAgoInWords(['end' => '+7 days'])) ?></td>
                     </tr>

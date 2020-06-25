@@ -147,7 +147,7 @@ use Cake\Utility\Hash;
                 <?php foreach ($mostMentioned as $n => $row): ?>
                     <?php if ($n > 9) break; ?>
                     <tr class="itemrow">
-                        <td class="itemdesc discordfeel"><?= $this->Html->link($this->Discord->getUsernameWithColor($row->mentioned_id) ?? $row->mentioned_id, ['controller' => 'Stats', 'action' => 'user', $row->mentioned_id], ['escape' => false]) ?></td>
+                        <td class="itemdesc"><?= $this->Html->link($this->Discord->getUsernameWithColor($row->mentioned_id) ?? $row->mentioned_id, ['controller' => 'Stats', 'action' => 'user', $row->mentioned_id], ['escape' => false]) ?></td>
                         <td class="itemdesc"><?= h($row->mentions) ?></td>
                     </tr>
                 <?php endforeach; ?>
@@ -167,7 +167,7 @@ use Cake\Utility\Hash;
                 <?php foreach ($mostMentionedBy as $n => $row): ?>
                     <?php if ($n > 9) break; ?>
                     <tr class="itemrow">
-                        <td class="itemdesc discordfeel"><?= $this->Html->link($this->Discord->getUsernameWithColor($row->author_id) ?? $row->author_id, ['controller' => 'Stats', 'action' => 'user', $row->author_id], ['escape' => false]) ?></td>
+                        <td class="itemdesc"><?= $this->Html->link($this->Discord->getUsernameWithColor($row->author_id) ?? $row->author_id, ['controller' => 'Stats', 'action' => 'user', $row->author_id], ['escape' => false]) ?></td>
                         <td class="itemdesc"><?= h($row->mentions) ?></td>
                     </tr>
                 <?php endforeach; ?>
