@@ -43,8 +43,11 @@ class LogsTable extends Table
         $this->addBehavior('Timestamp');
         $this->setPrimaryKey('message_id');
 
-        $this->hasMany('Attachments');
+        $this->hasMany('Attachments', [
+            'strategy' => 'subquery',
+        ]);
         $this->hasMany('EditHistory', [
+            'strategy' => 'subquery',
             'className' => 'MessageEditHistory',
             'sort' => ['created' => 'ASC'],
         ]);
