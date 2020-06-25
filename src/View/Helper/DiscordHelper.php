@@ -35,7 +35,7 @@ class DiscordHelper extends Helper
         $name = $user['nick'] ?? $user['user']['username'];
         $color = '';
         foreach ($user['roles'] as $role) {
-            if ($role['color'] !== 0) {
+            if (isset($role['color']) && $role['color'] !== 0) {
                 $color = 'color:#'.str_pad(dechex($role['color']), 6, '0', STR_PAD_LEFT).';';
             }
         }
