@@ -252,8 +252,8 @@ use Cake\Utility\Hash;
                 <td class="itemdesc">#<?= $n + 1 ?></td>
                 <td class="itemdesc bold"><?= $this->Html->link('#'.$guildChannels[$key]['name'], ['controller' => 'Logs', 'action' => 'index', '?' => ['channel' => $guildChannels[$key]['id']]]) ?></td>
                 <td class="itemdesc"><?= $channel->count ?></td>
-                <td class="itemdesc discordfeel" style="min-width:100px;"><?= $this->Html->link($this->Discord->getUsernameWithColor($channel->most_active) ?? $channel->most_active, ['controller' => 'Stats', 'action' => 'user', $channel->most_active], ['escape' => false]) ?></td>
-                <td class="itemdesc discordfeel" style="max-width:600px;word-break:break-word;"><?= $this->Log->richLine(preg_replace_callback('/<<@!?(\d*)>> (.*)/', function($x) { return '&lt;'.$this->Html->link($this->Discord->getUsernameWithColor($x[1]), ['controller' => 'Stats', 'action' => 'user', $x[1]], ['escape' => false]).'&gt; '.h($x[2]); }, $channel->random_message), false) ?></td>
+                <td class="itemdesc"><?= $this->Html->link($this->Discord->getUsernameWithColor($channel->most_active) ?? $channel->most_active, ['controller' => 'Stats', 'action' => 'user', $channel->most_active], ['escape' => false]) ?></td>
+                <td class="itemdesc"><?= $this->Log->wrappedRichLine(preg_replace_callback('/<<@!?(\d*)>> (.*)/', function($x) { return '&lt;'.$this->Html->link($this->Discord->getUsernameWithColor($x[1]), ['controller' => 'Stats', 'action' => 'user', $x[1]], ['escape' => false]).'&gt; '.h($x[2]); }, $channel->random_message), false) ?></td>
             </tr>
         <?php endforeach; ?>
         </tbody>
@@ -279,7 +279,7 @@ use Cake\Utility\Hash;
         <li>
             <b><?= $this->Discord->getUserById($authors[0], 'user.username') ?? $authors[0] ?></b> has quite a potty mouth. <?= $this->Number->format($topBadwords[$authors[0]], ['precision' => 2]) ?>% lines contained foul language.<br>
             <?php if ($foulLine): ?>
-            <b>For example, like this:</b><br />&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<?= $this->Log->richLine($foulLine->message) ?>
+            <b>For example, like this:</b><br />&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<?= $this->Log->wrappedRichLine($foulLine->message) ?>
             <?php endif; ?>
             <?php if (count($topBadwords) > 1): ?>
             <br>
@@ -292,7 +292,7 @@ use Cake\Utility\Hash;
             <li>
                 <b><?= $this->Discord->getUserById($authors[0], 'user.username') ?? $authors[0] ?></b> seems to be furious. <?= $this->Number->format($topAngry[$authors[0]], ['precision' => 2]) ?>% lines contained angry faces.<br>
                 <?php if ($angryLine): ?>
-                    <b>For instance:</b><br />&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<?= $this->Log->richLine($angryLine->message) ?>
+                    <b>For instance:</b><br />&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<?= $this->Log->wrappedRichLine($angryLine->message) ?>
                 <?php endif; ?>
                 <?php if (count($topAngry) > 1): ?>
                     <br>
@@ -358,7 +358,7 @@ use Cake\Utility\Hash;
             <tr class="itemrow">
                 <td class="itemdesc">#<?= $quote->id ?></td>
                 <td class="itemdesc" style="width:200px;"><?= $quote->author_id? $this->Html->link($this->Discord->getUsernameWithColor($quote->author_id), ['controller' => 'Stats', 'action' => 'user', $quote->author_id], ['escape' => false]) : h($quote->name) ?></td>
-                <td class="itemdesc" style="max-width:600px;word-break:break-word;"><?= $this->Log->richLine($quote->value) ?></td>
+                <td class="itemdesc" style="max-width:600px;word-break:break-word;"><?= $this->Log->wrappedRichLine($quote->value) ?></td>
                 <td><?= h($quote->created) ?></td>
             </tr>
         <?php endforeach; ?>

@@ -37,7 +37,7 @@ class LogHelper extends Helper
                 $line .= ' ';
                 $line .= $this->Html->link('<small><cite>(show edit history)</cite></small>', '#hide%23'.'c'.$log->message_id, ['escape' => false, 'class' => 'hide', 'id' => 'hide%23'.'c'.$log->message_id]);
                 $line .= $this->Html->link('<small><cite>(hide edit history)</cite></small>', '#show%23'.'c'.$log->message_id, ['escape' => false, 'class' => 'show', 'id' => 'show%23'.'c'.$log->message_id]);
-                $line .= '<span class="collapsible">'.implode('', array_map(function($x) { return '<br>&nbsp;<a>OLD:</a> '.$this->richLine($x->message); }, $log->edit_history)).'</span>';
+                $line .= '<span class="collapsible">'.implode('', array_map(function($x) { return '<br>&nbsp;<a>OLD:</a> '.$this->wrappedRichLine($x->message); }, $log->edit_history)).'</span>';
             }
         }
 
@@ -55,6 +55,7 @@ class LogHelper extends Helper
         $anchor = $this->Html->link($log->created->format($format), $this->Url->build(['?' => $queryParams]).'#'.$log->message_id, ['class' => 'anchor', 'id' => $log->message_id, 'escape' => false]);
         $anchor .= '<div class="anchor-marker"></div>';
 
+        $line = $this->_wrapRichLine($line);
         echo <<<EOL
             <div class="timestamp">{$anchor}</div>
             <div class="logline">&lt;<span class="nickname">{$nick}</span>&gt; <span class="rich-line">{$line}</span></div>
@@ -108,11 +109,19 @@ EOL;
         return $ret;
     }
 
+    private function _wrapRichLine($str) {
+        return '<span class="rich-line">'.$str.'</span>';
+    }
+
     public function richLine($str, $escape = true) {
         if ($escape) {
             $str = h($str);
         }
 
         return $this->Discord->resolveNickname($this->Discord->resolveEmoji($this->Twemoji->replace($this->resolveLinks($this->Discord->resolveMarkdown($str))), true));
+    }
+
+    public function wrappedRichLine($str, $escape = true) {
+        return $this->_wrapRichLine($this->richLine($str, $escape));
     }
 }
