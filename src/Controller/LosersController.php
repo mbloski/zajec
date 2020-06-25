@@ -7,6 +7,7 @@ use Cake\Core\Configure;
 use Cake\Event\EventInterface;
 use Cake\Http\Cookie\Cookie;
 use Cake\Utility\Hash;
+use PHPThumb\GD;
 
 /**
  * Losers Controller
@@ -18,9 +19,9 @@ class LosersController extends AppController
         $thumbFile = Configure::read('faces_dir').'/thumb/'.$id.'.jpg';
         if (!is_file($thumbFile)) {
             $loser = $this->Losers->get($id);
-            $magick = new \Imagick($loser->getPictureUrl());
-            $magick->scaleImage(180, 240, true);
-            $magick->writeImage($thumbFile);
+            $thumb = new GD($loser->getPictureUrl(), []);
+            $thumb->resize(180, 240);
+            $thumb->save($thumbFile);
         }
 
         return $this->getResponse()->withType('image/jpg')->withFile($thumbFile);
