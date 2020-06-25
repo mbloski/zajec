@@ -253,7 +253,16 @@ use Cake\Utility\Hash;
                 <td class="itemdesc bold"><?= $this->Html->link('#'.$guildChannels[$key]['name'], ['controller' => 'Logs', 'action' => 'index', '?' => ['channel' => $guildChannels[$key]['id']]]) ?></td>
                 <td class="itemdesc"><?= $channel->count ?></td>
                 <td class="itemdesc"><?= $this->Html->link($this->Discord->getUsernameWithColor($channel->most_active) ?? $channel->most_active, ['controller' => 'Stats', 'action' => 'user', $channel->most_active], ['escape' => false]) ?></td>
-                <td class="itemdesc"><?= $this->Log->wrappedRichLine(preg_replace_callback('/<<@!?(\d*)>> (.*)/', function($x) { return '&lt;'.$this->Html->link($this->Discord->getUsernameWithColor($x[1]), ['controller' => 'Stats', 'action' => 'user', $x[1]], ['escape' => false]).'&gt; '.h($x[2]); }, $channel->random_message), false) ?></td>
+                <?php
+                    $user = substr($channel->random_message, 0, strpos($channel->random_message, '>>'));
+                    $line = substr($channel->random_message, strpos($channel->random_message, $user) + strlen($user) + 3);
+                    $user = str_replace(['<', '>', '@', '!'], '', $user);
+                ?>
+                <td class="itemdesc">
+                    <div class="rich-line">
+                        <?= '&lt;'.$this->Html->link($this->Discord->getUsernameWithColor($user), ['controller' => 'Stats', 'action' => 'user', $user], ['escape' => false]).'&gt; ' ?> <?= $this->Log->richLine($line) ?>
+                    </div>
+                </td>
             </tr>
         <?php endforeach; ?>
         </tbody>

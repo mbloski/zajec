@@ -98,12 +98,13 @@ class DiscordHelper extends Helper
             $opentag = '<'.$otags[1][$i].' class="'.$type.' ' .$class. '">';
             $closetag = '</'.$otags[1][$i].'>';
 
-
             $o = ['start' => strpos($strr, $opentag), 'end' => strpos($strr, $closetag) + strlen($closetag)];
 
             $b = substr($strr, 0, $o['start']);
-            if (!empty($b))  $chunks[] = ['data' => $b];
-            $data = substr($strr, $o['start'] + strlen($opentag), $o['end'] - strlen($b) - strlen($opentag) - strlen($closetag));
+            if (!empty($b)) $chunks[] = ['data' => $b];
+
+            $data = substr($strr, $o['start'] + strlen($opentag), $o['end']);
+            $data = substr($data, 0, strpos($data, $closetag));
 
             if (in_array(strtolower($class), $highlighter->listLanguages())) {
                 try {
@@ -117,7 +118,7 @@ class DiscordHelper extends Helper
         }
 
         if ($strr) {
-            if (!empty($b))  $chunks[] = ['data' => $strr];
+            $chunks[] = ['data' => $strr];
         }
 
         if (empty($chunks)) {
@@ -129,8 +130,11 @@ class DiscordHelper extends Helper
             if (isset($c['noparse'])) {
                 $tpl .= '<code id="'.$k.'" hljs="'.intval($c['hljs']).'">';
             } else {
-                $tpl .= preg_replace_callback('/(\&lt;)?(https?|ftp):\/\/[^\s\/$.?#].[^\s]*/iS', function($x) {
-                    $elink = str_replace(['*', '`', '_'], ['\\*', '\\`', '\\_'], $x[0]);
+                $tpl .= preg_replace_callback('/(\&lt;)?((https?|ftp):\/\/[^\s\/$.?#].[^\s]*)/iS', function($x) {
+                    $elink = str_replace(['*', '`', '_'], ['\\*', '\\`', '\\_'], $x[2]);
+                    if ($x[1] && strrpos($elink, '&gt;') === strlen($elink) - 4) {
+                        $elink = substr($elink, 0, -4);
+                    }
                     $link = '<a href="'.$elink.'" target="_blank">'.$elink.'</a>';
                     return $link;
                 }, $c['data']);
