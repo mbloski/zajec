@@ -76,39 +76,6 @@ EOL;
 EOL;
     }
 
-    public function resolveLinks($str) {
-        $ret = $str;
-        $str = strip_tags($str) ?? '';
-        $reg_exUrl = "/(\&lt;)?((\&lt;)?(https?|ftp):\/\/[^\s\/$.?#].[^\s]*)/iS";
-        $urls = array();
-        $urlsToReplace = array();
-        if(preg_match_all($reg_exUrl, $str, $urls)) {
-            $numOfMatches = count($urls[2]);
-            for($i=0; $i<$numOfMatches; $i++) {
-                if ($urls[1][$i] === '&lt;' && strrpos($urls[2][$i], '&gt') === strlen($urls[2][$i]) - 3) {
-                    $urls[2][$i] = substr($urls[2][$i], 0, -3);
-                }
-
-                $alreadyAdded = false;
-                $numOfUrlsToReplace = count($urlsToReplace);
-                for($j=0; $j<$numOfUrlsToReplace; $j++) {
-                    if($urlsToReplace[$j] == $urls[2][$i]) {
-                        $alreadyAdded = true;
-                    }
-                }
-                if(!$alreadyAdded) {
-                    array_push($urlsToReplace, $urls[2][$i]);
-                }
-            }
-            $numOfUrlsToReplace = count($urlsToReplace);
-            for($i=0; $i<$numOfUrlsToReplace; $i++) {
-                $ret = str_replace($urlsToReplace[$i], "<a href=\"".$urlsToReplace[$i]."\" target=\"_blank\">".$urlsToReplace[$i]."</a>", $ret);
-            }
-            return $ret;
-        }
-        return $ret;
-    }
-
     private function _wrapRichLine($str) {
         return '<span class="rich-line">'.$str.'</span>';
     }
@@ -118,7 +85,7 @@ EOL;
             $str = h($str);
         }
 
-        return $this->Discord->resolveNickname($this->Discord->resolveEmoji($this->Twemoji->replace($this->resolveLinks($this->Discord->resolveMarkdown($str))), true));
+        return $this->Discord->resolveNickname($this->Discord->resolveEmoji($this->Twemoji->replace($this->Discord->resolveMarkdown($str)), true));
     }
 
     public function wrappedRichLine($str, $escape = true) {
