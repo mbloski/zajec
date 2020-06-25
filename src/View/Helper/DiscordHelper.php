@@ -83,6 +83,7 @@ class DiscordHelper extends Helper
         // TODO: write a proper parser
         $c = 0;
         $str = preg_replace_callback('/\`\`\`((\w*)\n)?\n?(([^\`]|\n)*)\n?\`\`\`\n?/', function($x) { return '<div class="code '.$x[2].'">'.(rtrim(empty($x[3])? $x[2] : $x[3])).'</div>'; }, $str, -1, $c);
+        $str = preg_replace_callback('/`([^`]*)`/', function($x) { return '<div class="code oneliner">'.$x[1].'</div>'; }, $str);
 
         // absolutely kek
         $chunks = [];
@@ -140,7 +141,6 @@ class DiscordHelper extends Helper
         $ret = preg_replace_callback('/__(.*?)__/', function($x) { return '<u>'.$x[1].'</u>'; }, $ret);
         $ret = preg_replace_callback('/_([^_]*)_/', function($x) { return '<i>'.$x[1].'</i>'; }, $ret);
         $ret = preg_replace_callback('/\|\|(.*?)\|\|/', function($x) { return '<span class="spoiler">'.$x[1].'</span>'; }, $ret);
-        $ret = preg_replace_callback('/`([^`]*)`/', function($x) { return '<span class="oneliner">'.$x[1].'</span>'; }, $ret);
 
         // ...and bring the code blocks back
         $ret = preg_replace_callback('/<code id="(\d*)">/', function($x) use ($chunks) { return '<div class="hljs">'.$chunks[$x[1]]['data'].'</div>'; }, $ret);

@@ -59,6 +59,8 @@ img.emoji {
     font-family: monospace;
     color: #bfbfbf;
     background-color: #202225;
+    display: inline;
+    padding: 2px;
 }
 
 @font-face {
