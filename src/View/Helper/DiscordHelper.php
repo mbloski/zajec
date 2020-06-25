@@ -144,6 +144,7 @@ class DiscordHelper extends Helper
         $ret = preg_replace_callback('/__(.*?)__/', function($x) { return '<u>'.$x[1].'</u>'; }, $ret);
         $ret = preg_replace_callback('/__(.*?)__/', function($x) { return '<u>'.$x[1].'</u>'; }, $ret);
         $ret = preg_replace_callback('/_([^_]*)_\b/', function($x) { return '<i>'.$x[1].'</i>'; }, $ret);
+        $ret = preg_replace_callback('/~~(.*?)~~/', function($x) { return '<s>'.$x[1].'</s>'; }, $ret);
         $ret = preg_replace_callback('/\|\|(.*?)\|\|/', function($x) { return '<span class="spoiler">'.$x[1].'</span>'; }, $ret);
 
         // ...and bring the code blocks back
