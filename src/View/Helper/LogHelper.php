@@ -58,7 +58,7 @@ class LogHelper extends Helper
         $line = $this->_wrapRichLine($line);
         echo <<<EOL
             <div class="timestamp">{$anchor}</div>
-            <div class="logline">&lt;<span class="nickname">{$nick}</span>&gt; <span class="rich-line">{$line}</span></div>
+            <div class="logline">&lt;<span class="nickname">{$nick}</span>&gt; {$line}</div>
 EOL;
         echo '</div>';
         echo '</div>';
