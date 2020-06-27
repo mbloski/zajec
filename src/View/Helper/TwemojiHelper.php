@@ -74,7 +74,6 @@ final class TwemojiHelper extends Helper
     }
 
     private function populateAnnotations() {
-        ini_set('memory_limit', '2G');
         $data = json_decode(file_get_contents(RESOURCES . 'emoji_annotations.json'), true);
 
         $appendMojis = function($name, $surrogates) {
