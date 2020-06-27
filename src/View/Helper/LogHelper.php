@@ -13,7 +13,7 @@ class LogHelper extends Helper
 {
     public $helpers = ['Html', 'Url', 'Discord', 'Twemoji'];
 
-    public function chat($log, $fullDate = false)
+    public function chat($log, $fullDate = false, $withChannelName = false)
     {
         echo '<div class="msg">';
         if ($log->deleted) {
@@ -51,8 +51,15 @@ class LogHelper extends Helper
         if (isset($queryParams['search'])) {
             unset($queryParams['search']);
         }
+        $queryParams['channel'] = $log->channel_id;
 
-        $anchor = $this->Html->link($log->created->format($format), $this->Url->build(['?' => $queryParams]).'#'.$log->message_id, ['class' => 'anchor', 'id' => $log->message_id, 'escape' => false]);
+        $anchorContent = '';
+        if ($withChannelName) {
+            $anchorContent .= '<small>'.($this->Discord->getChannelById($log->channel_id, 'name') ?? '(deleted channel)').'</small> ';
+        }
+        $anchorContent .= $log->created->format($format);
+
+        $anchor = $this->Html->link($anchorContent, $this->Url->build(['?' => $queryParams]).'#'.$log->message_id, ['class' => 'anchor', 'id' => $log->message_id, 'escape' => false]);
         $anchor .= '<div class="anchor-marker"></div>';
 
         $line = $this->_wrapRichLine($line);

@@ -24,6 +24,7 @@ class DiscordHelper extends Helper
     public function initialize(array $config): void
     {
         $this->guildMembers = $this->getView()->get('guildMembers');
+        $this->guildChannels = $this->getView()->get('guildChannels');
         parent::initialize($config);
     }
 
@@ -59,6 +60,19 @@ class DiscordHelper extends Helper
     public function getUsernameWithColor($id) {
         $ret = $this->getUserById($id);
         return $this->colorName($ret);
+    }
+
+    public function getChannelById($id, $prop = null) {
+        $key = array_search($id, array_column($this->guildChannels, 'id'));
+        if ($key === false) {
+            return null;
+        }
+
+        if (($ret = $this->guildChannels[$key]) && $prop) {
+            return Hash::get($ret, $prop);
+        }
+
+        return $ret;
     }
 
     public function resolveEmoji($str, bool $escaped = false) {

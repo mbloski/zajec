@@ -7,7 +7,7 @@
             <?= $this->Html->link('Home', ['controller' => 'Logs', 'action' => 'index']) ?>
         </li>
         <?php $currentChannel = null; ?>
-        <?php foreach ($guildChannels as $group): ?>
+        <?php foreach ($categorizedGuildChannels as $group): ?>
             <div class="row">
                 <?php if (!empty($group['name'])): ?>
                 <?php $class = 'withline'; ?>
@@ -41,22 +41,27 @@
             <?= $this->request->getQuery('date') ?? date('Y-m-d') ?>
         <?php endif; ?>
     </div>
+    <?php else: ?>
+        Home
+        <?php if ($this->request->getQuery('search')): ?>
+            - Search results
+        <?php endif; ?>
+    <?php endif; ?>
     <div class="search">
         <?= $this->Form->create($logs, ['type' => 'get']) ?>
-        <?= $this->Form->input('channel', ['type' => 'hidden', 'value' => $this->request->getQuery('channel')]) ?>
+        <?php if ($this->request->getQuery('channel') !== null): ?>
+            <?= $this->Form->input('channel', ['type' => 'hidden', 'value' => $this->request->getQuery('channel')]) ?>
+        <?php endif; ?>
         <?= $this->Form->input('search') ?>
         <?= $this->Form->submit('Search') ?>
         <?= $this->Form->end() ?>
     </div>
-    <?php else: ?>
-    Home
-    <?php endif; ?>
 </div>
 <div id="log">
     <?php if (isset($logs)): ?>
         <?php if ($logs->count() > 0): ?>
             <?php foreach ($logs as $log): ?>
-                <?php $this->Log->chat($log, (bool)$this->request->getQuery('search')); ?>
+                <?php $this->Log->chat($log, (bool)$this->request->getQuery('search'), $this->request->getQuery('channel') === null); ?>
             <?php endforeach; ?>
         <?php else: ?>
             <?php $this->Log->status('Nothing here'); ?>

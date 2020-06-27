@@ -30,17 +30,14 @@ class LogsController extends AppController
                 $channels[$channel['parent_id']]['channels'][] = $channel;
             }
         }
-        $guildChannels = array_filter($channels, function($x) { return !empty($x['channels']); });
-        $this->set(compact('guildChannels', 'date'));
+        $categorizedGuildChannels = array_filter($channels, function($x) { return !empty($x['channels']); });
+        $this->set(compact('categorizedGuildChannels', 'date'));
 
+        $conditions = [];
         $channel = $this->request->getQuery('channel') ?? null;
-        if (!$channel) {
-            return;
+        if ($channel) {
+            $conditions['channel_id'] = $channel;
         }
-
-        $conditions = [
-            'channel_id' => $channel,
-        ];
 
         $search = $this->request->getQuery('search') ?? null;
         if ($search) {
@@ -53,13 +50,17 @@ class LogsController extends AppController
         $logs = $this->Logs->find('all', [
             'fields' => [
                 'created' => 'DATETIME(created, \'localtime\')',
+                'channel_id',
                 'message_id',
                 'author_id',
                 'message',
                 'deleted',
             ],
             'contain' => ['Attachments', 'EditHistory'],
-            'conditions' => $conditions
+            'conditions' => $conditions,
+            'order' => [
+                'channel_id'
+            ],
         ]);
 
         $this->set(compact('logs'));
