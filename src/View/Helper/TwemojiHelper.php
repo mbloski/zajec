@@ -86,7 +86,6 @@ final class TwemojiHelper extends Helper
             // https://github.com/twitter/twemoji/issues/272
             if (mb_strlen($surrogates) == 2) {
                 $surrogates = join('', array_filter(mb_str_split($surrogates), function ($x) {
-                    debug(dechex(mb_ord($x)));
                     return mb_ord($x) !== 0xFE0F;
                 }));
             }
