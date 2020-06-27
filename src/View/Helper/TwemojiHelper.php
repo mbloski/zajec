@@ -9,12 +9,13 @@ use Cake\View\Helper;
 final class TwemojiHelper extends Helper
 {
     private $emojis;
+    private $img_format = '<img draggable="false" class="emoji" alt="%s" src="https://abs.twimg.com/emoji/%s/%s/%s.%s">';
 
     public function initialize(array $config): void
     {
         parent::initialize($config);
-        $format = $config['format'] ?? 'svg';
-        $version = $config['version'] ?? 'v2';
+        $this->format = $config['format'] ?? 'svg';
+        $this->version = $config['version'] ?? 'v2';
 
         $response = $this->requestRepository();
 
@@ -41,16 +42,17 @@ final class TwemojiHelper extends Helper
                 $emoji .= mb_chr(hexdec($code));
             }
             $emojis[$emoji] = sprintf(
-                '<img draggable="false" class="emoji" alt="%s" src="https://abs.twimg.com/emoji/%s/%s/%s.%s">',
+                $this->img_format,
                 $emoji,
-                $version,
-                $format,
+                $this->version,
+                $this->format,
                 $matches[1],
-                $format
+                $this->format
             );
         }
 
         $this->emojis = $emojis;
+        $this->populateAnnotations();
     }
 
     public function replace(string $string): string
@@ -69,5 +71,43 @@ final class TwemojiHelper extends Helper
         }
 
         return $ret;
+    }
+
+    private function populateAnnotations() {
+        ini_set('memory_limit', '2G');
+        $data = json_decode(file_get_contents(RESOURCES . 'emoji_annotations.json'), true);
+
+        $appendMojis = function($name, $surrogates) {
+            // ® © ™
+            if (mb_strlen($surrogates) == 2 || $surrogates[1] == 0x2122) {
+                return;
+            }
+
+            // https://github.com/twitter/twemoji/issues/272
+            if (mb_strlen($surrogates) == 2) {
+                $surrogates = join('', array_filter(mb_str_split($surrogates), function ($x) {
+                    debug(dechex(mb_ord($x)));
+                    return mb_ord($x) !== 0xFE0F;
+                }));
+            }
+
+            $this->emojis[':'.$name.':'] = $this->emojis[$surrogates];
+        };
+
+        foreach ($data as $emojiGroup) {
+            foreach ($emojiGroup as $emoji) {
+                if (isset($emoji['diversityChildren'])) {
+                    foreach ($emoji['diversityChildren'] as $diverseEmoji) {
+                        foreach ($diverseEmoji['names'] as $name) {
+                            $appendMojis($name, $emoji['surrogates']);
+                        }
+                    }
+                }
+
+                foreach ($emoji['names'] as $name) {
+                    $appendMojis($name, $emoji['surrogates']);
+                }
+            }
+        }
     }
 }

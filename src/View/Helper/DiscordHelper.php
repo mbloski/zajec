@@ -79,7 +79,9 @@ class DiscordHelper extends Helper
         $gt = $escaped? '&gt;' : '>';
         $lt = $escaped? '&lt;' : '<';
 
-        return preg_replace('/'.$lt.'\:(\w*)\:(\d*)'.$gt.'/', '<img draggable="false" class="emoji" alt=":$1:" title=":$1:" src="https://cdn.discordapp.com/emojis/$2.png">', $str);
+        $ret = preg_replace('/'.$lt.'\:(\w*)\:(\d*)'.$gt.'/', '<img draggable="false" class="emoji" alt=":$1:" title=":$1:" src="https://cdn.discordapp.com/emojis/$2.png">', $str);
+
+        return $ret;
     }
 
     public function resolveNickname($str) {

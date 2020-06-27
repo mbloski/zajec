@@ -18,7 +18,9 @@ img.emoji {
 }
 
 .spoiler:hover, .spoiler div:hover, .spoiler span:hover {
+    position: relative;
     color: #bfbfbf !important;
+    z-index: 0;
 }
 
 .code {
@@ -37,11 +39,13 @@ img.emoji {
     background: none !important;
 }
 
-.spoiler div {
+.spoiler div, .spoiler img {
+    position: relative;
     color: black !important;
     padding: 0;
     margin: 0;
     background: none !important;
+    z-index: -1;
 }
 
 .code u, .code i, .code b {
