@@ -58,7 +58,7 @@
     </div>
 </div>
 <div id="log">
-    <?php if (isset($logs)): ?>
+    <?php if (isset($logs) && $currentChannel || $this->request->getQuery('search')): ?>
         <?php if ($logs->count() > 0): ?>
             <?php foreach ($logs as $log): ?>
                 <?php $this->Log->chat($log, (bool)$this->request->getQuery('search'), $this->request->getQuery('channel') === null); ?>
