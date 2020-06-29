@@ -79,7 +79,10 @@ class DiscordHelper extends Helper
         $gt = $escaped? '&gt;' : '>';
         $lt = $escaped? '&lt;' : '<';
 
-        $ret = preg_replace('/'.$lt.'\:(\w*)\:(\d*)'.$gt.'/', '<img draggable="false" class="emoji" alt=":$1:" title=":$1:" src="https://cdn.discordapp.com/emojis/$2.png">', $str);
+        $ret = preg_replace_callback('/'.$lt.'(a?):(\w*):(\d*)'.$gt.'/', function($x) {
+            $format = empty($x[1])? 'png' : 'gif';
+            return '<img draggable="false" class="emoji" alt=":'.$x[2].':" title=":'.$x[2].':" src="https://cdn.discordapp.com/emojis/'.$x[3].'.'.$format.'">';
+        }, $str);
 
         return $ret;
     }
