@@ -31,7 +31,8 @@ if (Configure::read('debug')) :
 $this->end();
 endif;
 ?>
-<h2><?= h($message) ?></h2>
-<p class="error">
+
+<div class="error">
+    <h2><?= h($message) ?></h2>
     <?= __d('cake', 'The requested address was not found on this server.') ?>
-</p>
+</div>
