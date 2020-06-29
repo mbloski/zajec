@@ -20,11 +20,14 @@ class DiscordHelper extends Helper
      */
     protected $_defaultConfig = [];
     private $guildMembers;
+    private $guildChannels;
+    private $highlighter;
 
     public function initialize(array $config): void
     {
         $this->guildMembers = $this->getView()->get('guildMembers');
         $this->guildChannels = $this->getView()->get('guildChannels');
+        $this->highlighter = new Highlighter();
         parent::initialize($config);
     }
 
@@ -107,7 +110,6 @@ class DiscordHelper extends Helper
         $chunks = [];
         $strr = $str;
 
-        $highlighter = new Highlighter();
         preg_match_all('/<(\w*) class="(\w*) ?(\w*)">/', $str, $otags);
 
         for ($i = 0; $i < count($otags[0]); ++$i) {
@@ -125,9 +127,9 @@ class DiscordHelper extends Helper
             $data = substr($strr, $o['start'] + strlen($opentag), $o['end']);
             $data = substr($data, 0, strpos($data, $closetag));
 
-            if (in_array(strtolower($class), $highlighter->listLanguages())) {
+            if (in_array(strtolower($class), $this->highlighter->listLanguages())) {
                 try {
-                    $data = $highlighter->highlight(strtolower($class), html_entity_decode($data, ENT_QUOTES))->value;
+                    $data = $this->highlighter->highlight(strtolower($class), html_entity_decode($data, ENT_QUOTES))->value;
                 } catch (\Exception $e) {
                     // unknown language, let's just not highlight that
                 }
