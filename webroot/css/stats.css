@@ -9,17 +9,17 @@ body {
 
 #header {
     height: 60px;
-    padding: 10px;
+    padding: 10px 10px 10px 90px;
     border-bottom: 1px solid #666666;
     position: relative;
-    background: #C8D3D4 url("img/holiday.png");
-    background-position: 15px 14px;
+    background-color: #C8D3D4;
+    background-size: 70px 70px;
+    background-position: 5px 5px;
     background-repeat: no-repeat;
 }
 
 #header h1 {
     margin-top: 10px;
-    margin-left: 35px;
     color: #0D484D;
     margin-bottom: 2px;
     line-height: 25px;
@@ -42,8 +42,9 @@ body {
 #header #headnav {
     position: absolute;
     display: block;
-    left: 10px;
-    bottom: 0px;
+    left: initial;
+    right: 10px;
+    bottom: 0;
     padding: 0;
     margin: 0;
 }

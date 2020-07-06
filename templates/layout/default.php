@@ -17,6 +17,17 @@
 </head>
 <body>
 
+<?php $icon = 'https://cdn.discordapp.com/icons/'.$guild['id'].'/'.$guild['icon'].'.webp?size=128'; ?>
+<div id="header" style="background-image: url(<?= $icon ?>);">
+    <h1>
+        <?= $this->Html->link($guild['name'], '/') ?>
+    </h1>
+    <cite>Discord statistics</cite>
+    <ul id="headnav">
+        <li><?= $this->Html->link('Logs', ['controller' => 'Logs', 'action' => 'index']) ?></li>
+    </ul>
+</div>
+
 <div id="container">
     <div id="fcontent" style="width:80%">
         <?= $this->Flash->render() ?>

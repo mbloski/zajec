@@ -74,10 +74,11 @@ class AppController extends Controller
 
     public function beforeFilter(EventInterface $event)
     {
+        $guild = $this->Discord->getGuild(Configure::read('discord.guild'));
         $guildMembers = $this->Discord->getGuildMembersWithRoles(Configure::read('discord.guild'));
         $guildChannels = $this->Discord->getChannels(Configure::read('discord.guild'));
 
-        $this->set(compact('guildMembers', 'guildChannels'));
+        $this->set(compact('guild', 'guildMembers', 'guildChannels'));
         parent::beforeFilter($event);
     }
 }
