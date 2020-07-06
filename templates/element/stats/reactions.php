@@ -1,3 +1,4 @@
+<?php if ($reactions->count() > 0): ?>
 <div class="sbox">
     <h2 class="text-center">
         Most popular reactions
@@ -20,3 +21,4 @@
         </tr>
     </table>
 </div>
+<?php endif; ?>

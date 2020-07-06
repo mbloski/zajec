@@ -53,6 +53,7 @@
 
 <?= $this->Element('stats/reactions') ?>
 
+<?php if ($pictures->count() > 0): ?>
 <div class="sbox">
     <h2 class="text-center">
         Pictures
@@ -68,3 +69,4 @@
         <?php endforeach; ?>
     </div>
 </div>
+<?php endif; ?>
