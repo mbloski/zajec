@@ -44,20 +44,9 @@ class StatsController extends AppController
 
         $mostMentionedUsers = $this->Stats->mostMentionedUsers(2);
 
-        $this->loadModel('Quotes');
-        $quotes = $this->Quotes->find('all', [
-            'fields' => [
-                'created' => 'datetime(created, \'localtime\')',
-                'id',
-                'author_id',
-                'name',
-                'value',
-            ]
-        ]);
-
         $reactions = $this->Stats->getTopReactions(10);
 
-        $this->set(compact('top', 'dailyActivity', 'mostActiveTimes', 'quotes', 'reactions', 'topChannels', 'topBadwords', 'foulLine', 'mostCommonBadwords', 'topAngry', 'angryLine', 'topQuestions', 'longestLines', 'shortestLines', 'wordOccurences', 'mostMentionedUsers'));
+        $this->set(compact('top', 'dailyActivity', 'mostActiveTimes', 'reactions', 'topChannels', 'topBadwords', 'foulLine', 'mostCommonBadwords', 'topAngry', 'angryLine', 'topQuestions', 'longestLines', 'shortestLines', 'wordOccurences', 'mostMentionedUsers'));
     }
 
     /**

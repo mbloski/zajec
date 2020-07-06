@@ -19,9 +19,6 @@ namespace App\Controller;
 use Cake\Controller\Controller;
 use Cake\Core\Configure;
 use Cake\Event\EventInterface;
-use Cake\Event\EventManager;
-use Cake\ORM\TableRegistry;
-use Cake\Utility\Hash;
 
 /**
  * Application Controller

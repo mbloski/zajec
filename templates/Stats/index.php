@@ -5,4 +5,3 @@
 <?= $this->Element('stats/reactions') ?>
 <?= $this->Element('stats/top_channels') ?>
 <?= $this->Element('stats/fun_facts') ?>
-<?= $this->Element('stats/quotes') ?>

@@ -6,7 +6,7 @@ namespace App\Controller;
 use Cake\Event\EventInterface;
 
 /**
- * Messages Controller
+ * Logs Controller
  *
  * @property \App\Model\Table\LogsTable $Logs
  */

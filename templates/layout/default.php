@@ -24,6 +24,7 @@
     </h1>
     <cite>Discord statistics</cite>
     <ul id="headnav">
+        <li><?= $this->Html->link('Quotes', ['controller' => 'Quotes', 'action' => 'index']) ?></li>
         <li><?= $this->Html->link('Logs', ['controller' => 'Logs', 'action' => 'index']) ?></li>
     </ul>
 </div>

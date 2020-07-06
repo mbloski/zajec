@@ -4,9 +4,7 @@ declare(strict_types=1);
 namespace App\Controller;
 
 use Cake\Core\Configure;
-use Cake\Event\EventInterface;
 use Cake\Http\Cookie\Cookie;
-use Cake\Utility\Hash;
 
 /**
  * Users Controller
