@@ -4,6 +4,7 @@ declare(strict_types=1);
 namespace App\Controller;
 
 use Cake\Core\Configure;
+use Cake\Utility\Hash;
 use PHPThumb\GD;
 
 /**
@@ -27,5 +28,12 @@ class LosersController extends AppController
     public function photo($id, $name = null) {
         $loser = $this->Losers->get($id);
         return $this->getResponse()->withFile($loser->getPictureUrl());
+    }
+
+    public function index() {
+        $losers = $this->Losers->find('all');
+        $losers = Hash::combine($losers->toArray(), '{n}.id', '{n}', '{n}.author_id');
+
+        $this->set(compact('losers'));
     }
 }
