@@ -10,6 +10,6 @@ if (!isset($params['escape']) || $params['escape'] !== false) {
 ?>
 <div>
     <div class="sbox" style="text-align: center;">
-        <div class="message error"><?= $message ?></div>
+        <div class="message error-message"><?= $message ?></div>
     </div>
 </div>
