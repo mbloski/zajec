@@ -16,7 +16,7 @@ class StatsTable extends \Cake\ORM\Table
         $this->setTable('messages');
     }
 
-    public function getTop($c = null) {
+    public function getTop($c = null, array $conditions = []) {
         $messages = TableRegistry::getTableLocator()->get('Messages');
         return $messages->find('all', [
             'fields' => [
@@ -31,17 +31,15 @@ class StatsTable extends \Cake\ORM\Table
                 'count' => 'DESC',
             ],
             'limit' => $c,
+            'conditions' => $conditions,
         ]);
     }
 
-    public function getDaily(int $days = 7, $author_id = null) {
+    public function getDaily(int $days = 7, array $conditions = []) {
         --$days;
         $conditions = [
             'DATE(created, \'localtime\') >= (SELECT DATE(\'now\', \''.-$days.' day\', \'localtime\'))',
-        ];
-        if ($author_id) {
-            $conditions['author_id'] = $author_id;
-        }
+        ] + $conditions;
 
         $messages = TableRegistry::getTableLocator()->get('Messages');
         $q = $messages->find('all', [
@@ -69,12 +67,7 @@ class StatsTable extends \Cake\ORM\Table
         return $ret;
     }
 
-    public function getMostActiveTimes($author_id = null) {
-        $conditions = [];
-        if ($author_id) {
-            $conditions['author_id'] = $author_id;
-        }
-
+    public function getMostActiveTimes(array $conditions = []) {
         $messages = TableRegistry::getTableLocator()->get('Messages');
         $hours = $messages->find('list', [
             'keyField' => 'hour',
@@ -98,11 +91,7 @@ class StatsTable extends \Cake\ORM\Table
         return $ret;
     }
 
-    public function getTopReactions($c = null, $author_id = null) {
-        $conditions = [];
-        if ($author_id) {
-            $conditions['author_id'] = $author_id;
-        }
+    public function getTopReactions($c = null, array $conditions = []) {
         $reactions = TableRegistry::getTableLocator()->get('Reactions');
         return $reactions->find('all', [
             'conditions' => $conditions,

@@ -19,7 +19,7 @@ class StatsController extends AppController
      */
     public function index()
     {
-        $top = $this->Stats->getTop();
+        $top = $this->Stats->getTop(10);
         $dailyActivity = $this->Stats->getDaily(14);
         $mostActiveTimes = $this->Stats->getMostActiveTimes();
         $topChannels = $this->Stats->getTopChannels()->all();
@@ -61,6 +61,31 @@ class StatsController extends AppController
     }
 
     /**
+     * Channel method
+     *
+     * @return \Cake\Http\Response|null|void Renders view
+     */
+    public function channel($id = null)
+    {
+        $channels = $this->viewBuilder()->getVar('guildChannels');
+        $channel = null;
+        $key = array_search($id, array_column($channels, 'id'));
+        if ($key !== false) {
+            $channel = $channels[$key];
+        }
+
+        if ($channel === null || $channel['type'] !== 0) {
+            throw new NotFoundException();
+        }
+
+        $top = $this->Stats->getTop(10, ['channel_id' => $id]);
+        $dailyActivity = $this->Stats->getDaily(14, ['channel_id' => $id]);
+        $mostActiveTimes = $this->Stats->getMostActiveTimes(['channel_id' => $id]);
+
+        $this->set(compact('channel', 'top', 'dailyActivity', 'mostActiveTimes'));
+    }
+
+    /**
      * User method
      *
      * @return \Cake\Http\Response|null|void Renders view
@@ -79,9 +104,9 @@ class StatsController extends AppController
             ]
         ]);
 
-        $dailyActivity = $this->Stats->getDaily(14, $id);
-        $mostActiveTimes = $this->Stats->getMostActiveTimes($id);
-        $reactions = $this->Stats->getTopReactions(10, $id);
+        $dailyActivity = $this->Stats->getDaily(14, ['author_id' => $id]);
+        $mostActiveTimes = $this->Stats->getMostActiveTimes(['author_id' => $id]);
+        $reactions = $this->Stats->getTopReactions(10, ['author_id' => $id]);
         $mostMentioned = $this->Stats->mostMentioned($id);
         $mostMentionedBy = $this->Stats->mostMentionedBy($id);
 
