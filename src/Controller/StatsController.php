@@ -19,7 +19,7 @@ class StatsController extends AppController
      */
     public function index()
     {
-        $top = $this->Stats->getTop(10);
+        $top = $this->Stats->getTop();
         $dailyActivity = $this->Stats->getDaily(14);
         $mostActiveTimes = $this->Stats->getMostActiveTimes();
         $topChannels = $this->Stats->getTopChannels()->all();
@@ -78,7 +78,7 @@ class StatsController extends AppController
             throw new NotFoundException();
         }
 
-        $top = $this->Stats->getTop(10, ['channel_id' => $id]);
+        $top = $this->Stats->getTop(null, ['channel_id' => $id]);
         $dailyActivity = $this->Stats->getDaily(14, ['channel_id' => $id]);
         $mostActiveTimes = $this->Stats->getMostActiveTimes(['channel_id' => $id]);
 
