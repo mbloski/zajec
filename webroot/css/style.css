@@ -55,7 +55,7 @@ img.emoji {
     background: none !important;
 }
 
-.spoiler div, .spoiler img {
+.spoiler div, .spoiler img, .spoiler a {
     position: relative;
     color: black !important;
     padding: 0;
