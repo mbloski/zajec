@@ -33,7 +33,7 @@ img.emoji {
     color: black;
 }
 
-.spoiler:hover, .spoiler div:hover, .spoiler span:hover {
+.spoiler:hover, .spoiler div:hover, .spoiler span:hover, .spoiler a:hover {
     position: relative;
     color: #bfbfbf !important;
     z-index: 0;
