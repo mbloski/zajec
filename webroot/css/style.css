@@ -28,9 +28,9 @@ img.emoji {
 }
 
 .spoiler {
-    display: inline-block;
     background-color: black !important;
     color: black;
+    padding: 2px;
 }
 
 .spoiler:hover, .spoiler div:hover, .spoiler span:hover, .spoiler a:hover {
