@@ -159,6 +159,10 @@ td.rotate {
 td.point {
     width: 20px;
     height: 20px;
+    font-size: 10px;
+    text-align: center;
+    color: black;
+    font-family: monospace;
 }
 
 .pointstable .black {
