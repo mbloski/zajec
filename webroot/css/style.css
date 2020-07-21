@@ -122,3 +122,45 @@ img.emoji {
     font-weight: bold;
     font-family: 'Dearest', sans-serif;
 }
+
+.pointstable {
+    background-color: #2f3136;
+    color: #bfbfbf;
+    min-width: 400px;
+
+    border-collapse: collapse;
+
+    border: 1px solid #000;
+    margin: 0 auto;
+}
+
+.pointstable td {
+    border: 1px solid #000;
+}
+
+.pointstable td {
+    padding: 5px;
+    text-align: right;
+    border: 1px solid black;
+    line-height: 20px;
+}
+
+.pointstable .nick {
+    font-size: 12px;
+    font-weight: bold;
+}
+
+td.rotate {
+    writing-mode: vertical-rl;
+    transform: rotate(180deg);
+    vertical-align: top;
+}
+
+td.point {
+    width: 20px;
+    height: 20px;
+}
+
+.pointstable .black {
+    background-color: black;
+}

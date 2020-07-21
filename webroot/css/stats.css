@@ -111,7 +111,7 @@ body {
     text-decoration: underline;
 }
 
-td {
+.itemtable td {
     text-align: center;
 }
 
