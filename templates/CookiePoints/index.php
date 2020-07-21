@@ -7,7 +7,7 @@
         <?php endforeach; ?>
     </tr>
     <?php foreach ($guildMembersNoBots as $i): ?>
-        <tr>
+        <tr class="user-<?= $i['user']['id'] ?>">
             <td class="nick"><?= $this->Html->link($this->Discord->getUsernameWithColor($i['user']['id']), ['controller' => 'Stats', 'action' => 'user', $i['user']['id']], ['escape' => false]) ?></td>
             <?php foreach ($guildMembersNoBots as $j): ?>
                 <?php
