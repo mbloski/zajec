@@ -13,12 +13,12 @@
                 <?php
                 $color = '';
                 $count = '';
-                if ($i['user']['id'] == $j['user']['id']) {
-                    $color = '000';
-                }
                 if ($p = ($cookiePoints[$i['user']['id']][$j['user']['id']] ?? null)) {
                     $count = $p->count;
                     $color = $this->Color->rgbify($count, -$maxRep, $maxRep);
+                }
+                if ($i['user']['id'] == $j['user']['id']) {
+                    $color = '000';
                 }
                 ?>
                 <td class="point" style="background-color:#<?= $color ?>;"><?= $count ?></td>
