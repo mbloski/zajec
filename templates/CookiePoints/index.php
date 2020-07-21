@@ -3,12 +3,12 @@
     <tr>
         <td class=""></td>
         <?php foreach ($guildMembersNoBots as $i): ?>
-            <td class="nick rotate"><div><?= $i['user']['username'] ?></div></td>
+            <td class="nick rotate"><div><?= $this->Html->link($this->Discord->getUsernameWithColor($i['user']['id']), ['controller' => 'Stats', 'action' => 'user', $i['user']['id']], ['escape' => false]) ?></div></td>
         <?php endforeach; ?>
     </tr>
     <?php foreach ($guildMembersNoBots as $i): ?>
         <tr>
-            <td class="nick"><?= $i['user']['username'] ?></td>
+            <td class="nick"><?= $this->Html->link($this->Discord->getUsernameWithColor($i['user']['id']), ['controller' => 'Stats', 'action' => 'user', $i['user']['id']], ['escape' => false]) ?></td>
             <?php foreach ($guildMembersNoBots as $j): ?>
                 <?php
                 $color = '';

@@ -102,7 +102,7 @@ body {
     text-decoration: none;
 }
 
-.sbox .itemtable a {
+.sbox .itemtable a, .pointstable a {
     color: #AAAAAA;
     text-decoration: none;
 }
