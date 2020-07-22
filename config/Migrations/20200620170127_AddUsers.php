@@ -14,7 +14,7 @@ class AddUsers extends AbstractMigration
      */
     public function change()
     {
-        $table = $this->table('Users');
+        $table = $this->table('users');
         $table->addColumn('user_id', 'string', ['null' => false]);
         $table->addColumn('username', 'string', ['null' => false]);
         $table->addColumn('avatar', 'string', ['null' => false]);
