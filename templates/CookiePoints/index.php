@@ -19,7 +19,13 @@
                     $count = '';
                     if ($p = ($cookiePoints[$i['user']['id']][$j['user']['id']] ?? null)) {
                         $count = $p->count;
-                        $color = $this->Color->rgbify($count, $minRep, $maxRep);
+                        if ($count < 0) {
+                            $color = $this->Color->rgbify($count, $minRep, 0);
+                        } elseif ($count > 0) {
+                            $color = $this->Color->rgbify($count, 0, $maxRep);
+                        } else {
+                            $color = $this->Color->rgbify(0.5, 0, 1);
+                        }
                     }
                     if ($i['user']['id'] == $j['user']['id']) {
                         $color = '000';
