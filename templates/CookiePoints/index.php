@@ -20,9 +20,9 @@
                     if ($p = ($cookiePoints[$i['user']['id']][$j['user']['id']] ?? null)) {
                         $count = $p->count;
                         if ($count < 0) {
-                            $color = $this->Color->rgbify($count, $minRep, 0);
+                            $color = $this->Color->rgbify($count, $minRep, -$minRep);
                         } elseif ($count > 0) {
-                            $color = $this->Color->rgbify($count, 0, $maxRep);
+                            $color = $this->Color->rgbify($count, -$maxRep, $maxRep);
                         } else {
                             $color = $this->Color->rgbify(0.5, 0, 1);
                         }
