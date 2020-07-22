@@ -60,7 +60,7 @@ class UsersTable extends Table
         $user->user_id = $data['user_id'];
         $user->avatar = $data['avatar'];
         $user->discriminator = $data['discriminator'];
-        $this->save($user);
+        //$this->save($user);
 
         return $user;
     }
@@ -73,7 +73,7 @@ class UsersTable extends Table
         $user->user_id = $data['id'];
         $user->avatar = $data['avatar'];
         $user->discriminator = $data['discriminator'];
-        $this->save($user);
+        //$this->save($user);
 
         return $user->toArray();
     }
